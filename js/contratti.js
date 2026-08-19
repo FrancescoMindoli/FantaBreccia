@@ -52,7 +52,8 @@
       'Compila il foglio <em>Contratti</em> in <code>dati\\Gestione.xlsx</code>, ' +
       'poi lancia <code>aggiorna.bat</code>.'
     );
-    ['sezione-slot', 'sezione-andamento', 'sezione-griglia', 'sezione-eta', 'sezione-svincoli']
+    ['sezione-avvisi', 'sezione-slot', 'sezione-andamento', 'sezione-griglia',
+     'sezione-eta', 'sezione-svincoli']
       .forEach(function (id) { document.getElementById(id).hidden = true; });
     document.querySelector('.filtri').hidden = true;
     document.getElementById('generato-il').textContent = D.generatoIl || '—';
@@ -144,6 +145,133 @@
 
   function squadreVisibili(sel) {
     return sel === 'tutte' ? squadre : [Number(sel)];
+  }
+
+  // --- 0. Avvisi: problemi di slot, adesso e negli anni futuri ----------
+
+  /**
+   * Perché una squadra sfora in un certo anno.
+   *
+   * Non basta dire "sei a 4 su 3": serve sapere chi lo ha causato, perché
+   * quasi sempre nessuno ha fatto nulla — è un giocatore che è invecchiato
+   * e ha cambiato categoria da solo.
+   */
+  function causeDelloSforamento(idSquadra, anno, slot) {
+    // Solo le categorie che c'entrano col limite violato: se sfora la A,
+    // un giocatore che passa da C a B non è la causa, e citarlo confonde.
+    var critiche = {};
+    if (slot.A > C.MAX_CATEGORIA_A) critiche.A = true;
+    if (slot.ab > C.MAX_A_PIU_B) { critiche.A = true; critiche.B = true; }
+
+    var cambi = [];
+    var nuovi = [];
+
+    contratti.forEach(function (c) {
+      if (c.idSquadra !== idSquadra) return;
+      var d = dettaglio(c)[anno];
+      if (!d || !critiche[d.categoria]) return;
+
+      if (c.annoInizio === anno) {
+        nuovi.push(c.giocatore);
+      } else if (d.cambiata) {
+        var prima = dettaglio(c)[anno - 1];
+        cambi.push(
+          c.giocatore + ' compie ' + d.eta + ' anni e passa da ' +
+          (prima ? prima.categoria : '?') + ' a ' + d.categoria
+        );
+      }
+    });
+
+    // Nessuna causa nuova: lo sforamento arriva dall'anno prima e prosegue.
+    // Senza dirlo sembrerebbe che manchi un'informazione.
+    var invariato = !cambi.length && !nuovi.length;
+
+    return { cambi: cambi, nuovi: nuovi, invariato: invariato };
+  }
+
+  function disegnaAvvisi(annoRif, sel) {
+    var contenitore = document.getElementById('avvisi');
+    var elenco = squadreVisibili(sel);
+    var problemi = [];
+
+    elenco.forEach(function (id) {
+      anni.forEach(function (anno) {
+        var s = slotSquadra(id, anno);
+        if (!s.totale || !s.sfora) return;
+        problemi.push({
+          id: id, anno: anno, motivi: s.motivi,
+          futuro: anno > annoRif,
+          cause: causeDelloSforamento(id, anno, s)
+        });
+      });
+    });
+
+    if (!problemi.length) {
+      contenitore.innerHTML =
+        '<div class="avviso-ok">' +
+          '<strong>✓ Nessun problema di slot.</strong> ' +
+          'Tutte le squadre rispettano i limiti in ogni anno di contratto, ' +
+          'anche tenendo conto di come cambieranno le categorie.' +
+        '</div>';
+      return;
+    }
+
+    var adesso = problemi.filter(function (p) { return !p.futuro; });
+    var dopo = problemi.filter(function (p) { return p.futuro; });
+
+    var html =
+      '<div class="avviso-testata">' +
+        '<strong>⚠️ ' + problemi.length +
+        (problemi.length === 1 ? ' problema di slot' : ' problemi di slot') + '</strong>' +
+        '<span>' +
+          (adesso.length ? adesso.length + ' da risolvere subito' : 'nessuno immediato') +
+          ' · ' +
+          (dopo.length ? dopo.length + ' in arrivo negli anni futuri' : 'nessuno in futuro') +
+        '</span>' +
+      '</div>';
+
+    function blocco(elenco, titolo, classe) {
+      if (!elenco.length) return '';
+      var voci = '';
+      elenco.forEach(function (p) {
+        var cause = '';
+        if (p.cause.cambi.length) {
+          cause += '<div class="avviso-causa"><span>Perché:</span> ' +
+            esc(p.cause.cambi.join(' · ')) + '</div>';
+        }
+        if (p.cause.nuovi.length) {
+          cause += '<div class="avviso-causa"><span>Chi occupa gli slot:</span> ' +
+            esc(p.cause.nuovi.join(' · ')) + '</div>';
+        }
+        if (p.cause.invariato) {
+          cause += '<div class="avviso-causa"><span>Perché:</span> ' +
+            'situazione invariata rispetto all\'anno precedente</div>';
+        }
+        voci +=
+          '<li>' +
+            '<div class="avviso-riga">' +
+              '<strong>' + p.anno + '</strong> — ' + esc(nomeSquadra(p.id)) +
+              ': <span class="ko">' + esc(p.motivi.join(' e ')) + '</span>' +
+            '</div>' + cause +
+          '</li>';
+      });
+      return '<div class="avviso-blocco ' + classe + '">' +
+        '<div class="avviso-titolo">' + titolo + '</div>' +
+        '<ul>' + voci + '</ul></div>';
+    }
+
+    html += blocco(adesso, 'Da sistemare ora', 'avviso-ora');
+    html += blocco(dopo, 'In arrivo negli anni futuri', 'avviso-futuro');
+
+    html +=
+      '<p class="nota-tabella">' +
+        'Un contratto già firmato <strong>non viene annullato</strong> se la ' +
+        'squadra finisce sopra il limite: il regolamento non agisce ' +
+        'retroattivamente (<a href="regolamento.html#s2">§ 2</a>). Ma di quegli ' +
+        'sforamenti va tenuto conto nelle riconferme successive.' +
+      '</p>';
+
+    contenitore.innerHTML = html;
   }
 
   // --- 1. Riepilogo slot dell'anno selezionato --------------------------
@@ -469,6 +597,7 @@
     var sel = selSquadra.value;
     var filtro = ricerca.value.trim().toLowerCase();
 
+    disegnaAvvisi(anno, sel);
     disegnaSlot(anno, sel);
     disegnaAndamento(anno, sel);
     disegnaEta(anno, sel, filtro);

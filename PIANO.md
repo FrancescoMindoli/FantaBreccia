@@ -95,8 +95,10 @@ uno, lo script lo segnala.
 - [x] `contratti.html` + `js/contratti.js`
 - [x] Stato vuoto comprensibile finché i fogli non sono compilati
 
-Cinque sezioni, sul modello della pagina del gestionale:
+Sei sezioni, sul modello della pagina del gestionale:
 
+0. **Avvisi** — tutti i problemi di slot in un colpo d'occhio, divisi fra
+   quelli attuali e quelli in arrivo, con la causa di ciascuno
 1. **Slot nell'anno selezionato** — card per una squadra, tabella per tutte
 2. **Andamento per squadra** — anno per anno: giocatori, slot A/B/C, costo
    delle riconferme, costo se si svincola tutto, esito
@@ -151,7 +153,21 @@ conferma e pubblica.
 
 ---
 
-## 7. Cosa resta fuori
+## 7. Scelta: il sito resta in sola lettura
+
+Si era valutato di gestire i contratti direttamente dal browser, scrivendo nel
+repository tramite le API di GitHub. È tecnicamente possibile, ma richiede un
+token di scrittura conservato nel browser: accettabile per un amministratore
+solo, non distribuibile agli altri partecipanti.
+
+**Decisione: i dati si gestiscono dal PC, sull'Excel.** In cambio, la pagina
+Contratti deve segnalare da sola i problemi di slot — quelli attuali e quelli
+che matureranno negli anni successivi — così non serve andarseli a cercare.
+È quanto fa la sezione **Avvisi**.
+
+---
+
+## 8. Cosa resta fuori
 
 **Il gestionale non viene toccato.** Se continui a usarlo, i due archivi
 divergono: lui non legge questo Excel e questo Excel non sa cosa inserisci
