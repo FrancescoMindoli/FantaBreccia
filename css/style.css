@@ -685,9 +685,30 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 
 /* L'anno di riferimento è quello su cui valgono i limiti di slot */
-.cella-anno-rif { background: var(--orange-soft); box-shadow: inset 0 0 0 1px var(--orange-line); }
+.col-rif { background: var(--orange-soft); }
+th.col-rif { box-shadow: inset 0 -2px 0 var(--orange); }
+th.col-conflitto { color: var(--warn); }
 /* Il giocatore è passato di categoria rispetto all'anno prima */
 .cella-cambio { box-shadow: inset 3px 0 0 var(--violet); }
+td.vuota { color: var(--text-3); font-weight: 400; }
+
+.eta { font-weight: 800; font-size: 1.02rem; }
+
+/* Esiti */
+.ko { color: var(--ko); }
+.ok-muto { color: var(--text-3); }
+.riga-ko { background: rgba(248, 113, 113, 0.07); }
+.riga-anno-rif { background: var(--orange-soft); }
+
+.esito-ok, .esito-ko {
+  font-weight: 650;
+  font-size: 0.92rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--r-s);
+  margin: 0 0 0.9rem;
+}
+.esito-ok { color: var(--ok); background: rgba(52, 211, 153, 0.1); }
+.esito-ko { color: var(--ko); background: rgba(248, 113, 113, 0.1); }
 
 tfoot td {
   background: rgba(255, 255, 255, 0.045);

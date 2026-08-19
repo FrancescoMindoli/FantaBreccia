@@ -71,6 +71,7 @@ window.DATI = {
     }
   },
   "contratti": [],
+  "svincoli": [],
   "classifiche": {
     "2026": [
       {

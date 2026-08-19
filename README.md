@@ -52,6 +52,7 @@ git add . && git commit -m "Dati aggiornati" && git push
 | `AnagraficaSquadre` | Squadre e allenatori |
 | `CambioNome` | Nome della squadra per anno |
 | `Contratti` | Contratti di riconferma |
+| `Svincoli` | Storico degli svincoli e penali |
 | `Classifiche` | Classifica di campionato |
 | `Coppa` | Podio della coppa |
 | `CreditiAsta` | Crediti avanzati a fine stagione |
@@ -59,15 +60,13 @@ git add . && git commit -m "Dati aggiornati" && git push
 
 ### Il foglio Contratti
 
-Una riga per contratto, **nessun ID da scrivere**: giocatore e squadra si
-indicano per nome.
+Una riga per contratto.
 
 | Colonna | Cosa scrivere |
 |---|---|
 | `Giocatore` | Nome del calciatore |
-| `Ruolo` | `P`, `D`, `C` o `A` |
 | `AnnoNascita` | Solo l'anno. **Determina la categoria A/B/C** e quindi gli slot |
-| `Squadra` | Nome come in `AnagraficaSquadre`; maiuscole e spazi ai bordi non contano |
+| `IDSquadra` | ID come in `AnagraficaSquadre` |
 | `AnnoInizio` | Anno della riconferma |
 | `PrezzoAcquisto` | Prezzo pagato all'asta: non cambia mai |
 | `Attivo` | `1` in corso, `0` chiuso |
@@ -76,6 +75,31 @@ indicano per nome.
 
 Se lo stesso giocatore compare in due contratti attivi, lo script avvisa: o è
 un doppione, o sono due omonimi da distinguere nel nome.
+
+### Il foglio Svincoli
+
+| Colonna | Cosa scrivere |
+|---|---|
+| `Giocatore` | Lo stesso nome usato in `Contratti` |
+| `IDSquadra` | La squadra che lo svincola |
+| `AnnoSvincolo` | Anno in cui avviene |
+| `Penale` | **Lasciala vuota**: la calcola il sistema |
+| `Note` | Motivo, facoltativo |
+
+**Quando svincoli un giocatore servono due passaggi:**
+
+1. Aggiungi la riga in `Svincoli`
+2. Metti `Attivo = 0` nella sua riga di `Contratti`
+
+Se ne fai solo uno, lo script te lo segnala.
+
+La penale è `prezzo × 10% × anni residui`, arrotondata per eccesso
+(regolamento § 8). Compila `Penale` solo per forzare un valore diverso da
+quello da regolamento: in quel caso lo script avvisa, così una forzatura non
+passa inosservata.
+
+Il sito raggruppa le penali per squadra e per anno, e mostra quanti crediti
+vanno tolti all'asta di quella stagione.
 
 ### Calcolare i crediti della stagione nuova
 

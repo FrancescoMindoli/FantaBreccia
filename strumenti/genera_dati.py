@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -57,6 +58,13 @@ def categoria_per_eta(anno_nascita, anno_riferimento):
     if eta <= ETA_MAX_B:
         return "B"
     return "A"
+
+
+def calcola_penale(prezzo, anni_rimanenti):
+    """Penale di svincolo — regolamento § 8. Come calcolaSvincolo() in JS."""
+    if not anni_rimanenti or anni_rimanenti <= 0:
+        return 0
+    return math.ceil(prezzo * 0.10 * anni_rimanenti - 1e-9)
 
 
 # --- Lettura dei fogli ---------------------------------------------------
@@ -122,6 +130,7 @@ def costruisci(wb) -> dict:
         "squadre": [],
         "nomiPerAnno": {},
         "contratti": [],
+        "svincoli": [],
         "classifiche": {},
         "coppa": {},
         "creditiResidui": {},
@@ -150,19 +159,8 @@ def costruisci(wb) -> dict:
         anni.add(anno)
         dati["nomiPerAnno"].setdefault(str(anno), {})[str(idx)] = testo(riga.get("Nome"))
 
-    # Contratti: foglio autosufficiente, nessun ID da scrivere.
-    # Giocatore e squadra si indicano per nome; l'anno di fine è sempre
-    # inizio + 3 e non si scrive.
+    # Contratti — l'anno di fine è sempre inizio + 3 e non si scrive
     print("  · Contratti")
-
-    # Nome squadra -> id, per risolvere la colonna "Squadra".
-    # Confronto senza maiuscole e senza spazi ai bordi: chi compila non deve
-    # preoccuparsi di riprodurre il nome carattere per carattere.
-    id_per_nome = {}
-    for s in dati["squadre"]:
-        if s["squadra"]:
-            id_per_nome[s["squadra"].strip().lower()] = s["id"]
-
     for riga in leggi_foglio(wb, "Contratti"):
         nome = testo(riga.get("Giocatore"))
         inizio = intero(riga.get("AnnoInizio"))
@@ -170,24 +168,57 @@ def costruisci(wb) -> dict:
         if not nome or nome.upper().startswith("ESEMPIO") or inizio is None:
             continue
 
-        nome_squadra = testo(riga.get("Squadra"))
-        id_squadra = id_per_nome.get(nome_squadra.lower())
-        if id_squadra is None:
-            # Ripiego: qualcuno potrebbe aver lasciato la vecchia colonna
-            id_squadra = intero(riga.get("IDSquadra"))
-
         fine = intero(riga.get("AnnoFine"), inizio + DURATA_CONTRATTO - 1)
         anni.add(inizio)
         dati["contratti"].append({
             "giocatore": nome,
-            "ruolo": testo(riga.get("Ruolo")).upper(),
             "annoNascita": intero(riga.get("AnnoNascita")),
-            "squadra": nome_squadra,
-            "idSquadra": id_squadra,
+            "idSquadra": intero(riga.get("IDSquadra")),
             "annoInizio": inizio,
             "annoFine": fine,
             "prezzo": intero(riga.get("PrezzoAcquisto"), 0),
             "attivo": bool(intero(riga.get("Attivo"), 1)),
+        })
+
+    # Svincoli — la penale si calcola dal contratto, salvo forzatura
+    print("  · Svincoli")
+    for riga in leggi_foglio(wb, "Svincoli"):
+        nome = testo(riga.get("Giocatore"))
+        anno_sv = intero(riga.get("AnnoSvincolo"))
+        if not nome or nome.upper().startswith("ESEMPIO") or anno_sv is None:
+            continue
+
+        id_squadra = intero(riga.get("IDSquadra"))
+        anni.add(anno_sv)
+
+        # Cerca il contratto a cui si riferisce: stesso giocatore, stessa
+        # squadra, e anno di svincolo dentro la durata.
+        contratto = None
+        for c in dati["contratti"]:
+            if (c["giocatore"].strip().lower() == nome.strip().lower()
+                    and c["idSquadra"] == id_squadra
+                    and c["annoInizio"] <= anno_sv <= c["annoFine"]):
+                contratto = c
+                break
+
+        penale = intero(riga.get("Penale"))
+        forzata = penale is not None
+        anni_rimanenti = None
+        if contratto is not None:
+            anni_rimanenti = contratto["annoFine"] - anno_sv + 1
+            if penale is None:
+                penale = calcola_penale(contratto["prezzo"], anni_rimanenti)
+
+        dati["svincoli"].append({
+            "giocatore": nome,
+            "idSquadra": id_squadra,
+            "anno": anno_sv,
+            "penale": penale if penale is not None else 0,
+            "penaleForzata": forzata,
+            "anniRimanenti": anni_rimanenti,
+            "prezzo": contratto["prezzo"] if contratto else None,
+            "note": testo(riga.get("Note")),
+            "contrattoTrovato": contratto is not None,
         })
 
     # Classifica di campionato
@@ -251,6 +282,7 @@ def costruisci(wb) -> dict:
     dati["contratti"].sort(
         key=lambda c: (c["idSquadra"] is None, c["idSquadra"] or 0, c["giocatore"])
     )
+    dati["svincoli"].sort(key=lambda s: (-s["anno"], s["idSquadra"] or 0, s["giocatore"]))
     for elenco in dati["classifiche"].values():
         elenco.sort(key=lambda r: (r["posizione"] is None, r["posizione"]))
     for elenco in dati["coppa"].values():
@@ -303,9 +335,8 @@ def controlli(dati: dict) -> list[str]:
         nome = c["giocatore"]
         if c["idSquadra"] not in id_noti:
             avvisi.append(
-                f"Contratti: '{nome}' è assegnato a \"{c['squadra']}\", che non "
-                "corrisponde a nessuna squadra di AnagraficaSquadre — "
-                "controlla come l'hai scritto"
+                f"Contratti: '{nome}' ha IDSquadra {c['idSquadra']}, che non "
+                "esiste in AnagraficaSquadre"
             )
         if c["annoNascita"] is None:
             avvisi.append(
@@ -327,6 +358,30 @@ def controlli(dati: dict) -> list[str]:
                 f"Contratti: risultano {quanti} contratti attivi per '{nome}' — "
                 "o è un doppione, o sono due omonimi (in tal caso distinguili "
                 "nel nome)"
+            )
+
+    # --- Svincoli ---
+    attivi = {
+        (c["giocatore"].strip().lower(), c["idSquadra"])
+        for c in dati["contratti"] if c["attivo"]
+    }
+    for s in dati["svincoli"]:
+        if not s["contrattoTrovato"]:
+            avvisi.append(
+                f"Svincoli: per '{s['giocatore']}' nel {s['anno']} non trovo un "
+                "contratto corrispondente — controlla nome, IDSquadra e che "
+                "l'anno cada dentro la durata del contratto"
+            )
+        if (s["giocatore"].strip().lower(), s["idSquadra"]) in attivi:
+            avvisi.append(
+                f"Svincoli: '{s['giocatore']}' risulta svincolato nel {s['anno']} "
+                "ma il suo contratto è ancora Attivo = 1 — mettilo a 0"
+            )
+        if s["penaleForzata"]:
+            avvisi.append(
+                f"Svincoli: la penale di '{s['giocatore']}' ({s['penale']}) è "
+                "scritta a mano, non calcolata. Lascia la cella vuota se vuoi "
+                "il valore da regolamento"
             )
 
     # --- Slot per squadra e anno ---
@@ -396,8 +451,11 @@ def main() -> int:
 
     print(f"\nScritto {args.out}")
     print(f"  {len(dati['squadre'])} squadre")
-    attivi = sum(1 for c in dati["contratti"] if c["attivo"])
-    print(f"  {len(dati['contratti'])} contratti ({attivi} attivi)")
+    n_attivi = sum(1 for c in dati["contratti"] if c["attivo"])
+    print(f"  {len(dati['contratti'])} contratti ({n_attivi} attivi)")
+    if dati["svincoli"]:
+        penali = sum(s["penale"] for s in dati["svincoli"])
+        print(f"  {len(dati['svincoli'])} svincoli, {penali} crediti di penali")
     print(f"  {len(dati['anni'])} stagioni: {', '.join(str(a) for a in dati['anni'])}")
 
     avvisi = controlli(dati)

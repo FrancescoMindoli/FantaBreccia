@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fanta Breccia — Contratti</title>
-<meta name="description" content="I giocatori sotto contratto squadra per squadra, con il costo di riconferma anno per anno.">
+<meta name="description" content="I giocatori sotto contratto squadra per squadra: costi anno per anno, controllo delle età e degli slot, storico svincoli.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
 
   <header class="hero">
     <h1>Contratti</h1>
-    <p>I giocatori sotto contratto, con quanto costa tenerli in ciascuno dei quattro anni.</p>
+    <p>Chi è sotto contratto, quanto costa tenerlo e come cambiano le categorie con il passare degli anni.</p>
   </header>
 
   <div class="filtri">
@@ -47,24 +47,55 @@
   <p class="errore-input" id="errore" hidden></p>
 
   <section id="sezione-slot">
-    <h2>Slot occupati</h2>
+    <h2>Slot nell'anno selezionato</h2>
     <p class="nota-tabella">
-      Conteggio riferito all'anno selezionato. I limiti sono 3 in categoria A e
-      6 sommando A e B; la categoria C non occupa posti
+      I limiti valgono <strong>per squadra</strong>: massimo 3 in categoria A e
+      massimo 6 sommando A e B. La categoria C non occupa posti
       (<a href="regolamento.html#s2">regolamento § 2</a>).
     </p>
     <div id="slot-riepilogo"></div>
   </section>
 
+  <section id="sezione-andamento">
+    <h2>Andamento per squadra</h2>
+    <p class="nota-tabella">
+      Anno per anno: quanti giocatori sotto contratto, come si distribuiscono
+      nelle categorie, quanto costano le riconferme e quanto costerebbe
+      svincolarli tutti.
+    </p>
+    <div id="andamento"></div>
+  </section>
+
+  <section id="sezione-eta">
+    <h2>Controllo delle età</h2>
+    <p class="nota-tabella">
+      L'età di ciascun giocatore nei quattro anni di contratto, con la categoria
+      corrispondente. Le celle marcate sono quelle in cui il giocatore
+      <strong>cambia categoria</strong>: è lì che una squadra può ritrovarsi
+      sopra il limite senza aver fatto nulla.
+    </p>
+    <div id="eta-tabella"></div>
+  </section>
+
   <section id="sezione-griglia">
-    <h2>Giocatori sotto contratto</h2>
+    <h2>Costi anno per anno</h2>
+    <p class="nota-tabella">
+      In ogni cella: il costo per riconfermarlo quell'anno, la categoria, e
+      sotto la penale se invece lo svincoli.
+    </p>
     <div id="griglia"></div>
+  </section>
+
+  <section id="sezione-svincoli">
+    <h2>Svincoli</h2>
+    <div id="svincoli-tabella"></div>
+    <div id="svincoli-totale"></div>
   </section>
 
 </main>
 
 <footer>
-  <p>Fotografia al <span id="generato-il">—</span>. Per le operazioni si usa il gestionale.</p>
+  <p>Fotografia al <span id="generato-il">—</span>, generata da <code>dati/Gestione.xlsx</code>.</p>
   <p>In caso di discordanza fa fede il <a href="regolamento.html">regolamento integrale</a>.</p>
 </footer>
 

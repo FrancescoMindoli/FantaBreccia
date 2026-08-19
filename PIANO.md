@@ -52,21 +52,23 @@ I nomi dei fogli restano quelli che avevi: rinominarli avrebbe rotto quello
 che già funziona senza alcun guadagno. La corrispondenza con le tabelle è
 documentata nel foglio `_Leggimi`.
 
-### Il foglio nuovo
+### I fogli nuovi
 
-**`Contratti`** — `Giocatore` · `Ruolo` · `AnnoNascita` · `Squadra` ·
-`AnnoInizio` · `PrezzoAcquisto` · `Attivo`
+**`Contratti`** — `Giocatore` · `AnnoNascita` · `IDSquadra` · `AnnoInizio` ·
+`PrezzoAcquisto` · `Attivo`
 
-Autosufficiente: **nessun ID da scrivere**, giocatore e squadra si indicano per
-nome. `AnnoFine` non si scrive, è sempre `AnnoInizio + 3`.
+`AnnoFine` non si scrive, è sempre `AnnoInizio + 3`. `AnnoNascita` è il campo
+critico: da lì dipende la categoria A/B/C e tutto il conteggio degli slot.
 
-`AnnoNascita` è il campo critico: da lì dipende la categoria A/B/C e quindi
-tutto il conteggio degli slot.
+**`Svincoli`** — `Giocatore` · `IDSquadra` · `AnnoSvincolo` · `Penale` · `Note`
 
-> Inizialmente c'era anche un foglio `Giocatori` separato, con gli ID. È stato
-> eliminato perché costringeva a incrociare due fogli a mano per inserire un
-> contratto. Le colonne che servivano davvero — nome, ruolo, anno di nascita —
-> sono migrate qui.
+La penale si lascia vuota e la calcola il sistema. Svincolare richiede due
+passaggi: la riga qui, e `Attivo = 0` nella riga di `Contratti`. Se ne manca
+uno, lo script lo segnala.
+
+> Inizialmente c'era anche un foglio `Giocatori` separato. È stato eliminato
+> perché costringeva a incrociare due fogli per inserire un contratto: le
+> colonne che servivano davvero sono migrate in `Contratti`.
 
 ---
 
@@ -93,10 +95,21 @@ tutto il conteggio degli slot.
 - [x] `contratti.html` + `js/contratti.js`
 - [x] Stato vuoto comprensibile finché i fogli non sono compilati
 
-Mostra: selettore squadra e anno, ricerca, riepilogo slot (limiti 3 e 6),
-griglia anno per anno con costo e categoria, totali.
-Non mostra: svincolo e rettifiche — sono scritture, un sito statico non le può
-registrare.
+Cinque sezioni, sul modello della pagina del gestionale:
+
+1. **Slot nell'anno selezionato** — card per una squadra, tabella per tutte
+2. **Andamento per squadra** — anno per anno: giocatori, slot A/B/C, costo
+   delle riconferme, costo se si svincola tutto, esito
+3. **Controllo delle età** — l'età di ciascuno nei quattro anni, con la
+   categoria e l'evidenza di dove cambia
+4. **Costi anno per anno** — griglia con costo, categoria e penale per cella,
+   più totali e verifica dei limiti in fondo
+5. **Svincoli** — storico e crediti da togliere all'asta
+
+Le colonne sono **anni solari**, non "anno 1..4": i contratti partono in
+stagioni diverse e vanno confrontati sulla stessa scala.
+
+Non c'è il pulsante "Svincola": è una scrittura, e si fa nell'Excel.
 
 ---
 
