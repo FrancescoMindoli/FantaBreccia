@@ -42,33 +42,51 @@
 
   <p class="errore-input" id="errore" hidden></p>
 
-  <!-- 1. L'avviso, se c'è qualcosa che non va -->
-  <div id="avvisi"></div>
-
-  <!-- 2. Il cuore della pagina: chi hai e quanto costa -->
-  <section id="sezione-tabella">
-    <h2>I tuoi giocatori</h2>
+  <!-- 1. Il check anno per anno, prima di ogni altra cosa -->
+  <section id="sezione-riepilogo">
+    <h2>Slot, anno per anno</h2>
     <p class="nota-tabella">
-      Per ogni anno vedi le due alternative: <strong>quanto paghi per
-      riscattarlo</strong> e tenerlo un altro anno, oppure <strong>quanto paghi
-      di penale</strong> per lasciarlo andare. Gli anni segnati in rosso sono
-      quelli in cui la squadra sfora i limiti di slot.
+      Puoi tenere al massimo <strong>3 Over 25</strong> e <strong>6 sommando
+      Over e Under 25</strong>. Gli <strong>Under 21</strong> non occupano
+      posti (<a href="regolamento.html#s2">regolamento § 2</a>).
     </p>
-    <div id="tabella"></div>
+    <div id="riepilogo"></div>
+    <div id="avvisi"></div>
   </section>
 
-  <!-- 3. Il dettaglio degli slot, che spiega i rossi -->
-  <section id="sezione-slot">
-    <h2>Slot anno per anno</h2>
+  <!-- 2. I giocatori, uno per scheda -->
+  <section id="sezione-giocatori">
+    <h2>I tuoi giocatori</h2>
     <p class="nota-tabella">
-      Massimo <strong>3 giocatori in categoria A</strong> e <strong>6 sommando
-      A e B</strong>. La categoria C non occupa posti
-      (<a href="regolamento.html#s2">regolamento § 2</a>).
+      Per ogni anno le due alternative: <strong>riscatti</strong> è quanto paghi
+      per tenerlo un altro anno, <strong>svincoli</strong> è la penale se lo
+      lasci andare.
+    </p>
+    <div id="giocatori"></div>
+  </section>
+
+  <!-- 3. I totali -->
+  <section id="sezione-totali">
+    <h2>Quanto costa in tutto</h2>
+    <p class="nota-tabella">
+      Le due strade opposte: riscattare l'intera rosa sotto contratto, oppure
+      liberarsene completamente.
+    </p>
+    <div id="totali"></div>
+  </section>
+
+  <!-- 4. Chi occupa quale slot -->
+  <section id="sezione-slot">
+    <h2>Dettaglio slot</h2>
+    <p class="nota-tabella">
+      Chi occupa quale categoria, anno per anno. I nomi evidenziati sono quelli
+      che <strong>cambiano categoria</strong> in quell'anno: è così che una
+      squadra finisce sopra il limite senza aver fatto nulla.
     </p>
     <div id="slot"></div>
   </section>
 
-  <!-- 4. Svincoli già fatti -->
+  <!-- 5. Svincoli registrati -->
   <section id="sezione-svincoli">
     <h2>Svincoli registrati</h2>
     <div id="svincoli"></div>
