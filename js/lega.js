@@ -69,6 +69,7 @@
 
     righe.forEach(function (r) {
       var tr = document.createElement('tr');
+      if (r.posizione) tr.setAttribute('data-pos', String(r.posizione));
 
       var pos = document.createElement('td');
       pos.className = 'num';
@@ -113,6 +114,7 @@
 
     righe.forEach(function (r) {
       var tr = document.createElement('tr');
+      if (r.posizione) tr.setAttribute('data-pos', String(r.posizione));
       var pos = document.createElement('td');
       pos.className = 'num';
       pos.textContent = (MEDAGLIE[r.posizione] || '') + ' ' + numeroOTrattino(r.posizione);
@@ -176,8 +178,9 @@
     mostraSezione('sezione-squadre', D.squadre.length > 0);
 
     D.squadre.forEach(function (s) {
+      // L'ID è un identificativo interno del foglio di gestione: non dice
+      // nulla a chi legge, quindi non compare.
       var tr = document.createElement('tr');
-      tr.appendChild(cella(String(s.id), 'num'));
       var nome = document.createElement('td');
       nome.innerHTML = '<strong>' + nomeSquadra(s.id, anno, s.squadra) + '</strong>';
       tr.appendChild(nome);
@@ -191,6 +194,11 @@
     disegnaCoppa(anno);
     disegnaCrediti(anno);
     disegnaSquadre(anno);
+
+    // Rimette le etichette sulle celle appena create, così su telefono le
+    // tabelle restano schede anche dopo un cambio di stagione.
+    // Al primo giro tabelle.js non è ancora caricato: ci pensa lui da solo.
+    if (typeof window.preparaTabelle === 'function') window.preparaTabelle();
 
     Array.prototype.forEach.call(
       document.querySelectorAll('#anno-scelte button'),

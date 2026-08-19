@@ -1,447 +1,702 @@
 /*
- * Fanta Breccia — sito pubblico
- * Palette e caratteri ripresi dal gestionale (fantacalcio/static/style.css),
- * ma riscritti da zero: qui servono solo testo lungo e una tabella.
+ * Fanta Breccia — foglio di stile unico
+ *
+ * Progettato prima per il telefono: è da lì che si legge il regolamento
+ * durante l'asta. Le regole per schermi larghi arrivano dopo, in coda.
+ *
+ * Le tabelle con 3+ colonne diventano schede sotto i 640px (vedi
+ * js/tabelle.js): niente scorrimento orizzontale su telefono.
  */
+
+/* ====================================================================
+   1. Variabili
+   ==================================================================== */
 
 :root {
   /* Sfondi */
-  --bg-primary: #0F172A;
-  --bg-secondary: #1E293B;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-elevated: rgba(255, 255, 255, 0.04);
+  --bg: #0A0F1C;
+  --bg-2: #111A2E;
+  --surface: rgba(23, 33, 54, 0.72);
+  --surface-solid: #162034;
+  --elevated: rgba(255, 255, 255, 0.045);
 
   /* Testo */
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --text: #EDF2F8;
+  --text-2: #9FB0C7;
+  --text-3: #64748B;
 
   /* Accenti */
-  --orange: #FF6B35;
-  --orange-soft: rgba(255, 107, 53, 0.12);
-  --blue: #4361EE;
-  --blue-soft: rgba(67, 97, 238, 0.12);
-  --gradient-mix: linear-gradient(135deg, #FF6B35 0%, #FF8C42 30%, #4361EE 70%, #7209B7 100%);
+  --orange: #FF7A45;
+  --orange-2: #FFA552;
+  --orange-soft: rgba(255, 122, 69, 0.13);
+  --orange-line: rgba(255, 122, 69, 0.32);
+  --blue: #5B8DEF;
+  --blue-soft: rgba(91, 141, 239, 0.13);
+  --violet: #A78BFA;
+
+  --gradient: linear-gradient(120deg, #FF7A45 0%, #FFA552 28%, #5B8DEF 72%, #A78BFA 100%);
 
   /* Semantici */
-  --success: #22C55E;
-  --danger: #EF4444;
-  --warning: #F59E0B;
+  --ok: #34D399;
+  --ko: #F87171;
+  --warn: #FBBF24;
 
-  /* Categorie */
-  --cat-a: #A78BFA;
-  --cat-b: #38BDF8;
-  --cat-c: #34D399;
+  /* Medaglie */
+  --oro: #FFD24A;
+  --argento: #CBD5E1;
+  --bronzo: #D08B4F;
 
-  --border: rgba(255, 255, 255, 0.1);
-  --radius: 12px;
-  --radius-lg: 16px;
+  /* Bordi e raggi */
+  --line: rgba(255, 255, 255, 0.085);
+  --line-2: rgba(255, 255, 255, 0.16);
+  --r-s: 10px;
+  --r: 14px;
+  --r-l: 20px;
 
-  --font: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Ombre */
+  --sh: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --sh-l: 0 12px 32px rgba(0, 0, 0, 0.36);
+
+  /* Tipografia fluida */
+  --f: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+  --f-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --t-base: clamp(0.94rem, 0.9rem + 0.2vw, 1.03rem);
+  --t-small: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
+  --t-h1: clamp(1.65rem, 1.3rem + 1.9vw, 2.6rem);
+  --t-h2: clamp(1.22rem, 1.08rem + 0.7vw, 1.5rem);
+  --t-h3: clamp(1.02rem, 0.97rem + 0.25vw, 1.13rem);
+
+  /* Ritmo verticale */
+  --sp: clamp(1rem, 0.85rem + 0.8vw, 1.5rem);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-
-body {
-  margin: 0;
-  font-family: var(--font);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.7;
-  font-size: 17px;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
   -webkit-text-size-adjust: 100%;
 }
 
-/* ---------- Navigazione ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+
+body {
+  margin: 0;
+  font-family: var(--f);
+  font-size: var(--t-base);
+  line-height: 1.68;
+  color: var(--text);
+  background: var(--bg);
+  /* Alone luminoso in alto: dà profondità senza appesantire */
+  background-image:
+    radial-gradient(58rem 30rem at 18% -12%, rgba(255, 122, 69, 0.11), transparent 62%),
+    radial-gradient(52rem 28rem at 88% -6%, rgba(91, 141, 239, 0.10), transparent 60%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ====================================================================
+   2. Navigazione
+   ==================================================================== */
 
 .nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(10, 15, 28, 0.86);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--line);
 }
 
 .nav-inner {
-  max-width: 900px;
+  max-width: 62rem;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--sp);
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  min-height: 60px;
+  gap: 6px;
+  min-height: 54px;
 }
 
 .nav-brand {
-  font-weight: 700;
-  font-size: 1.05rem;
-  margin-right: auto;
+  font-weight: 800;
+  font-size: 0.98rem;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  background: var(--gradient-mix);
+  white-space: nowrap;
+  margin-right: auto;
+  padding-right: 10px;
+  background: var(--gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.nav a.nav-link {
-  color: var(--text-secondary);
+.nav-link {
+  position: relative;
+  color: var(--text-2);
   text-decoration: none;
-  padding: 8px 14px;
-  border-radius: var(--radius);
-  font-size: 0.94rem;
-  transition: background 0.15s, color 0.15s;
+  padding: 7px 12px;
+  border-radius: var(--r-s);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 0.16s, background 0.16s;
+}
+.nav-link:hover { color: var(--text); background: var(--elevated); }
+
+.nav-link.active {
+  color: var(--orange);
+  font-weight: 650;
+  background: var(--orange-soft);
 }
 
-.nav a.nav-link:hover { background: var(--bg-elevated); color: var(--text-primary); }
-.nav a.nav-link.active { background: var(--orange-soft); color: var(--orange); font-weight: 600; }
-
-/* ---------- Struttura ---------- */
+/* ====================================================================
+   3. Struttura
+   ==================================================================== */
 
 main {
-  max-width: 900px;
+  max-width: 46rem;
   margin: 0 auto;
-  padding: 40px 20px 80px;
+  padding: clamp(1.6rem, 1rem + 2.4vw, 3rem) var(--sp) 5rem;
 }
 
-.hero { margin-bottom: 48px; }
+.hero { margin-bottom: clamp(1.8rem, 1.2rem + 2vw, 3rem); }
 
 .hero h1 {
-  font-size: clamp(1.9rem, 5vw, 2.6rem);
-  line-height: 1.2;
-  margin: 0 0 12px;
-  background: var(--gradient-mix);
+  font-size: var(--t-h1);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  margin: 0 0 0.5rem;
+  background: var(--gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.hero p { color: var(--text-secondary); font-size: 1.1rem; margin: 0; }
-
-h2 {
-  font-size: 1.55rem;
-  margin: 48px 0 16px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--border);
+.hero p {
+  color: var(--text-2);
+  font-size: clamp(0.98rem, 0.94rem + 0.3vw, 1.14rem);
+  margin: 0;
+  max-width: 38ch;
 }
 
-h3 { font-size: 1.15rem; margin: 32px 0 12px; color: var(--text-primary); }
+h2 {
+  font-size: var(--t-h2);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin: clamp(2.2rem, 1.6rem + 2vw, 3.4rem) 0 0.9rem;
+  padding-left: 0.72rem;
+  border-left: 3px solid var(--orange);
+}
 
-p { margin: 0 0 16px; }
+h3 {
+  font-size: var(--t-h3);
+  line-height: 1.35;
+  margin: 1.9rem 0 0.6rem;
+  color: var(--text);
+}
 
-a { color: var(--orange); }
+p { margin: 0 0 0.95rem; }
 
-strong { color: #fff; font-weight: 600; }
+a {
+  color: var(--orange);
+  text-decoration-color: var(--orange-line);
+  text-underline-offset: 0.18em;
+}
+a:hover { text-decoration-color: var(--orange); }
 
-ul, ol { padding-left: 24px; margin: 0 0 16px; }
-li { margin-bottom: 8px; }
+strong { color: #fff; font-weight: 650; }
+
+ul, ol { padding-left: 1.3rem; margin: 0 0 1rem; }
+li { margin-bottom: 0.42rem; }
+li::marker { color: var(--orange); }
 
 code {
-  font-family: var(--font-mono);
-  font-size: 0.88em;
-  background: var(--bg-elevated);
-  padding: 2px 6px;
-  border-radius: 5px;
-  color: var(--cat-b);
+  font-family: var(--f-mono);
+  font-size: 0.87em;
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  padding: 0.1em 0.4em;
+  border-radius: 6px;
+  color: var(--blue);
+  overflow-wrap: anywhere;
 }
 
 pre {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 1rem;
   overflow-x: auto;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  box-shadow: var(--sh);
 }
+pre code { background: none; border: none; padding: 0; color: var(--text); }
 
-pre code { background: none; padding: 0; color: var(--text-primary); }
+hr { border: none; border-top: 1px solid var(--line); margin: 2.4rem 0; }
 
-/* ---------- Riquadri ---------- */
+/* ====================================================================
+   4. Riquadri
+   ==================================================================== */
 
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin: 24px 0;
+  background: linear-gradient(160deg, rgba(31, 43, 68, 0.8), rgba(16, 24, 42, 0.9));
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  padding: clamp(1.1rem, 0.9rem + 1vw, 1.6rem);
+  margin: 1.5rem 0;
+  box-shadow: var(--sh-l);
 }
 
 .callout {
-  border-left: 4px solid var(--orange);
+  position: relative;
+  border-left: 3px solid var(--orange);
   background: var(--orange-soft);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 16px 20px;
-  margin: 24px 0;
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 0.95rem 1.15rem;
+  margin: 1.5rem 0;
+  font-size: 0.97em;
 }
-
 .callout.info { border-left-color: var(--blue); background: var(--blue-soft); }
-.callout.warn { border-left-color: var(--warning); background: rgba(245, 158, 11, 0.1); }
+.callout.warn { border-left-color: var(--warn); background: rgba(251, 191, 36, 0.1); }
 .callout p:last-child { margin-bottom: 0; }
-.callout-title { font-weight: 700; display: block; margin-bottom: 6px; }
+
+.callout-title {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.005em;
+}
 
 .esempio {
-  background: var(--bg-secondary);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  margin: 20px 0;
-  font-size: 0.97rem;
+  background: rgba(255, 255, 255, 0.028);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--violet);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 0.95rem 1.15rem;
+  margin: 1.3rem 0;
+  font-size: 0.96em;
 }
-.esempio .esempio-label {
+.esempio-label {
   display: block;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  color: var(--violet);
+  margin-bottom: 0.45rem;
+  font-weight: 800;
 }
 .esempio p:last-child { margin-bottom: 0; }
 
-/* ---------- Tabelle (scorrono su telefono) ---------- */
+/* ====================================================================
+   5. Tabelle
+   ==================================================================== */
 
 .table-wrap {
-  overflow-x: auto;
-  margin: 20px 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  -webkit-overflow-scrolling: touch;
+  margin: 1.2rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
 }
 
-table { width: 100%; border-collapse: collapse; min-width: 380px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
 
 th, td {
-  padding: 12px 16px;
+  padding: 0.62rem 0.85rem;
   text-align: left;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
 }
 
 th {
-  background: var(--bg-secondary);
-  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--text-2);
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover { background: var(--bg-elevated); }
+tbody tr { transition: background 0.14s; }
+tbody tr:hover { background: rgba(255, 255, 255, 0.028); }
 
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.num { font-weight: 600; }
+
+.nota-tabella {
+  font-size: var(--t-small);
+  color: var(--text-3);
+  margin: -0.4rem 0 1.2rem;
+  line-height: 1.55;
+}
+
+/* Etichette e valori */
 
 .badge {
   display: inline-block;
-  padding: 2px 10px;
+  padding: 0.1rem 0.55rem;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  vertical-align: middle;
 }
-.badge.a { background: rgba(167, 139, 250, 0.16); color: var(--cat-a); }
-.badge.b { background: rgba(56, 189, 248, 0.16); color: var(--cat-b); }
-.badge.c { background: rgba(52, 211, 153, 0.16); color: var(--cat-c); }
+.badge.a { background: rgba(167, 139, 250, 0.16); color: var(--violet); }
+.badge.b { background: rgba(91, 141, 239, 0.16); color: var(--blue); }
+.badge.c { background: rgba(52, 211, 153, 0.16); color: var(--ok); }
 
-.pos { color: var(--success); font-weight: 600; }
-.neg { color: var(--danger); font-weight: 600; }
+.pos { color: var(--ok); font-weight: 700; }
+.neg { color: var(--ko); font-weight: 700; }
 
-/* ---------- Indice del regolamento ---------- */
+/* Podio: le prime tre posizioni si riconoscono a colpo d'occhio */
+tr[data-pos="1"] td:first-child { color: var(--oro); font-weight: 800; }
+tr[data-pos="2"] td:first-child { color: var(--argento); font-weight: 800; }
+tr[data-pos="3"] td:first-child { color: var(--bronzo); font-weight: 800; }
+tr[data-pos="1"] { background: linear-gradient(90deg, rgba(255, 210, 74, 0.07), transparent 55%); }
+
+/* ====================================================================
+   6. Indice del regolamento
+   ==================================================================== */
 
 .toc {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 20px 24px;
-  margin-bottom: 40px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 2.2rem;
 }
-.toc h2 { margin: 0 0 12px; font-size: 1.1rem; border: none; padding: 0; }
-.toc ol { columns: 2; column-gap: 32px; margin: 0; padding-left: 20px; }
-.toc li { margin-bottom: 6px; break-inside: avoid; }
-.toc a { color: var(--text-secondary); text-decoration: none; font-size: 0.94rem; }
+.toc h2 {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  border: none;
+  padding: 0;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 1.4rem;
+  columns: 1;
+}
+.toc li { margin-bottom: 0.34rem; break-inside: avoid; }
+.toc a {
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
 .toc a:hover { color: var(--orange); }
 
-.sezione { scroll-margin-top: 80px; }
-
-.sezione h2 { display: flex; align-items: baseline; gap: 10px; }
+.sezione { scroll-margin-top: 72px; }
+.sezione h2 { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
 .sezione h2 .num {
-  font-size: 0.85rem;
+  font-size: 0.74rem;
   color: var(--orange);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: left;
 }
 
 .back-top {
   display: inline-block;
-  font-size: 0.82rem;
-  color: var(--text-muted);
+  font-size: 0.76rem;
+  color: var(--text-3);
   text-decoration: none;
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }
 .back-top:hover { color: var(--orange); }
 
-/* ---------- Simulatore ---------- */
+/* ====================================================================
+   7. Simulatore
+   ==================================================================== */
 
 .sim-input-row {
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
-label.sim-label {
+.sim-label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  font-weight: 700;
-  margin-bottom: 8px;
+  letter-spacing: 0.09em;
+  color: var(--text-3);
+  font-weight: 800;
+  margin-bottom: 0.45rem;
 }
 
 input[type="number"] {
-  font-family: var(--font);
-  font-size: 1.6rem;
-  font-weight: 700;
-  width: 180px;
-  padding: 12px 16px;
-  background: var(--bg-primary);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-primary);
-  transition: border-color 0.15s;
+  font-family: var(--f);
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  width: 9rem;
+  padding: 0.6rem 0.9rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1.5px solid var(--line-2);
+  border-radius: var(--r);
+  color: var(--text);
+  transition: border-color 0.16s, box-shadow 0.16s;
 }
-input[type="number"]:focus { outline: none; border-color: var(--orange); }
-
-/* Toglie le frecce, poco utili su un campo così */
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px var(--orange-soft);
+}
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; }
 
-.preset { display: flex; gap: 8px; flex-wrap: wrap; }
-.preset button {
-  font-family: var(--font);
-  font-size: 0.9rem;
-  padding: 8px 14px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-secondary);
+.preset { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.preset button,
+.anno-scelte button {
+  font-family: var(--f);
+  font-size: 0.88rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  min-height: 40px;
+  padding: 0.45rem 0.85rem;
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  color: var(--text-2);
   cursor: pointer;
   transition: all 0.15s;
 }
-.preset button:hover { border-color: var(--orange); color: var(--orange); }
+.preset button:hover,
+.anno-scelte button:hover {
+  border-color: var(--orange-line);
+  color: var(--orange);
+  background: var(--orange-soft);
+}
+.preset button:active, .anno-scelte button:active { transform: translateY(1px); }
 
 .fascia-box {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: baseline;
+  gap: 0.9rem;
   flex-wrap: wrap;
-  padding: 16px 20px;
+  padding: 0.9rem 1.15rem;
   background: var(--orange-soft);
-  border: 1px solid rgba(255, 107, 53, 0.25);
-  border-radius: var(--radius);
-  margin: 24px 0;
+  border: 1px solid var(--orange-line);
+  border-radius: var(--r);
+  margin: 1.3rem 0;
 }
-.fascia-valore { font-size: 1.6rem; font-weight: 800; color: var(--orange); }
-.fascia-desc { color: var(--text-secondary); font-size: 0.95rem; }
+.fascia-valore {
+  font-size: 1.5rem;
+  font-weight: 850;
+  color: var(--orange);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.fascia-desc { color: var(--text-2); font-size: 0.9rem; }
 
 .totale-riga {
-  font-size: 1.05rem;
-  padding: 16px 20px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius);
-  margin-top: 20px;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  padding: 0.95rem 1.15rem;
+  background: rgba(255, 255, 255, 0.032);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  margin-top: 1.1rem;
 }
-.totale-riga strong { color: var(--orange); font-size: 1.2rem; }
+.totale-riga strong { color: var(--orange); }
 
 .errore-input {
-  color: var(--warning);
-  font-size: 0.92rem;
-  margin-top: 12px;
+  color: var(--warn);
+  font-size: 0.9rem;
+  margin-top: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(251, 191, 36, 0.09);
+  border-radius: var(--r-s);
 }
 
-/* ---------- Pagina della lega ---------- */
+/* ====================================================================
+   8. Pagina della lega
+   ==================================================================== */
 
 .anno-bar {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 0.8rem;
   flex-wrap: wrap;
-  margin-bottom: 32px;
+  margin-bottom: 1.8rem;
 }
-
 .anno-label {
-  font-size: 0.82rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  font-weight: 700;
+  letter-spacing: 0.09em;
+  color: var(--text-3);
+  font-weight: 800;
 }
-
-.anno-scelte { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.anno-scelte button {
-  font-family: var(--font);
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.anno-scelte button:hover { border-color: var(--orange); color: var(--orange); }
+.anno-scelte { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .anno-scelte button.attivo {
   background: var(--orange-soft);
   border-color: var(--orange);
   color: var(--orange);
 }
 
-.nota-tabella {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  margin-top: -6px;
-}
-
-/* ---------- Piè di pagina ---------- */
+/* ====================================================================
+   9. Piè di pagina
+   ==================================================================== */
 
 footer {
-  border-top: 1px solid var(--border);
-  margin-top: 64px;
-  padding: 32px 20px 48px;
+  border-top: 1px solid var(--line);
+  margin-top: 4rem;
+  padding: 2rem var(--sp) 3rem;
   text-align: center;
-  color: var(--text-muted);
-  font-size: 0.88rem;
+  color: var(--text-3);
+  font-size: var(--t-small);
+  line-height: 1.6;
 }
-footer p { margin: 0 0 8px; max-width: 620px; margin-inline: auto; }
+footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
 
-/* ---------- Telefono ---------- */
+/* ====================================================================
+   10. Telefono — tabelle in schede
+   ==================================================================== */
 
 @media (max-width: 640px) {
-  body { font-size: 16px; }
-  main { padding: 28px 16px 60px; }
-  .nav-inner { padding: 0 16px; min-height: 56px; }
-  .nav-brand { width: 100%; margin: 10px 0 0; }
-  .nav { padding-bottom: 8px; }
-  .toc ol { columns: 1; }
-  .card { padding: 18px; }
-  th, td { padding: 10px 12px; font-size: 0.92rem; }
-  input[type="number"] { width: 100%; }
-  .sim-input-row { flex-direction: column; align-items: stretch; }
+  body { line-height: 1.62; }
+
+  .nav-inner { min-height: 50px; gap: 2px; }
+  .nav-brand { font-size: 0.9rem; padding-right: 6px; }
+  .nav-link { padding: 6px 8px; font-size: 0.82rem; }
+
+  .hero p { max-width: none; }
+  h2 { padding-left: 0.6rem; }
+
+  .table-wrap {
+    border: none;
+    background: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  /* Le tabelle a 3+ colonne diventano schede (classe messa da tabelle.js) */
+  table.schede { font-size: 1em; }
+  table.schede thead { display: none; }
+
+  table.schede tbody,
+  table.schede tr,
+  table.schede td { display: block; width: 100%; }
+
+  table.schede tr {
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    margin-bottom: 0.6rem;
+    padding: 0.15rem 0.9rem;
+    background: linear-gradient(160deg, rgba(31, 43, 68, 0.55), rgba(16, 24, 42, 0.7));
+  }
+  table.schede tr:hover { background: linear-gradient(160deg, rgba(31, 43, 68, 0.7), rgba(16, 24, 42, 0.8)); }
+
+  table.schede td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.42rem 0;
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+  }
+  table.schede tr td:last-child { border-bottom: none; }
+
+  table.schede td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    text-align: left;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 800;
+    color: var(--text-3);
+  }
+  /* Celle senza etichetta: niente spazio vuoto a sinistra */
+  table.schede td:not([data-label])::before { content: none; }
+
+  /* La prima cella fa da titolo della scheda: niente etichetta sopra di sé,
+     sarebbe ridondante (una posizione con la medaglia si spiega da sola). */
+  table.schede td:first-child {
+    display: block;
+    text-align: left;
+    font-size: 1.04rem;
+    font-weight: 700;
+    padding-top: 0.7rem;
+  }
+  table.schede td:first-child::before { content: none; }
+
+  /* Il podio resta riconoscibile anche in versione scheda */
+  table.schede tr[data-pos="1"] { border-color: rgba(255, 210, 74, 0.42); }
+  table.schede tr[data-pos="2"] { border-color: rgba(203, 213, 225, 0.3); }
+  table.schede tr[data-pos="3"] { border-color: rgba(208, 139, 79, 0.32); }
+
+  /* Le tabelle a 2 colonne restano tabelle: ci stanno già */
+  table:not(.schede) { min-width: 0; }
+  table:not(.schede) th,
+  table:not(.schede) td { padding: 0.55rem 0.7rem; }
+
+  .toc { padding: 0.9rem 1.1rem; }
+  input[type="number"] { width: 100%; font-size: 1.6rem; }
+  .sim-input-row { flex-direction: column; align-items: stretch; gap: 0.9rem; }
+  .preset { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; }
+  .preset button { padding: 0.5rem 0.2rem; }
+  .fascia-valore { font-size: 1.35rem; }
+  footer { margin-top: 3rem; }
 }
 
-/* ---------- Stampa ---------- */
+/* Schermi molto stretti */
+@media (max-width: 380px) {
+  .nav-link { padding: 6px 6px; font-size: 0.78rem; }
+  .nav-brand { font-size: 0.84rem; }
+}
+
+/* ====================================================================
+   11. Schermi larghi
+   ==================================================================== */
+
+@media (min-width: 900px) {
+  .toc ol { columns: 2; column-gap: 2.4rem; }
+  .card:hover { border-color: var(--line-2); }
+}
+
+/* ====================================================================
+   12. Accessibilità e stampa
+   ==================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection { background: var(--orange); color: #0A0F1C; }
 
 @media print {
-  .nav, .preset, footer, .back-top { display: none; }
-  body { background: #fff; color: #000; }
-  .card, .callout, .esempio { border: 1px solid #ccc; background: none; }
-  .hero h1 { color: #000; -webkit-text-fill-color: #000; }
+  .nav, .preset, .anno-bar, footer, .back-top { display: none; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  body, .card, .callout, .esempio, pre { background-image: none; }
+  .card, .callout, .esempio, pre, .table-wrap { border: 1px solid #bbb; box-shadow: none; }
+  .hero h1, .nav-brand { color: #000; -webkit-text-fill-color: #000; }
+  h2 { border-left-color: #000; }
   a { color: #000; }
+  table.schede thead { display: table-header-group; }
+  tr, .card, .callout { break-inside: avoid; }
 }
