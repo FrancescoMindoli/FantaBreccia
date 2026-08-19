@@ -140,6 +140,26 @@ Questo era il punto meno chiaro del sito:
 
 ---
 
+## 5bis. Pagina Stagioni
+
+La pagina «La lega» è diventata **Stagioni**, riorganizzata in tre blocchi:
+
+1. **Albo d'oro** — campione in carica in evidenza, poi una riga per edizione
+   (campione, secondo, terzo, coppa, miglior punteggio) e il medagliere.
+   È calcolato dal generatore a ogni esecuzione, non si compila a mano
+2. **Filtro della stagione** — le stagioni da giocare sono marcate come tali
+3. **Risultati della stagione scelta** — classifica, coppa e i crediti con cui
+   ogni squadra si presenta all'asta
+
+Il foglio `CreditiAnnoNuovo` è indicizzato sull'anno che si **chiude**, ma quel
+budget si spende nell'asta dell'anno **dopo**. Il generatore lo reindicizza
+sull'anno d'uso: è per questo che il 2027 compare come stagione selezionabile
+pur non essendo ancora stato giocato.
+
+`lega.html` resta come redirect, per non rompere i link già condivisi.
+
+---
+
 ## 6. Il flusso, d'ora in poi
 
 ```

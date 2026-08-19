@@ -10,7 +10,7 @@ simulatore per calcolare il costo delle riconferme.
 | Pagina | Cosa contiene |
 |---|---|
 | `index.html` | Le regole spiegate in modo discorsivo |
-| `lega.html` | Squadre, classifica, coppa e crediti |
+| `stagioni.html` | Albo d'oro, classifiche, coppa e crediti per stagione |
 | `contratti.html` | Giocatori sotto contratto, costo anno per anno, slot |
 | `regolamento.html` | Regolamento integrale, con indice navigabile |
 | `simulatore.html` | Calcolo dei costi di riconferma e delle penali di svincolo |

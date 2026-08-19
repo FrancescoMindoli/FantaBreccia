@@ -345,5 +345,181 @@ window.DATI = {
   },
   "anni": [
     2026
+  ],
+  "alboDoro": {
+    "perAnno": [
+      {
+        "anno": 2026,
+        "campione": {
+          "id": 8,
+          "squadra": "Roul e il socio",
+          "punteggio": 2486
+        },
+        "secondo": {
+          "id": 5,
+          "squadra": "TurettaEPacciani FC",
+          "punteggio": 2471
+        },
+        "terzo": {
+          "id": 4,
+          "squadra": "Whiteam FC",
+          "punteggio": 2419.5
+        },
+        "coppa": {
+          "id": 4,
+          "squadra": "Whiteam FC"
+        },
+        "migliorPunteggio": {
+          "id": 8,
+          "squadra": "Roul e il socio",
+          "punteggio": 2486
+        }
+      }
+    ],
+    "medagliere": [
+      {
+        "id": 8,
+        "squadra": "Roul e il socio",
+        "ori": 1,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 1
+      },
+      {
+        "id": 5,
+        "squadra": "TurettaEPacciani FC",
+        "ori": 0,
+        "argenti": 1,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0
+      },
+      {
+        "id": 4,
+        "squadra": "Whiteam FC",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 1,
+        "coppe": 1,
+        "miglioriPunteggi": 0
+      }
+    ]
+  },
+  "budget": {
+    "2027": [
+      {
+        "id": 1,
+        "squadra": "Chentus",
+        "campionato": -5,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 32,
+        "totale": 1027,
+        "daStagione": 2026
+      },
+      {
+        "id": 2,
+        "squadra": "MALLOREDDUS FC",
+        "campionato": -15,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 13,
+        "totale": 998,
+        "daStagione": 2026
+      },
+      {
+        "id": 3,
+        "squadra": "Sporting Garra",
+        "campionato": 0,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 34,
+        "totale": 1034,
+        "daStagione": 2026
+      },
+      {
+        "id": 4,
+        "squadra": "Whiteam FC",
+        "campionato": 10,
+        "coppa": 10,
+        "punteggio": 0,
+        "residui": 10,
+        "totale": 1030,
+        "daStagione": 2026
+      },
+      {
+        "id": 5,
+        "squadra": "TurettaEPacciani FC",
+        "campionato": 15,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 1,
+        "totale": 1016,
+        "daStagione": 2026
+      },
+      {
+        "id": 6,
+        "squadra": "Nkunku Settete",
+        "campionato": -20,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 4,
+        "totale": 984,
+        "daStagione": 2026
+      },
+      {
+        "id": 7,
+        "squadra": "Mapi Group",
+        "campionato": 0,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 33,
+        "totale": 1033,
+        "daStagione": 2026
+      },
+      {
+        "id": 8,
+        "squadra": "Roul e il socio",
+        "campionato": 25,
+        "coppa": 0,
+        "punteggio": 10,
+        "residui": 13,
+        "totale": 1048,
+        "daStagione": 2026
+      },
+      {
+        "id": 9,
+        "squadra": "Compagnia Ascolana Sigari",
+        "campionato": 5,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 14,
+        "totale": 1019,
+        "daStagione": 2026
+      },
+      {
+        "id": 10,
+        "squadra": "Tridente demoniaco",
+        "campionato": -10,
+        "coppa": 0,
+        "punteggio": 0,
+        "residui": 27,
+        "totale": 1017,
+        "daStagione": 2026
+      }
+    ]
+  },
+  "stagioni": [
+    {
+      "anno": 2027,
+      "giocata": false,
+      "haBudget": true
+    },
+    {
+      "anno": 2026,
+      "giocata": true,
+      "haBudget": false
+    }
   ]
 };

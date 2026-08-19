@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fanta Breccia — Stagioni</title>
+<meta name="description" content="Albo d'oro, classifiche, coppa e crediti stagione per stagione.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Fanta Breccia</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Come funziona</a>
+      <a class="nav-link active" href="stagioni.html">Stagioni</a>
+      <a class="nav-link" href="contratti.html">Contratti</a>
+      <a class="nav-link" href="simulatore.html">Simulatore</a>
+      <a class="nav-link" href="regolamento.html">Regolamento</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <header class="hero">
+    <h1>Stagioni</h1>
+    <p>L'albo d'oro della lega, e i risultati di ciascuna stagione.</p>
+  </header>
+
+  <p class="errore-input" id="errore" hidden></p>
+
+  <!-- 1. Albo d'oro: tutte le edizioni insieme -->
+  <section id="sezione-albo">
+    <h2>Albo d'oro</h2>
+    <div id="albo"></div>
+  </section>
+
+  <!-- 2. Il filtro dell'anno -->
+  <section id="sezione-filtro">
+    <h2>Una stagione alla volta</h2>
+    <div class="anno-bar">
+      <span class="anno-label">Stagione</span>
+      <div class="anno-scelte" id="anno-scelte"></div>
+    </div>
+  </section>
+
+  <!-- 3. Risultati e crediti della stagione scelta -->
+  <section id="sezione-stagione">
+    <div id="stagione"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Dati aggiornati al <span id="generato-il">—</span>, da <code>dati/Gestione.xlsx</code>.</p>
+  <p>In caso di discordanza fa fede il <a href="regolamento.html">regolamento integrale</a>.</p>
+</footer>
+
+<script src="js/dati.js"></script>
+<script src="js/stagioni.js"></script>
+<script src="js/tabelle.js"></script>
+</body>
+</html>

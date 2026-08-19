@@ -1,0 +1,287 @@
+/*
+ * stagioni.js — albo d'oro e risultati stagione per stagione.
+ *
+ * L'ordine della pagina è quello con cui si guardano le cose: prima l'albo
+ * d'oro, che riassume tutta la storia della lega; poi si sceglie una stagione
+ * e se ne vedono classifica, coppa e crediti.
+ *
+ * Non calcola nulla: albo d'oro, medagliere e budget arrivano già pronti da
+ * js/dati.js, prodotto da strumenti/genera_dati.py.
+ */
+
+(function () {
+  'use strict';
+
+  var errore = document.getElementById('errore');
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  if (typeof window.DATI === 'undefined') {
+    errore.textContent =
+      'Dati non disponibili: manca js/dati.js. Va generato con ' +
+      'strumenti/genera_dati.py a partire da Gestione.xlsx.';
+    errore.hidden = false;
+    return;
+  }
+
+  var D = window.DATI;
+  var albo = (D.alboDoro || {}).perAnno || [];
+  var medagliere = (D.alboDoro || {}).medagliere || [];
+  var stagioni = D.stagioni || [];
+
+  var allenatori = {};
+  (D.squadre || []).forEach(function (s) { allenatori[s.id] = s.allenatore; });
+
+  var MEDAGLIE = { 1: '🥇', 2: '🥈', 3: '🥉' };
+
+  function nomeSquadra(id, anno, ripiego) {
+    var perAnno = D.nomiPerAnno[anno];
+    if (perAnno && perAnno[id]) return perAnno[id];
+    if (ripiego) return ripiego;
+    var s = (D.squadre || []).filter(function (x) { return x.id === id; })[0];
+    return s ? s.squadra : '—';
+  }
+
+  function numero(v) { return (v === null || v === undefined) ? '—' : String(v); }
+
+  // --- 1. Albo d'oro ------------------------------------------------------
+
+  function disegnaAlbo() {
+    var contenitore = document.getElementById('albo');
+
+    if (!albo.length) {
+      contenitore.innerHTML =
+        '<p class="nota-tabella">Nessuna stagione conclusa: l\'albo d\'oro ' +
+        'si popola da solo appena compili una classifica.</p>';
+      return;
+    }
+
+    // Il campione in carica, in evidenza
+    var ultimo = albo[0];
+    var vetrina = '';
+    if (ultimo.campione) {
+      vetrina =
+        '<div class="vetrina">' +
+          '<div class="vetrina-coppa">🏆</div>' +
+          '<div>' +
+            '<div class="vetrina-etichetta">Campione ' + ultimo.anno + '</div>' +
+            '<div class="vetrina-nome">' + esc(ultimo.campione.squadra) + '</div>' +
+            '<div class="vetrina-meta">' +
+              esc(allenatori[ultimo.campione.id] || '') +
+              (ultimo.campione.punteggio != null
+                ? ' · ' + ultimo.campione.punteggio + ' punti' : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    // Una riga per edizione
+    var righe = '';
+    albo.forEach(function (v) {
+      function chi(x, medaglia) {
+        return x ? medaglia + ' ' + esc(x.squadra) : '—';
+      }
+      righe +=
+        '<tr>' +
+          '<td><strong>' + v.anno + '</strong></td>' +
+          '<td>' + chi(v.campione, '🥇') + '</td>' +
+          '<td>' + chi(v.secondo, '🥈') + '</td>' +
+          '<td>' + chi(v.terzo, '🥉') + '</td>' +
+          '<td>' + (v.coppa ? '🏆 ' + esc(v.coppa.squadra) : '—') + '</td>' +
+          '<td>' + (v.migliorPunteggio
+            ? esc(v.migliorPunteggio.squadra) +
+              '<span class="meta">' + v.migliorPunteggio.punteggio + ' punti</span>'
+            : '—') + '</td>' +
+        '</tr>';
+    });
+
+    // Medagliere
+    var med = '';
+    medagliere.forEach(function (m) {
+      med +=
+        '<tr>' +
+          '<td><strong>' + esc(m.squadra) + '</strong>' +
+            '<span class="meta">' + esc(allenatori[m.id] || '') + '</span></td>' +
+          '<td class="num medaglia-oro">' + m.ori + '</td>' +
+          '<td class="num medaglia-argento">' + m.argenti + '</td>' +
+          '<td class="num medaglia-bronzo">' + m.bronzi + '</td>' +
+          '<td class="num">' + m.coppe + '</td>' +
+          '<td class="num">' + m.miglioriPunteggi + '</td>' +
+        '</tr>';
+    });
+
+    contenitore.innerHTML =
+      vetrina +
+      '<h3>Edizione per edizione</h3>' +
+      '<div class="table-wrap"><table><thead><tr>' +
+        '<th>Anno</th><th>Campione</th><th>Secondo</th><th>Terzo</th>' +
+        '<th>Coppa</th><th>Miglior punteggio</th>' +
+      '</tr></thead><tbody>' + righe + '</tbody></table></div>' +
+      '<h3>Medagliere</h3>' +
+      '<div class="table-wrap"><table><thead><tr>' +
+        '<th>Squadra</th><th class="num">🥇</th><th class="num">🥈</th>' +
+        '<th class="num">🥉</th><th class="num">🏆 Coppe</th>' +
+        '<th class="num">Miglior punt.</th>' +
+      '</tr></thead><tbody>' + med + '</tbody></table></div>';
+  }
+
+  // --- 2. Filtro dell'anno ------------------------------------------------
+
+  function disegnaFiltro(annoScelto) {
+    var contenitore = document.getElementById('anno-scelte');
+    contenitore.innerHTML = '';
+    stagioni.forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = (String(s.anno) === String(annoScelto) ? 'attivo' : '') +
+                    (s.giocata ? '' : ' anno-futuro');
+      b.textContent = String(s.anno);
+      if (!s.giocata) {
+        var nota = document.createElement('span');
+        nota.textContent = 'da giocare';
+        b.appendChild(nota);
+      }
+      b.addEventListener('click', function () { mostra(String(s.anno)); });
+      contenitore.appendChild(b);
+    });
+  }
+
+  // --- 3. La stagione scelta ----------------------------------------------
+
+  function disegnaStagione(anno) {
+    var contenitore = document.getElementById('stagione');
+    var classifica = D.classifiche[anno] || [];
+    var coppa = D.coppa[anno] || [];
+    var budget = (D.budget || {})[anno] || [];
+    var html = '<h2>Stagione ' + anno + '</h2>';
+
+    if (!classifica.length && !coppa.length && !budget.length) {
+      contenitore.innerHTML = html +
+        '<p class="nota-tabella">Nessun dato per questa stagione.</p>';
+      return;
+    }
+
+    // Stagione non ancora giocata: dirlo, invece di mostrare tabelle vuote
+    if (!classifica.length) {
+      html +=
+        '<div class="banner banner-attenzione">' +
+          '<div class="banner-icona">⏳</div>' +
+          '<div><strong>Stagione non ancora giocata.</strong> ' +
+          'Classifica e coppa compariranno quando compilerai i fogli ' +
+          '<em>Classifiche</em> e <em>Coppa</em>. Qui sotto trovi i crediti ' +
+          'con cui ogni squadra si presenta all\'asta.</div>' +
+        '</div>';
+    }
+
+    if (classifica.length) {
+      var righe = '';
+      classifica.forEach(function (r) {
+        righe +=
+          '<tr' + (r.posizione ? ' data-pos="' + r.posizione + '"' : '') + '>' +
+            '<td class="num">' + (MEDAGLIE[r.posizione] || '') + ' ' +
+              numero(r.posizione) + '</td>' +
+            '<td><strong>' + esc(nomeSquadra(r.id, anno, r.squadra)) + '</strong>' +
+              (r.migliorPunteggio
+                ? ' <span class="badge c">miglior punteggio</span>' : '') + '</td>' +
+            '<td>' + esc(allenatori[r.id] || '—') + '</td>' +
+            '<td class="num">' + numero(r.punteggio) + '</td>' +
+          '</tr>';
+      });
+      html +=
+        '<h3>Classifica</h3>' +
+        '<div class="table-wrap"><table><thead><tr>' +
+          '<th class="num">Pos.</th><th>Squadra</th><th>Allenatore</th>' +
+          '<th class="num">Punteggio</th>' +
+        '</tr></thead><tbody>' + righe + '</tbody></table></div>';
+
+      // La classifica segue i punti di campionato, non i fantapunti totali
+      var conPunteggio = classifica.filter(function (r) { return r.punteggio != null; });
+      if (conPunteggio.length > 1) {
+        var top = conPunteggio.slice().sort(function (a, b) {
+          return b.punteggio - a.punteggio;
+        })[0];
+        if (top.posizione !== 1) {
+          html += '<p class="nota-tabella">La classifica segue i punti di ' +
+            'campionato, non il totale dei fantapunti: il punteggio più alto ' +
+            'della stagione è di ' + esc(top.squadra) + ' (' + top.punteggio + ').</p>';
+        }
+      }
+    }
+
+    if (coppa.length) {
+      var rc = '';
+      coppa.forEach(function (r) {
+        rc +=
+          '<tr' + (r.posizione ? ' data-pos="' + r.posizione + '"' : '') + '>' +
+            '<td class="num">' + (MEDAGLIE[r.posizione] || '') + ' ' +
+              numero(r.posizione) + '</td>' +
+            '<td><strong>' + esc(nomeSquadra(r.id, anno, r.squadra)) + '</strong></td>' +
+            '<td>' + esc(allenatori[r.id] || '—') + '</td>' +
+          '</tr>';
+      });
+      html +=
+        '<h3>Coppa</h3>' +
+        '<div class="table-wrap"><table><thead><tr>' +
+          '<th class="num">Pos.</th><th>Squadra</th><th>Allenatore</th>' +
+        '</tr></thead><tbody>' + rc + '</tbody></table></div>';
+    }
+
+    if (budget.length) {
+      var rb = '';
+      budget.forEach(function (b) {
+        rb +=
+          '<tr>' +
+            '<td><strong>' + esc(nomeSquadra(b.id, anno, b.squadra)) + '</strong></td>' +
+            '<td class="num">' + numero(b.residui) + '</td>' +
+            '<td class="num">' + segnato(b.campionato) + '</td>' +
+            '<td class="num">' + segnato(b.coppa) + '</td>' +
+            '<td class="num">' + segnato(b.punteggio) + '</td>' +
+            '<td class="num">' + (b.totale == null
+              ? '—' : '<strong>' + b.totale + '</strong>') + '</td>' +
+          '</tr>';
+      });
+      html +=
+        '<h3>Crediti portati all\'asta ' + anno + '</h3>' +
+        '<p class="nota-tabella">Ricavati dalla stagione ' +
+          (budget[0].daStagione) + ': crediti avanzati più premi e malus ' +
+          '(<a href="regolamento.html#s12">regolamento § 12–17</a>).</p>' +
+        '<div class="table-wrap"><table><thead><tr>' +
+          '<th>Squadra</th><th class="num">Avanzati</th>' +
+          '<th class="num">Campionato</th><th class="num">Coppa</th>' +
+          '<th class="num">Punteggio</th><th class="num">Totale asta</th>' +
+        '</tr></thead><tbody>' + rb + '</tbody></table></div>';
+    }
+
+    contenitore.innerHTML = html;
+  }
+
+  function segnato(v) {
+    if (v === null || v === undefined) return '—';
+    if (v > 0) return '<span class="pos">+' + v + '</span>';
+    if (v < 0) return '<span class="neg">' + v + '</span>';
+    return '0';
+  }
+
+  // --- Avvio ---------------------------------------------------------------
+
+  function mostra(anno) {
+    disegnaFiltro(anno);
+    disegnaStagione(anno);
+    if (typeof window.preparaTabelle === 'function') window.preparaTabelle();
+  }
+
+  disegnaAlbo();
+
+  if (!stagioni.length) {
+    document.getElementById('sezione-filtro').hidden = true;
+    document.getElementById('sezione-stagione').hidden = true;
+  } else {
+    mostra(String(stagioni[0].anno));
+  }
+
+  document.getElementById('generato-il').textContent = D.generatoIl || '—';
+})();

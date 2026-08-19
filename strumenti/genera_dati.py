@@ -292,7 +292,122 @@ def costruisci(wb) -> dict:
         elenco.sort(key=lambda r: (r["id"] is None, r["id"]))
 
     dati["anni"] = sorted(anni, reverse=True)
+    costruisci_albo_doro(dati)
+    costruisci_stagioni(dati)
     return dati
+
+
+def costruisci_albo_doro(dati: dict) -> None:
+    """Vincitori stagione per stagione e medagliere complessivo.
+
+    Si ricava da Classifiche e Coppa: non è un dato da compilare a mano, e
+    ricalcolarlo a ogni generazione evita che resti indietro.
+    """
+    nomi = {s["id"]: s["squadra"] for s in dati["squadre"]}
+
+    def nome(anno, idx, ripiego=""):
+        per_anno = dati["nomiPerAnno"].get(str(anno), {})
+        return per_anno.get(str(idx)) or ripiego or nomi.get(idx, f"Squadra {idx}")
+
+    per_anno = []
+    medaglie: dict = {}
+
+    def conta(idx, chiave):
+        v = medaglie.setdefault(idx, {"ori": 0, "argenti": 0, "bronzi": 0,
+                                      "coppe": 0, "miglioriPunteggi": 0})
+        v[chiave] += 1
+
+    for anno_str, classifica in dati["classifiche"].items():
+        anno = int(anno_str)
+        podio = {r["posizione"]: r for r in classifica if r["posizione"] in (1, 2, 3)}
+        migliore = next((r for r in classifica if r["migliorPunteggio"]), None)
+        coppa = dati["coppa"].get(anno_str, [])
+        vincitore_coppa = next((r for r in coppa if r["posizione"] == 1), None)
+
+        voce = {"anno": anno}
+        for posizione, chiave in ((1, "campione"), (2, "secondo"), (3, "terzo")):
+            r = podio.get(posizione)
+            if r:
+                voce[chiave] = {"id": r["id"], "squadra": nome(anno, r["id"], r["squadra"]),
+                                "punteggio": r["punteggio"]}
+                conta(r["id"], {1: "ori", 2: "argenti", 3: "bronzi"}[posizione])
+            else:
+                voce[chiave] = None
+
+        if vincitore_coppa:
+            voce["coppa"] = {"id": vincitore_coppa["id"],
+                             "squadra": nome(anno, vincitore_coppa["id"],
+                                             vincitore_coppa["squadra"])}
+            conta(vincitore_coppa["id"], "coppe")
+        else:
+            voce["coppa"] = None
+
+        if migliore:
+            voce["migliorPunteggio"] = {
+                "id": migliore["id"],
+                "squadra": nome(anno, migliore["id"], migliore["squadra"]),
+                "punteggio": migliore["punteggio"],
+            }
+            conta(migliore["id"], "miglioriPunteggi")
+        else:
+            voce["migliorPunteggio"] = None
+
+        per_anno.append(voce)
+
+    per_anno.sort(key=lambda v: -v["anno"])
+
+    medagliere = []
+    for idx, v in medaglie.items():
+        medagliere.append({"id": idx, "squadra": nomi.get(idx, f"Squadra {idx}"), **v})
+    # Ordine olimpico: prima gli ori, poi argenti, poi bronzi, poi le coppe
+    medagliere.sort(key=lambda m: (-m["ori"], -m["argenti"], -m["bronzi"],
+                                   -m["coppe"], m["squadra"]))
+
+    dati["alboDoro"] = {"perAnno": per_anno, "medagliere": medagliere}
+
+
+def costruisci_stagioni(dati: dict) -> None:
+    """Elenco delle stagioni selezionabili, e il budget di ciascuna.
+
+    Il foglio CreditiAnnoNuovo è indicizzato sull'anno che si CHIUDE, ma quel
+    budget si spende nell'asta dell'anno DOPO. Qui viene reindicizzato
+    sull'anno in cui si usa, che è come lo cerca chi guarda la pagina: la
+    stagione 2027 esiste proprio perché ha un budget, pur non essendo ancora
+    stata giocata.
+    """
+    budget: dict = {}
+    for anno_str, righe in dati["creditiAnnoNuovo"].items():
+        anno_chiusura = int(anno_str)
+        anno_uso = anno_chiusura + 1
+        residui = dati["creditiResidui"].get(anno_str, {})
+        voci = []
+        for r in righe:
+            res = residui.get(str(r["id"]))
+            voci.append({
+                "id": r["id"],
+                "squadra": r["squadra"],
+                "campionato": r["campionato"],
+                "coppa": r["coppa"],
+                "punteggio": r["punteggio"],
+                "residui": res["crediti"] if res else None,
+                "totale": r["totale"],
+                "daStagione": anno_chiusura,
+            })
+        if voci:
+            budget[str(anno_uso)] = voci
+
+    dati["budget"] = budget
+
+    anni = set(int(a) for a in dati["classifiche"])
+    anni |= set(int(a) for a in budget)
+    anni |= set(int(a) for a in dati["coppa"])
+
+    dati["stagioni"] = [
+        {"anno": a,
+         "giocata": str(a) in dati["classifiche"],
+         "haBudget": str(a) in budget}
+        for a in sorted(anni, reverse=True)
+    ]
 
 
 def controlli(dati: dict) -> list[str]:
@@ -457,7 +572,18 @@ def main() -> int:
     if dati["svincoli"]:
         penali = sum(s["penale"] for s in dati["svincoli"])
         print(f"  {len(dati['svincoli'])} svincoli, {penali} crediti di penali")
-    print(f"  {len(dati['anni'])} stagioni: {', '.join(str(a) for a in dati['anni'])}")
+    stagioni = dati.get("stagioni", [])
+    if stagioni:
+        etichette = [
+            f"{s['anno']}" + ("" if s["giocata"] else " (da giocare)")
+            for s in stagioni
+        ]
+        print(f"  {len(stagioni)} stagioni: {', '.join(etichette)}")
+    albo = dati.get("alboDoro", {}).get("perAnno", [])
+    if albo:
+        c = albo[0].get("campione")
+        print(f"  albo d'oro: {len(albo)} edizioni"
+              + (f", ultimo campione {c['squadra']}" if c else ""))
 
     avvisi = controlli(dati)
     if avvisi:
