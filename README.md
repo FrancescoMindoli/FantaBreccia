@@ -1,7 +1,7 @@
-# Fanta Breccia — Regolamento e simulatore
+# Fanta Breccia
 
-Sito statico con il regolamento della lega e un simulatore per calcolare il
-costo delle riconferme.
+Sito statico con il regolamento della lega, i dati delle stagioni e un
+simulatore per calcolare il costo delle riconferme.
 
 **Online:** https://FrancescoMindoli.github.io/FantaBreccia/
 
@@ -10,6 +10,7 @@ costo delle riconferme.
 | Pagina | Cosa contiene |
 |---|---|
 | `index.html` | Le regole spiegate in modo discorsivo |
+| `lega.html` | Squadre, classifica, coppa e crediti |
 | `regolamento.html` | Regolamento integrale, con indice navigabile |
 | `simulatore.html` | Calcolo dei costi di riconferma e delle penali di svincolo |
 | `test.html` | Verifica automatica delle formule |
@@ -17,11 +18,51 @@ costo delle riconferme.
 ## Come funziona
 
 Solo HTML, CSS e JavaScript. Nessun framework, nessuna compilazione, nessuna
-chiamata di rete, nessun dato raccolto o memorizzato.
+chiamata di rete.
 
 Per provarlo in locale basta aprire `index.html` con un doppio click.
 
-## Le formule
+## Aggiornare i dati della lega
+
+I dati mostrati in `lega.html` vengono da `Gestione.xlsx`, il foglio che si
+compila a mano. Il flusso è:
+
+1. **Compila l'Excel** (`fantacalcio/database/Gestione.xlsx` nel progetto del
+   gestionale)
+2. **Rigenera i dati del sito:**
+   ```
+   d:\Codice\Fanta_Riconferme\fantacalcio\.venv\Scripts\python.exe strumenti\genera_dati.py
+   ```
+   Lo script legge i sei fogli e riscrive `js/dati.js`. Segnala anche le
+   incoerenze che trova, senza correggerle: le correzioni si fanno nell'Excel.
+3. **Controlla il risultato** aprendo `lega.html` con un doppio click
+4. **Pubblica:**
+   ```
+   git add .
+   git commit -m "Dati stagione aggiornati"
+   git push
+   ```
+
+> `js/dati.js` è **generato**: non modificarlo a mano, verrebbe sovrascritto
+> alla prossima esecuzione dello script. La fonte è sempre l'Excel.
+
+### Perché un `.js` e non un `.json`
+
+Un file JSON andrebbe letto con `fetch()`, che i browser bloccano sulle pagine
+aperte da `file://`. Il sito non sarebbe più provabile in locale con un doppio
+click. Un `.js` che assegna una variabile globale funziona ovunque, senza
+bisogno di un server.
+
+### Cosa il sito non fa
+
+Il sito **non calcola** i crediti: mostra i valori scritti nell'Excel. I premi
+e i malus non sono costanti — nel gestionale vivono nella tabella
+`credit_rules` e possono cambiare da un anno all'altro — quindi ricalcolarli
+qui produrrebbe numeri che possono divergere da quelli veri.
+
+Se una casella dell'Excel è vuota, il sito mostra un trattino.
+
+## Le formule del simulatore
 
 Vivono in [`js/calcoli.js`](js/calcoli.js) e riproducono le regole del
 regolamento:
@@ -39,16 +80,6 @@ terminale:
 ```
 node js/calcoli.js
 ```
-
-## Aggiornare il sito
-
-```
-git add .
-git commit -m "descrizione della modifica"
-git push
-```
-
-Online entro 1–2 minuti.
 
 ## Nota per chi mantiene il progetto
 
