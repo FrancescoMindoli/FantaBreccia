@@ -12,10 +12,13 @@
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">Fanta Breccia</a>
-    <a class="nav-link" href="index.html">Come funziona</a>
-    <a class="nav-link" href="lega.html">La lega</a>
-    <a class="nav-link" href="simulatore.html">Simulatore</a>
-    <a class="nav-link active" href="regolamento.html">Regolamento</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Come funziona</a>
+      <a class="nav-link" href="lega.html">La lega</a>
+      <a class="nav-link" href="contratti.html">Contratti</a>
+      <a class="nav-link" href="simulatore.html">Simulatore</a>
+      <a class="nav-link active" href="regolamento.html">Regolamento</a>
+    </div>
   </div>
 </nav>
 
@@ -194,6 +197,27 @@ costo_anno_2 = arrotondato per eccesso all'intero
     </div>
     <p>Gli anni rimanenti sono calcolati <strong>esclusivamente</strong> sui dati del contratto:</p>
 <pre><code>anni_rimanenti = anno_fine − anno_corrente + 1</code></pre>
+
+    <h3>Cosa significa "anno" in concreto</h3>
+
+    <p>Ogni anno di contratto corrisponde a <strong>un'asta</strong>: un momento in cui la squadra decide se tenere il giocatore o lasciarlo andare.</p>
+
+    <ul>
+      <li><strong>Anno 1</strong> è l'anno in cui il giocatore viene riconfermato. La penale dell'anno 1 è quella che si paga svincolandolo <em>durante quella stessa stagione</em>, per esempio a gennaio.</li>
+      <li><strong>Anno 2</strong> è la seconda asta da quando è stato riconfermato: si paga la cifra dell'anno 2 per riscattarlo, oppure la penale corrispondente per non riscattarlo.</li>
+      <li><strong>Anni 3 e 4</strong> seguono la stessa logica, fino alla scadenza del contratto.</li>
+    </ul>
+
+    <div class="esempio">
+      <span class="esempio-label">Esempio — giocatore pagato 20 all'asta</span>
+      <p>
+        <strong>Anno 1:</strong> lo riconfermi pagando 22. Se lo svincoli nella stagione stessa, 8 di penale.<br>
+        <strong>Anno 2:</strong> lo riscatti pagando 25, oppure paghi 6 di penale e lo lasci andare.<br>
+        <strong>Anno 3:</strong> 28 per riscattarlo, oppure 4 di penale.<br>
+        <strong>Anno 4:</strong> 31 per riscattarlo, oppure 2 di penale.
+      </p>
+      <p>Più il contratto avanza, più costa tenerlo e meno costa lasciarlo andare.</p>
+    </div>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 

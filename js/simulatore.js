@@ -67,33 +67,47 @@
       var tr = document.createElement('tr');
 
       var tdAnno = document.createElement('td');
-      tdAnno.textContent = 'Anno ' + riga.anno;
+      tdAnno.innerHTML = '<strong>Anno ' + riga.anno + '</strong>' +
+        '<span class="meta">' +
+        (riga.anno === 1
+          ? 'quando lo riconfermi'
+          : riga.anno + 'ª asta da allora') +
+        '</span>';
 
       var tdCosto = document.createElement('td');
       tdCosto.className = 'num';
-      tdCosto.innerHTML = '<strong>' + riga.costoRiscatto + '</strong>';
+      tdCosto.innerHTML = '<span class="costo">' + riga.costoRiscatto + '</span>';
 
       var tdSvincolo = document.createElement('td');
       tdSvincolo.className = 'num';
-      tdSvincolo.textContent = riga.costoSvincolo;
+      tdSvincolo.innerHTML =
+        '<span class="costo costo-ko">' + riga.costoSvincolo + '</span>' +
+        '<span class="meta">' + riga.anniRimanenti +
+        (riga.anniRimanenti === 1 ? ' anno residuo' : ' anni residui') + '</span>';
 
-      var tdRimanenti = document.createElement('td');
-      tdRimanenti.className = 'num';
-      tdRimanenti.textContent = riga.anniRimanenti;
+      var tdSpiega = document.createElement('td');
+      tdSpiega.className = 'spiega';
+      tdSpiega.textContent = riga.anno === 1
+        ? 'Paghi ' + riga.costoRiscatto + ' crediti e lo riconfermi. Se lo molli '
+          + 'durante la stagione stessa, la penale è ' + riga.costoSvincolo + '.'
+        : 'Paghi ' + riga.costoRiscatto + ' crediti per riscattarlo, oppure '
+          + riga.costoSvincolo + ' di penale e lo lasci andare.';
 
       tr.appendChild(tdAnno);
       tr.appendChild(tdCosto);
       tr.appendChild(tdSvincolo);
-      tr.appendChild(tdRimanenti);
+      tr.appendChild(tdSpiega);
       corpo.appendChild(tr);
     });
 
+    // Le etichette delle schede su telefono vanno rimesse: le celle sono nuove
+    if (typeof window.preparaTabelle === 'function') window.preparaTabelle();
+
     var ultimo = sim.anni[sim.anni.length - 1].costoRiscatto;
     totale.innerHTML =
-      'Tenerlo tutti e quattro gli anni ti costa in totale <strong>' +
-      sim.costoTotale + '</strong> crediti. ' +
-      'L\'ultimo anno da solo ne costa <strong>' + ultimo + '</strong>, ' +
-      'contro i ' + prezzo + ' pagati all\'asta.';
+      'Se lo tieni per tutti e quattro gli anni spendi in totale <strong>' +
+      sim.costoTotale + ' crediti</strong>. Il quarto anno da solo ne costa <strong>' +
+      ultimo + '</strong>, contro i ' + prezzo + ' che hai pagato all\'asta.';
   }
 
   input.addEventListener('input', aggiorna);

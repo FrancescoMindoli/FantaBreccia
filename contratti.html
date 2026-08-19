@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fanta Breccia — Contratti</title>
+<meta name="description" content="I giocatori sotto contratto squadra per squadra, con il costo di riconferma anno per anno.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Fanta Breccia</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Come funziona</a>
+      <a class="nav-link" href="lega.html">La lega</a>
+      <a class="nav-link active" href="contratti.html">Contratti</a>
+      <a class="nav-link" href="simulatore.html">Simulatore</a>
+      <a class="nav-link" href="regolamento.html">Regolamento</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <header class="hero">
+    <h1>Contratti</h1>
+    <p>I giocatori sotto contratto, con quanto costa tenerli in ciascuno dei quattro anni.</p>
+  </header>
+
+  <div class="filtri">
+    <div class="filtro">
+      <label class="sim-label" for="squadra-select">Squadra</label>
+      <select id="squadra-select" class="select"></select>
+    </div>
+    <div class="filtro">
+      <label class="sim-label" for="anno-select">Anno di riferimento</label>
+      <select id="anno-select" class="select"></select>
+    </div>
+    <div class="filtro filtro-largo">
+      <label class="sim-label" for="ricerca">Cerca giocatore</label>
+      <input type="search" id="ricerca" class="select" placeholder="nome…" autocomplete="off">
+    </div>
+  </div>
+
+  <p class="errore-input" id="errore" hidden></p>
+
+  <section id="sezione-slot">
+    <h2>Slot occupati</h2>
+    <p class="nota-tabella">
+      Conteggio riferito all'anno selezionato. I limiti sono 3 in categoria A e
+      6 sommando A e B; la categoria C non occupa posti
+      (<a href="regolamento.html#s2">regolamento § 2</a>).
+    </p>
+    <div id="slot-riepilogo"></div>
+  </section>
+
+  <section id="sezione-griglia">
+    <h2>Giocatori sotto contratto</h2>
+    <div id="griglia"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Fotografia al <span id="generato-il">—</span>. Per le operazioni si usa il gestionale.</p>
+  <p>In caso di discordanza fa fede il <a href="regolamento.html">regolamento integrale</a>.</p>
+</footer>
+
+<script src="js/dati.js"></script>
+<script src="js/calcoli.js"></script>
+<script src="js/contratti.js"></script>
+<script src="js/tabelle.js"></script>
+</body>
+</html>

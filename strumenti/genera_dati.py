@@ -36,10 +36,27 @@ except ImportError:
         "strumenti/genera_dati.py"
     )
 
-XLSX_PREDEFINITO = Path(
-    r"d:\Codice\Fanta_Riconferme\fantacalcio\database\Gestione.xlsx"
-)
-USCITA = Path(__file__).resolve().parent.parent / "js" / "dati.js"
+RADICE = Path(__file__).resolve().parent.parent
+XLSX_PREDEFINITO = RADICE / "dati" / "Gestione.xlsx"
+USCITA = RADICE / "js" / "dati.js"
+
+DURATA_CONTRATTO = 4  # regolamento § 1
+ETA_MAX_C = 21        # regolamento § 2
+ETA_MAX_B = 25
+MAX_CATEGORIA_A = 3
+MAX_A_PIU_B = 6
+
+
+def categoria_per_eta(anno_nascita, anno_riferimento):
+    """Stessa regola di js/calcoli.js e del gestionale."""
+    if anno_nascita is None or anno_riferimento is None:
+        return "A"
+    eta = anno_riferimento - anno_nascita
+    if eta <= ETA_MAX_C:
+        return "C"
+    if eta <= ETA_MAX_B:
+        return "B"
+    return "A"
 
 
 # --- Lettura dei fogli ---------------------------------------------------
@@ -104,6 +121,8 @@ def costruisci(wb) -> dict:
         "generatoIl": dt.date.today().isoformat(),
         "squadre": [],
         "nomiPerAnno": {},
+        "giocatori": [],
+        "contratti": [],
         "classifiche": {},
         "coppa": {},
         "creditiResidui": {},
@@ -131,6 +150,43 @@ def costruisci(wb) -> dict:
             continue
         anni.add(anno)
         dati["nomiPerAnno"].setdefault(str(anno), {})[str(idx)] = testo(riga.get("Nome"))
+
+    # Giocatori
+    print("  · Giocatori")
+    for riga in leggi_foglio(wb, "Giocatori"):
+        idx = intero(riga.get("ID"))
+        nome = testo(riga.get("Nome"))
+        # Le righe di esempio del file iniziale non finiscono nel sito
+        if idx is None or not nome or nome.upper().startswith("ESEMPIO"):
+            continue
+        dati["giocatori"].append({
+            "id": idx,
+            "nome": nome,
+            "ruolo": testo(riga.get("Ruolo")).upper(),
+            "annoNascita": intero(riga.get("AnnoNascita")),
+            "idSquadra": intero(riga.get("IDSquadra")),
+        })
+
+    # Contratti: l'anno di fine non si scrive, è sempre inizio + 3
+    print("  · Contratti")
+    id_giocatori_validi = {g["id"] for g in dati["giocatori"]}
+    for riga in leggi_foglio(wb, "Contratti"):
+        id_g = intero(riga.get("IDGiocatore"))
+        inizio = intero(riga.get("AnnoInizio"))
+        if id_g is None or inizio is None:
+            continue
+        if id_g not in id_giocatori_validi:
+            continue  # riga di esempio o riferimento rotto: segnalato dai controlli
+        fine = intero(riga.get("AnnoFine"), inizio + DURATA_CONTRATTO - 1)
+        anni.add(inizio)
+        dati["contratti"].append({
+            "idGiocatore": id_g,
+            "idSquadra": intero(riga.get("IDSquadra")),
+            "annoInizio": inizio,
+            "annoFine": fine,
+            "prezzo": intero(riga.get("PrezzoAcquisto"), 0),
+            "attivo": bool(intero(riga.get("Attivo"), 1)),
+        })
 
     # Classifica di campionato
     print("  · Classifiche")
@@ -190,6 +246,8 @@ def costruisci(wb) -> dict:
 
     # Ordinamenti stabili, così il file non cambia senza motivo fra due run
     dati["squadre"].sort(key=lambda s: s["id"])
+    dati["giocatori"].sort(key=lambda g: g["id"])
+    dati["contratti"].sort(key=lambda c: (c["idSquadra"] or 0, c["idGiocatore"]))
     for elenco in dati["classifiche"].values():
         elenco.sort(key=lambda r: (r["posizione"] is None, r["posizione"]))
     for elenco in dati["coppa"].values():
@@ -235,6 +293,77 @@ def controlli(dati: dict) -> list[str]:
                 "(il sito mostrerà un trattino)"
             )
 
+    # --- Giocatori ---
+    id_giocatori = [g["id"] for g in dati["giocatori"]]
+    if len(id_giocatori) != len(set(id_giocatori)):
+        avvisi.append("Giocatori: ci sono ID duplicati")
+
+    for g in dati["giocatori"]:
+        if g["idSquadra"] not in id_noti:
+            avvisi.append(
+                f"Giocatori: '{g['nome']}' punta alla squadra {g['idSquadra']}, "
+                "che non esiste in AnagraficaSquadre"
+            )
+        if g["annoNascita"] is None:
+            avvisi.append(
+                f"Giocatori: '{g['nome']}' senza AnnoNascita — verrà trattato "
+                "come categoria A"
+            )
+
+    # --- Contratti ---
+    nomi = {g["id"]: g["nome"] for g in dati["giocatori"]}
+    attivi_per_giocatore: dict[int, int] = {}
+
+    for c in dati["contratti"]:
+        nome = nomi.get(c["idGiocatore"], f"ID {c['idGiocatore']}")
+        if c["idSquadra"] not in id_noti:
+            avvisi.append(
+                f"Contratti: '{nome}' assegnato alla squadra {c['idSquadra']}, "
+                "che non esiste"
+            )
+        if not c["prezzo"] or c["prezzo"] <= 0:
+            avvisi.append(
+                f"Contratti: '{nome}' ha PrezzoAcquisto {c['prezzo']} — "
+                "i costi verranno calcolati male"
+            )
+        if c["attivo"]:
+            attivi_per_giocatore[c["idGiocatore"]] = \
+                attivi_per_giocatore.get(c["idGiocatore"], 0) + 1
+
+    for id_g, quanti in attivi_per_giocatore.items():
+        if quanti > 1:
+            avvisi.append(
+                f"Contratti: '{nomi.get(id_g, id_g)}' ha {quanti} contratti attivi "
+                "insieme — il regolamento non lo consente"
+            )
+
+    # --- Slot per squadra e anno ---
+    per_squadra_anno: dict = {}
+    nascite = {g["id"]: g["annoNascita"] for g in dati["giocatori"]}
+
+    for c in dati["contratti"]:
+        if not c["attivo"]:
+            continue
+        for anno in range(c["annoInizio"], c["annoFine"] + 1):
+            cat = categoria_per_eta(nascite.get(c["idGiocatore"]), anno)
+            chiave = (c["idSquadra"], anno)
+            conta = per_squadra_anno.setdefault(chiave, {"A": 0, "B": 0, "C": 0})
+            conta[cat] += 1
+
+    nomi_squadre = {s["id"]: s["squadra"] for s in dati["squadre"]}
+    for (id_sq, anno), conta in sorted(per_squadra_anno.items()):
+        squadra = nomi_squadre.get(id_sq, f"squadra {id_sq}")
+        if conta["A"] > MAX_CATEGORIA_A:
+            avvisi.append(
+                f"{anno}: {squadra} ha {conta['A']} giocatori in categoria A "
+                f"(massimo {MAX_CATEGORIA_A})"
+            )
+        if conta["A"] + conta["B"] > MAX_A_PIU_B:
+            avvisi.append(
+                f"{anno}: {squadra} ha {conta['A'] + conta['B']} giocatori in A+B "
+                f"(massimo {MAX_A_PIU_B})"
+            )
+
     return avvisi
 
 
@@ -271,6 +400,9 @@ def main() -> int:
 
     print(f"\nScritto {args.out}")
     print(f"  {len(dati['squadre'])} squadre")
+    print(f"  {len(dati['giocatori'])} giocatori")
+    attivi = sum(1 for c in dati["contratti"] if c["attivo"])
+    print(f"  {len(dati['contratti'])} contratti ({attivi} attivi)")
     print(f"  {len(dati['anni'])} stagioni: {', '.join(str(a) for a in dati['anni'])}")
 
     avvisi = controlli(dati)

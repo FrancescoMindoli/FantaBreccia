@@ -12,10 +12,13 @@
 <nav class="nav">
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">Fanta Breccia</a>
-    <a class="nav-link" href="index.html">Come funziona</a>
-    <a class="nav-link" href="lega.html">La lega</a>
-    <a class="nav-link active" href="simulatore.html">Simulatore</a>
-    <a class="nav-link" href="regolamento.html">Regolamento</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Come funziona</a>
+      <a class="nav-link" href="lega.html">La lega</a>
+      <a class="nav-link" href="contratti.html">Contratti</a>
+      <a class="nav-link active" href="simulatore.html">Simulatore</a>
+      <a class="nav-link" href="regolamento.html">Regolamento</a>
+    </div>
   </div>
 </nav>
 
@@ -54,10 +57,10 @@
         <table>
           <thead>
             <tr>
-              <th>Anno</th>
-              <th class="num">Costo riconferma</th>
-              <th class="num">Penale svincolo</th>
-              <th class="num">Anni rimanenti</th>
+              <th>Quando</th>
+              <th class="num">Se lo tieni <span class="th-nota">crediti</span></th>
+              <th class="num">Se lo molli <span class="th-nota">penale</span></th>
+              <th>Cosa stai decidendo</th>
             </tr>
           </thead>
           <tbody id="tabella-corpo"></tbody>
@@ -68,15 +71,31 @@
     </div>
   </div>
 
-  <h2>Come leggere la tabella</h2>
+  <h2>Come si leggono gli anni</h2>
 
-  <p><strong>Costo riconferma</strong> è quanto ti costa tenere il giocatore in quell'anno di contratto. Cresce ogni anno della percentuale della sua fascia, calcolata sul costo dell'anno precedente e arrotondata per eccesso.</p>
+  <p>È la parte che genera più confusione, quindi conviene essere espliciti: <strong>ogni riga della tabella è un'asta</strong>, cioè un momento in cui decidi se tenere il giocatore o lasciarlo andare.</p>
 
-  <p><strong>Penale svincolo</strong> è quanto pagheresti liberandotene <em>in quel momento</em>: il 10% del prezzo d'asta per ogni anno che resterebbe da fare. Più avanti sei nel contratto, meno costa uscirne.</p>
+  <div class="esempio">
+    <span class="esempio-label">Esempio — un giocatore pagato 20 crediti all'asta</span>
+    <p>
+      <strong>Anno 1 — è l'anno in cui lo riconfermi.</strong><br>
+      Firmi il contratto e paghi <strong>22</strong> crediti. Se cambi idea <em>durante quella stessa stagione</em> — per esempio a gennaio, perché si è infortunato — lo svincoli pagando <strong>8</strong> di penale.
+    </p>
+    <p>
+      <strong>Anno 2 — è la seconda asta da quando lo hai riconfermato.</strong><br>
+      Qui scegli: paghi <strong>25</strong> crediti per riscattarlo e tenertelo un altro anno, oppure paghi <strong>6</strong> di penale e lo lasci andare.
+    </p>
+    <p>
+      <strong>Anni 3 e 4 — la stessa scelta</strong>, con il costo che continua a salire e la penale che continua a scendere.
+    </p>
+  </div>
 
   <div class="callout">
-    <p>Il prezzo d'asta non cambia mai per tutta la durata del contratto: è sempre lui la base del calcolo, sia per le riconferme sia per le penali.</p>
+    <span class="callout-title">La regola in una riga</span>
+    <p>Più lo tieni, <strong>più costa tenerlo</strong> e <strong>meno costa mollarlo</strong>. La penale si calcola sugli anni che restano: al quarto anno ne resta uno solo, quindi è la più bassa di tutte.</p>
   </div>
+
+  <p>Il <strong>prezzo pagato all'asta non cambia mai</strong> per tutta la durata del contratto: è sempre lui la base del calcolo, sia per il costo di riconferma sia per la penale. Anche se il giocatore raddoppia di valore o sparisce dai radar, i tuoi conti restano questi.</p>
 
   <div class="callout info">
     <p>Non ti torna qualcosa? Le regole complete sono spiegate in <a href="index.html">Come funziona</a>, il testo formale è nel <a href="regolamento.html">regolamento integrale</a> ai punti <a href="regolamento.html#s4">4</a>, <a href="regolamento.html#s5">5</a> e <a href="regolamento.html#s8">8</a>.</p>

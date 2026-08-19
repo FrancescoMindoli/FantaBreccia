@@ -86,6 +86,39 @@
     return costo;
   }
 
+  /** Soglie di età delle categorie — regolamento § 2. */
+  var ETA_MAX_C = 21;
+  var ETA_MAX_B = 25;
+
+  /** Limiti di slot per squadra — regolamento § 2. */
+  var MAX_CATEGORIA_A = 3;
+  var MAX_A_PIU_B = 6;
+
+  /**
+   * Categoria di un giocatore in una data stagione.
+   *
+   *   età <= 21  ->  "C"  (illimitati)
+   *   età <= 25  ->  "B"  (nessun limite proprio, ma A+B <= 6)
+   *   oltre      ->  "A"  (massimo 3)
+   *
+   * L'età è relativa all'anno di riferimento: un giocatore cambia categoria
+   * col passare delle stagioni, ed è il motivo per cui una squadra può
+   * ritrovarsi sopra il limite senza aver fatto nulla.
+   *
+   * Traduzione di category_for_age() del gestionale.
+   */
+  function categoriaPerEta(annoNascita, annoRiferimento) {
+    // Senza anno di nascita si assume la categoria più restrittiva, come fa
+    // determine_category() lato Python.
+    if (!Number.isFinite(annoNascita) || !Number.isFinite(annoRiferimento)) {
+      return 'A';
+    }
+    var eta = annoRiferimento - annoNascita;
+    if (eta <= ETA_MAX_C) return 'C';
+    if (eta <= ETA_MAX_B) return 'B';
+    return 'A';
+  }
+
   /**
    * Penale di svincolo: 10% del prezzo d'acquisto per ogni anno rimanente.
    * Con 0 anni rimanenti la penale è 0.
@@ -206,6 +239,22 @@
       );
     });
 
+    log('\n--- Categorie per età (regolamento § 2) ---');
+    [
+      { nascita: 2005, anno: 2026, atteso: 'C', nota: '21 anni' },
+      { nascita: 2004, anno: 2026, atteso: 'B', nota: '22 anni, confine C/B' },
+      { nascita: 2001, anno: 2026, atteso: 'B', nota: '25 anni' },
+      { nascita: 2000, anno: 2026, atteso: 'A', nota: '26 anni, confine B/A' },
+      { nascita: 1990, anno: 2026, atteso: 'A', nota: '36 anni' },
+      { nascita: 2001, anno: 2027, atteso: 'A', nota: 'lo stesso del 2001 un anno dopo' }
+    ].forEach(function (c) {
+      controlla(
+        'categoria(nato ' + c.nascita + ', stagione ' + c.anno + ') — ' + c.nota,
+        categoriaPerEta(c.nascita, c.anno),
+        c.atteso
+      );
+    });
+
     log('\n--- Valori limite (non devono produrre NaN) ---');
     [0, -5, NaN, Infinity].forEach(function (v) {
       var r = calcolaRiscatto(v, 1);
@@ -231,11 +280,14 @@
 
   var api = {
     DURATA_CONTRATTO: DURATA_CONTRATTO,
+    MAX_CATEGORIA_A: MAX_CATEGORIA_A,
+    MAX_A_PIU_B: MAX_A_PIU_B,
     arrotondaPerEccesso: arrotondaPerEccesso,
     calcolaFascia: calcolaFascia,
     etichettaFascia: etichettaFascia,
     calcolaRiscatto: calcolaRiscatto,
     calcolaSvincolo: calcolaSvincolo,
+    categoriaPerEta: categoriaPerEta,
     simulaContratto: simulaContratto,
     verifica: verifica
   };

@@ -1,11 +1,20 @@
 # Questo repository è PUBBLICO: qui dentro non deve finire nulla di privato.
 
-# Dati del gestionale — non devono mai comparire in questo repo
+# dati/Gestione.xlsx È VERSIONATO di proposito: è la fonte di verità del sito,
+# e tenerlo sotto Git significa averne uno storico e poter tornare indietro.
+# Restano esclusi i file temporanei che Excel crea mentre lo tieni aperto.
+~$*.xlsx
+*.xlsx#
+
+# Database e altri formati che qui non servono
 *.db
 *.sqlite
 *.sqlite3
-*.xlsx
-*.csv
+
+# Ambiente Python locale
+.venv/
+__pycache__/
+*.py[cod]
 
 # Segreti
 .env

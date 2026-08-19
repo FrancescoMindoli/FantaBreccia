@@ -11,6 +11,7 @@ simulatore per calcolare il costo delle riconferme.
 |---|---|
 | `index.html` | Le regole spiegate in modo discorsivo |
 | `lega.html` | Squadre, classifica, coppa e crediti |
+| `contratti.html` | Giocatori sotto contratto, costo anno per anno, slot |
 | `regolamento.html` | Regolamento integrale, con indice navigabile |
 | `simulatore.html` | Calcolo dei costi di riconferma e delle penali di svincolo |
 | `test.html` | Verifica automatica delle formule |
@@ -22,26 +23,49 @@ chiamata di rete.
 
 Per provarlo in locale basta aprire `index.html` con un doppio click.
 
-## Aggiornare i dati della lega
+## Aggiornare il sito
 
-I dati mostrati in `lega.html` vengono da `Gestione.xlsx`, il foglio che si
-compila a mano. Il flusso è:
+Tutti i dati vengono da **`dati/Gestione.xlsx`**, che è la fonte unica.
 
-1. **Compila l'Excel** (`fantacalcio/database/Gestione.xlsx` nel progetto del
-   gestionale)
-2. **Rigenera i dati del sito:**
-   ```
-   d:\Codice\Fanta_Riconferme\fantacalcio\.venv\Scripts\python.exe strumenti\genera_dati.py
-   ```
-   Lo script legge i sei fogli e riscrive `js/dati.js`. Segnala anche le
-   incoerenze che trova, senza correggerle: le correzioni si fanno nell'Excel.
-3. **Controlla il risultato** aprendo `lega.html` con un doppio click
-4. **Pubblica:**
-   ```
-   git add .
-   git commit -m "Dati stagione aggiornati"
-   git push
-   ```
+```
+1. Apri dati\Gestione.xlsx, compila e SALVA
+2. Chiudi Excel
+3. Doppio click su aggiorna.bat
+```
+
+`aggiorna.bat` fa tutto: rigenera i dati, ti mostra cosa è cambiato e quali
+incoerenze ha trovato, chiede conferma, poi salva e pubblica. Se qualcosa non
+va si ferma senza pubblicare nulla.
+
+Se preferisci i comandi a mano:
+
+```
+.venv\Scripts\python.exe strumenti\genera_dati.py
+git add . && git commit -m "Dati aggiornati" && git push
+```
+
+### I fogli dell'Excel
+
+| Foglio | Contenuto |
+|---|---|
+| `_Leggimi` | Mappa dei fogli e delle colonne |
+| `AnagraficaSquadre` | Squadre e allenatori |
+| `CambioNome` | Nome della squadra per anno |
+| `Giocatori` | Calciatori: ID, nome, ruolo, anno di nascita, squadra |
+| `Contratti` | Contratti: giocatore, squadra, anno di inizio, prezzo, attivo |
+| `Classifiche` | Classifica di campionato |
+| `Coppa` | Podio della coppa |
+| `CreditiAsta` | Crediti avanzati a fine stagione |
+| `CreditiAnnoNuovo` | Budget della stagione nuova |
+
+`AnnoFine` dei contratti non si scrive: è sempre `AnnoInizio + 3`.
+
+### Se manca Python
+
+```
+py -3 -m venv .venv
+.venv\Scripts\python.exe -m pip install openpyxl
+```
 
 > `js/dati.js` è **generato**: non modificarlo a mano, verrebbe sovrascritto
 > alla prossima esecuzione dello script. La fonte è sempre l'Excel.

@@ -70,6 +70,8 @@ window.DATI = {
       "10": "Tridente demoniaco"
     }
   },
+  "giocatori": [],
+  "contratti": [],
   "classifiche": {
     "2026": [
       {
