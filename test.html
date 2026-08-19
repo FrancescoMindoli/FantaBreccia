@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verifica formule — Fanta Breccia</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #esito { font-size: 1.3rem; font-weight: 800; padding: 20px; border-radius: 12px; margin: 24px 0; }
+  #esito.ok { background: rgba(34,197,94,.15); color: #86EFAC; border: 1px solid rgba(34,197,94,.4); }
+  #esito.ko { background: rgba(239,68,68,.15); color: #FCA5A5; border: 1px solid rgba(239,68,68,.4); }
+  #log { font-family: var(--font-mono); font-size: .86rem; line-height: 1.6; white-space: pre-wrap;
+         background: var(--bg-secondary); border: 1px solid var(--border);
+         border-radius: 12px; padding: 20px; overflow-x: auto; }
+  .r-ok { color: #86EFAC; }
+  .r-ko { color: #FCA5A5; font-weight: 700; }
+  .r-h  { color: var(--orange); font-weight: 700; display: block; margin-top: 14px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Fanta Breccia</a>
+    <a class="nav-link" href="index.html">Come funziona</a>
+    <a class="nav-link" href="simulatore.html">Simulatore</a>
+    <a class="nav-link" href="regolamento.html">Regolamento</a>
+  </div>
+</nav>
+
+<main>
+  <header class="hero">
+    <h1>Verifica delle formule</h1>
+    <p>Controlla che il calcolo del sito produca gli stessi numeri del gestionale, sui casi ufficiali del regolamento.</p>
+  </header>
+
+  <div class="callout warn">
+    <p><strong>Questa pagina non va pubblicata insieme al sito.</strong> Serve durante lo sviluppo. Prima di caricare su GitHub, cancella <code>test.html</code> — oppure lascialo, non espone nulla di sensibile, ma è rumore per chi legge il regolamento.</p>
+  </div>
+
+  <div id="esito">Esecuzione in corso…</div>
+  <div id="log"></div>
+
+  <h2>Quando rieseguirla</h2>
+  <p>Ogni volta che tocchi <code>js/calcoli.js</code>, e ogni volta che cambiano le fasce o le percentuali nel gestionale. Se anche un solo caso è rosso, il simulatore sta dando numeri sbagliati agli altri partecipanti.</p>
+</main>
+
+<script src="js/calcoli.js"></script>
+<script>
+(function () {
+  var log = document.getElementById('log');
+  var esito = document.getElementById('esito');
+
+  // Intercetta console.log per riversare gli esiti nella pagina.
+  var originale = console.log;
+  console.log = function (messaggio) {
+    originale.apply(console, arguments);
+    var testo = String(messaggio);
+    var span = document.createElement('span');
+    if (testo.indexOf('  OK') === 0) span.className = 'r-ok';
+    else if (testo.indexOf('  FAIL') === 0) span.className = 'r-ko';
+    else if (testo.indexOf('---') !== -1) span.className = 'r-h';
+    span.textContent = testo + '\n';
+    log.appendChild(span);
+  };
+
+  var risultato = verifica();
+  console.log = originale;
+
+  if (risultato.errori === 0) {
+    esito.className = 'ok';
+    esito.textContent = '✅ Tutti i ' + risultato.totali + ' casi superati';
+  } else {
+    esito.className = 'ko';
+    esito.textContent = '❌ ' + risultato.errori + ' casi falliti su ' + risultato.totali;
+  }
+})();
+</script>
+</body>
+</html>

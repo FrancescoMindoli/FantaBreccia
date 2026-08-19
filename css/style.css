@@ -1,0 +1,402 @@
+/*
+ * Fanta Breccia — sito pubblico
+ * Palette e caratteri ripresi dal gestionale (fantacalcio/static/style.css),
+ * ma riscritti da zero: qui servono solo testo lungo e una tabella.
+ */
+
+:root {
+  /* Sfondi */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-elevated: rgba(255, 255, 255, 0.04);
+
+  /* Testo */
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+
+  /* Accenti */
+  --orange: #FF6B35;
+  --orange-soft: rgba(255, 107, 53, 0.12);
+  --blue: #4361EE;
+  --blue-soft: rgba(67, 97, 238, 0.12);
+  --gradient-mix: linear-gradient(135deg, #FF6B35 0%, #FF8C42 30%, #4361EE 70%, #7209B7 100%);
+
+  /* Semantici */
+  --success: #22C55E;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+
+  /* Categorie */
+  --cat-a: #A78BFA;
+  --cat-b: #38BDF8;
+  --cat-c: #34D399;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --radius: 12px;
+  --radius-lg: 16px;
+
+  --font: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- Navigazione ---------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 60px;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-right: auto;
+  text-decoration: none;
+  background: var(--gradient-mix);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav a.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  font-size: 0.94rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav a.nav-link:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.nav a.nav-link.active { background: var(--orange-soft); color: var(--orange); font-weight: 600; }
+
+/* ---------- Struttura ---------- */
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.hero { margin-bottom: 48px; }
+
+.hero h1 {
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.2;
+  margin: 0 0 12px;
+  background: var(--gradient-mix);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p { color: var(--text-secondary); font-size: 1.1rem; margin: 0; }
+
+h2 {
+  font-size: 1.55rem;
+  margin: 48px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+h3 { font-size: 1.15rem; margin: 32px 0 12px; color: var(--text-primary); }
+
+p { margin: 0 0 16px; }
+
+a { color: var(--orange); }
+
+strong { color: #fff; font-weight: 600; }
+
+ul, ol { padding-left: 24px; margin: 0 0 16px; }
+li { margin-bottom: 8px; }
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--bg-elevated);
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: var(--cat-b);
+}
+
+pre {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+pre code { background: none; padding: 0; color: var(--text-primary); }
+
+/* ---------- Riquadri ---------- */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.callout {
+  border-left: 4px solid var(--orange);
+  background: var(--orange-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+
+.callout.info { border-left-color: var(--blue); background: var(--blue-soft); }
+.callout.warn { border-left-color: var(--warning); background: rgba(245, 158, 11, 0.1); }
+.callout p:last-child { margin-bottom: 0; }
+.callout-title { font-weight: 700; display: block; margin-bottom: 6px; }
+
+.esempio {
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 20px 0;
+  font-size: 0.97rem;
+}
+.esempio .esempio-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+.esempio p:last-child { margin-bottom: 0; }
+
+/* ---------- Tabelle (scorrono su telefono) ---------- */
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  -webkit-overflow-scrolling: touch;
+}
+
+table { width: 100%; border-collapse: collapse; min-width: 380px; }
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+th {
+  background: var(--bg-secondary);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--bg-elevated); }
+
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.badge.a { background: rgba(167, 139, 250, 0.16); color: var(--cat-a); }
+.badge.b { background: rgba(56, 189, 248, 0.16); color: var(--cat-b); }
+.badge.c { background: rgba(52, 211, 153, 0.16); color: var(--cat-c); }
+
+.pos { color: var(--success); font-weight: 600; }
+.neg { color: var(--danger); font-weight: 600; }
+
+/* ---------- Indice del regolamento ---------- */
+
+.toc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 40px;
+}
+.toc h2 { margin: 0 0 12px; font-size: 1.1rem; border: none; padding: 0; }
+.toc ol { columns: 2; column-gap: 32px; margin: 0; padding-left: 20px; }
+.toc li { margin-bottom: 6px; break-inside: avoid; }
+.toc a { color: var(--text-secondary); text-decoration: none; font-size: 0.94rem; }
+.toc a:hover { color: var(--orange); }
+
+.sezione { scroll-margin-top: 80px; }
+
+.sezione h2 { display: flex; align-items: baseline; gap: 10px; }
+.sezione h2 .num {
+  font-size: 0.85rem;
+  color: var(--orange);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.back-top {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-top: 8px;
+}
+.back-top:hover { color: var(--orange); }
+
+/* ---------- Simulatore ---------- */
+
+.sim-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+label.sim-label {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+input[type="number"] {
+  font-family: var(--font);
+  font-size: 1.6rem;
+  font-weight: 700;
+  width: 180px;
+  padding: 12px 16px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  transition: border-color 0.15s;
+}
+input[type="number"]:focus { outline: none; border-color: var(--orange); }
+
+/* Toglie le frecce, poco utili su un campo così */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+.preset { display: flex; gap: 8px; flex-wrap: wrap; }
+.preset button {
+  font-family: var(--font);
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.preset button:hover { border-color: var(--orange); color: var(--orange); }
+
+.fascia-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  background: var(--orange-soft);
+  border: 1px solid rgba(255, 107, 53, 0.25);
+  border-radius: var(--radius);
+  margin: 24px 0;
+}
+.fascia-valore { font-size: 1.6rem; font-weight: 800; color: var(--orange); }
+.fascia-desc { color: var(--text-secondary); font-size: 0.95rem; }
+
+.totale-riga {
+  font-size: 1.05rem;
+  padding: 16px 20px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  margin-top: 20px;
+}
+.totale-riga strong { color: var(--orange); font-size: 1.2rem; }
+
+.errore-input {
+  color: var(--warning);
+  font-size: 0.92rem;
+  margin-top: 12px;
+}
+
+/* ---------- Piè di pagina ---------- */
+
+footer {
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+  padding: 32px 20px 48px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+footer p { margin: 0 0 8px; max-width: 620px; margin-inline: auto; }
+
+/* ---------- Telefono ---------- */
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  main { padding: 28px 16px 60px; }
+  .nav-inner { padding: 0 16px; min-height: 56px; }
+  .nav-brand { width: 100%; margin: 10px 0 0; }
+  .nav { padding-bottom: 8px; }
+  .toc ol { columns: 1; }
+  .card { padding: 18px; }
+  th, td { padding: 10px 12px; font-size: 0.92rem; }
+  input[type="number"] { width: 100%; }
+  .sim-input-row { flex-direction: column; align-items: stretch; }
+}
+
+/* ---------- Stampa ---------- */
+
+@media print {
+  .nav, .preset, footer, .back-top { display: none; }
+  body { background: #fff; color: #000; }
+  .card, .callout, .esempio { border: 1px solid #ccc; background: none; }
+  .hero h1 { color: #000; -webkit-text-fill-color: #000; }
+  a { color: #000; }
+}

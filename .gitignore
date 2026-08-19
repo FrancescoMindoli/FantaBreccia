@@ -1,0 +1,18 @@
+# Questo repository è PUBBLICO: qui dentro non deve finire nulla di privato.
+
+# Dati del gestionale — non devono mai comparire in questo repo
+*.db
+*.sqlite
+*.sqlite3
+*.xlsx
+*.csv
+
+# Segreti
+.env
+.env.*
+
+# Sistema ed editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
