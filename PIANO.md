@@ -52,16 +52,21 @@ I nomi dei fogli restano quelli che avevi: rinominarli avrebbe rotto quello
 che già funziona senza alcun guadagno. La corrispondenza con le tabelle è
 documentata nel foglio `_Leggimi`.
 
-### I due fogli nuovi
+### Il foglio nuovo
 
-**`Giocatori`** — `ID` · `Nome` · `Ruolo` · `AnnoNascita` · `IDSquadra`
+**`Contratti`** — `Giocatore` · `Ruolo` · `AnnoNascita` · `Squadra` ·
+`AnnoInizio` · `PrezzoAcquisto` · `Attivo`
+
+Autosufficiente: **nessun ID da scrivere**, giocatore e squadra si indicano per
+nome. `AnnoFine` non si scrive, è sempre `AnnoInizio + 3`.
 
 `AnnoNascita` è il campo critico: da lì dipende la categoria A/B/C e quindi
 tutto il conteggio degli slot.
 
-**`Contratti`** — `IDGiocatore` · `IDSquadra` · `AnnoInizio` · `PrezzoAcquisto` · `Attivo`
-
-`AnnoFine` non si scrive: è sempre `AnnoInizio + 3` e lo calcola lo script.
+> Inizialmente c'era anche un foglio `Giocatori` separato, con gli ID. È stato
+> eliminato perché costringeva a incrociare due fogli a mano per inserire un
+> contratto. Le colonne che servivano davvero — nome, ruolo, anno di nascita —
+> sono migrate qui.
 
 ---
 

@@ -26,11 +26,9 @@
   var D = window.DATI;
   var C = window.Calcoli;
 
-  var giocatori = D.giocatori || [];
+  // Ogni contratto porta con sé nome, ruolo e anno di nascita del giocatore:
+  // nel foglio non esistono più ID da incrociare.
   var contratti = (D.contratti || []).filter(function (c) { return c.attivo; });
-
-  var perId = {};
-  giocatori.forEach(function (g) { perId[g.id] = g; });
 
   var nomiSquadre = {};
   (D.squadre || []).forEach(function (s) { nomiSquadre[s.id] = s.squadra; });
@@ -40,7 +38,7 @@
   if (!contratti.length) {
     avvisa(
       '<strong>Nessun contratto inserito.</strong><br>' +
-      'Compila i fogli <em>Giocatori</em> e <em>Contratti</em> in ' +
+      'Compila il foglio <em>Contratti</em> in ' +
       '<code>dati\\Gestione.xlsx</code>, poi lancia <code>aggiorna.bat</code>.'
     );
     document.getElementById('sezione-slot').hidden = true;
@@ -93,7 +91,6 @@
    * categoria del giocatore in quella stagione.
    */
   function dettaglio(contratto) {
-    var g = perId[contratto.idGiocatore] || {};
     var durata = contratto.annoFine - contratto.annoInizio + 1;
     var righe = [];
     var categoriaPrecedente = null;
@@ -101,7 +98,7 @@
     for (var i = 0; i < durata; i++) {
       var annoSolare = contratto.annoInizio + i;
       var annoContratto = i + 1;
-      var categoria = C.categoriaPerEta(g.annoNascita, annoSolare);
+      var categoria = C.categoriaPerEta(contratto.annoNascita, annoSolare);
       righe.push({
         annoSolare: annoSolare,
         annoContratto: annoContratto,
@@ -136,8 +133,7 @@
       contratti.forEach(function (c) {
         if (c.idSquadra !== id) return;
         if (anno < c.annoInizio || anno > c.annoFine) return;
-        var g = perId[c.idGiocatore] || {};
-        conta[C.categoriaPerEta(g.annoNascita, anno)] += 1;
+        conta[C.categoriaPerEta(c.annoNascita, anno)] += 1;
       });
 
       var totale = conta.A + conta.B + conta.C;
@@ -178,9 +174,8 @@
 
     var visibili = contratti.filter(function (c) {
       if (idSquadra !== 'tutte' && c.idSquadra !== Number(idSquadra)) return false;
-      if (filtro) {
-        var g = perId[c.idGiocatore] || {};
-        if ((g.nome || '').toLowerCase().indexOf(filtro) === -1) return false;
+      if (filtro && (c.giocatore || '').toLowerCase().indexOf(filtro) === -1) {
+        return false;
       }
       return true;
     });
@@ -212,7 +207,6 @@
     var totali = [0, 0, 0, 0];
 
     elenco.forEach(function (c) {
-      var g = perId[c.idGiocatore] || {};
       var det = dettaglio(c);
 
       var celle = '';
@@ -231,9 +225,9 @@
       righe +=
         '<tr>' +
           '<td>' +
-            '<strong>' + (g.nome || ('Giocatore ' + c.idGiocatore)) + '</strong>' +
-            '<span class="meta">' + (g.ruolo || '—') +
-              (g.annoNascita ? ' · ' + g.annoNascita : '') +
+            '<strong>' + c.giocatore + '</strong>' +
+            '<span class="meta">' + (c.ruolo || '—') +
+              (c.annoNascita ? ' · ' + c.annoNascita : '') +
               ' · pagato ' + c.prezzo +
             '</span>' +
           '</td>' + celle +

@@ -51,14 +51,31 @@ git add . && git commit -m "Dati aggiornati" && git push
 | `_Leggimi` | Mappa dei fogli e delle colonne |
 | `AnagraficaSquadre` | Squadre e allenatori |
 | `CambioNome` | Nome della squadra per anno |
-| `Giocatori` | Calciatori: ID, nome, ruolo, anno di nascita, squadra |
-| `Contratti` | Contratti: giocatore, squadra, anno di inizio, prezzo, attivo |
+| `Contratti` | Contratti di riconferma |
 | `Classifiche` | Classifica di campionato |
 | `Coppa` | Podio della coppa |
 | `CreditiAsta` | Crediti avanzati a fine stagione |
 | `CreditiAnnoNuovo` | Budget della stagione nuova |
 
-`AnnoFine` dei contratti non si scrive: è sempre `AnnoInizio + 3`.
+### Il foglio Contratti
+
+Una riga per contratto, **nessun ID da scrivere**: giocatore e squadra si
+indicano per nome.
+
+| Colonna | Cosa scrivere |
+|---|---|
+| `Giocatore` | Nome del calciatore |
+| `Ruolo` | `P`, `D`, `C` o `A` |
+| `AnnoNascita` | Solo l'anno. **Determina la categoria A/B/C** e quindi gli slot |
+| `Squadra` | Nome come in `AnagraficaSquadre`; maiuscole e spazi ai bordi non contano |
+| `AnnoInizio` | Anno della riconferma |
+| `PrezzoAcquisto` | Prezzo pagato all'asta: non cambia mai |
+| `Attivo` | `1` in corso, `0` chiuso |
+
+`AnnoFine` non si scrive: è sempre `AnnoInizio + 3`.
+
+Se lo stesso giocatore compare in due contratti attivi, lo script avvisa: o è
+un doppione, o sono due omonimi da distinguere nel nome.
 
 ### Calcolare i crediti della stagione nuova
 

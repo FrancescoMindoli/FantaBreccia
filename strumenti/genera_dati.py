@@ -121,7 +121,6 @@ def costruisci(wb) -> dict:
         "generatoIl": dt.date.today().isoformat(),
         "squadre": [],
         "nomiPerAnno": {},
-        "giocatori": [],
         "contratti": [],
         "classifiche": {},
         "coppa": {},
@@ -151,37 +150,40 @@ def costruisci(wb) -> dict:
         anni.add(anno)
         dati["nomiPerAnno"].setdefault(str(anno), {})[str(idx)] = testo(riga.get("Nome"))
 
-    # Giocatori
-    print("  · Giocatori")
-    for riga in leggi_foglio(wb, "Giocatori"):
-        idx = intero(riga.get("ID"))
-        nome = testo(riga.get("Nome"))
-        # Le righe di esempio del file iniziale non finiscono nel sito
-        if idx is None or not nome or nome.upper().startswith("ESEMPIO"):
-            continue
-        dati["giocatori"].append({
-            "id": idx,
-            "nome": nome,
-            "ruolo": testo(riga.get("Ruolo")).upper(),
-            "annoNascita": intero(riga.get("AnnoNascita")),
-            "idSquadra": intero(riga.get("IDSquadra")),
-        })
-
-    # Contratti: l'anno di fine non si scrive, è sempre inizio + 3
+    # Contratti: foglio autosufficiente, nessun ID da scrivere.
+    # Giocatore e squadra si indicano per nome; l'anno di fine è sempre
+    # inizio + 3 e non si scrive.
     print("  · Contratti")
-    id_giocatori_validi = {g["id"] for g in dati["giocatori"]}
+
+    # Nome squadra -> id, per risolvere la colonna "Squadra".
+    # Confronto senza maiuscole e senza spazi ai bordi: chi compila non deve
+    # preoccuparsi di riprodurre il nome carattere per carattere.
+    id_per_nome = {}
+    for s in dati["squadre"]:
+        if s["squadra"]:
+            id_per_nome[s["squadra"].strip().lower()] = s["id"]
+
     for riga in leggi_foglio(wb, "Contratti"):
-        id_g = intero(riga.get("IDGiocatore"))
+        nome = testo(riga.get("Giocatore"))
         inizio = intero(riga.get("AnnoInizio"))
-        if id_g is None or inizio is None:
+        # Le righe di esempio del file iniziale non finiscono nel sito
+        if not nome or nome.upper().startswith("ESEMPIO") or inizio is None:
             continue
-        if id_g not in id_giocatori_validi:
-            continue  # riga di esempio o riferimento rotto: segnalato dai controlli
+
+        nome_squadra = testo(riga.get("Squadra"))
+        id_squadra = id_per_nome.get(nome_squadra.lower())
+        if id_squadra is None:
+            # Ripiego: qualcuno potrebbe aver lasciato la vecchia colonna
+            id_squadra = intero(riga.get("IDSquadra"))
+
         fine = intero(riga.get("AnnoFine"), inizio + DURATA_CONTRATTO - 1)
         anni.add(inizio)
         dati["contratti"].append({
-            "idGiocatore": id_g,
-            "idSquadra": intero(riga.get("IDSquadra")),
+            "giocatore": nome,
+            "ruolo": testo(riga.get("Ruolo")).upper(),
+            "annoNascita": intero(riga.get("AnnoNascita")),
+            "squadra": nome_squadra,
+            "idSquadra": id_squadra,
             "annoInizio": inizio,
             "annoFine": fine,
             "prezzo": intero(riga.get("PrezzoAcquisto"), 0),
@@ -246,8 +248,9 @@ def costruisci(wb) -> dict:
 
     # Ordinamenti stabili, così il file non cambia senza motivo fra due run
     dati["squadre"].sort(key=lambda s: s["id"])
-    dati["giocatori"].sort(key=lambda g: g["id"])
-    dati["contratti"].sort(key=lambda c: (c["idSquadra"] or 0, c["idGiocatore"]))
+    dati["contratti"].sort(
+        key=lambda c: (c["idSquadra"] is None, c["idSquadra"] or 0, c["giocatore"])
+    )
     for elenco in dati["classifiche"].values():
         elenco.sort(key=lambda r: (r["posizione"] is None, r["posizione"]))
     for elenco in dati["coppa"].values():
@@ -293,33 +296,21 @@ def controlli(dati: dict) -> list[str]:
                 "(il sito mostrerà un trattino)"
             )
 
-    # --- Giocatori ---
-    id_giocatori = [g["id"] for g in dati["giocatori"]]
-    if len(id_giocatori) != len(set(id_giocatori)):
-        avvisi.append("Giocatori: ci sono ID duplicati")
-
-    for g in dati["giocatori"]:
-        if g["idSquadra"] not in id_noti:
-            avvisi.append(
-                f"Giocatori: '{g['nome']}' punta alla squadra {g['idSquadra']}, "
-                "che non esiste in AnagraficaSquadre"
-            )
-        if g["annoNascita"] is None:
-            avvisi.append(
-                f"Giocatori: '{g['nome']}' senza AnnoNascita — verrà trattato "
-                "come categoria A"
-            )
-
     # --- Contratti ---
-    nomi = {g["id"]: g["nome"] for g in dati["giocatori"]}
-    attivi_per_giocatore: dict[int, int] = {}
+    attivi_per_giocatore: dict[str, int] = {}
 
     for c in dati["contratti"]:
-        nome = nomi.get(c["idGiocatore"], f"ID {c['idGiocatore']}")
+        nome = c["giocatore"]
         if c["idSquadra"] not in id_noti:
             avvisi.append(
-                f"Contratti: '{nome}' assegnato alla squadra {c['idSquadra']}, "
-                "che non esiste"
+                f"Contratti: '{nome}' è assegnato a \"{c['squadra']}\", che non "
+                "corrisponde a nessuna squadra di AnagraficaSquadre — "
+                "controlla come l'hai scritto"
+            )
+        if c["annoNascita"] is None:
+            avvisi.append(
+                f"Contratti: '{nome}' senza AnnoNascita — verrà trattato come "
+                "categoria A, e il conteggio degli slot potrebbe risultare falsato"
             )
         if not c["prezzo"] or c["prezzo"] <= 0:
             avvisi.append(
@@ -327,31 +318,36 @@ def controlli(dati: dict) -> list[str]:
                 "i costi verranno calcolati male"
             )
         if c["attivo"]:
-            attivi_per_giocatore[c["idGiocatore"]] = \
-                attivi_per_giocatore.get(c["idGiocatore"], 0) + 1
+            chiave = nome.strip().lower()
+            attivi_per_giocatore[chiave] = attivi_per_giocatore.get(chiave, 0) + 1
 
-    for id_g, quanti in attivi_per_giocatore.items():
+    for nome, quanti in attivi_per_giocatore.items():
         if quanti > 1:
             avvisi.append(
-                f"Contratti: '{nomi.get(id_g, id_g)}' ha {quanti} contratti attivi "
-                "insieme — il regolamento non lo consente"
+                f"Contratti: risultano {quanti} contratti attivi per '{nome}' — "
+                "o è un doppione, o sono due omonimi (in tal caso distinguili "
+                "nel nome)"
             )
 
     # --- Slot per squadra e anno ---
     per_squadra_anno: dict = {}
-    nascite = {g["id"]: g["annoNascita"] for g in dati["giocatori"]}
 
     for c in dati["contratti"]:
         if not c["attivo"]:
             continue
         for anno in range(c["annoInizio"], c["annoFine"] + 1):
-            cat = categoria_per_eta(nascite.get(c["idGiocatore"]), anno)
+            cat = categoria_per_eta(c["annoNascita"], anno)
             chiave = (c["idSquadra"], anno)
             conta = per_squadra_anno.setdefault(chiave, {"A": 0, "B": 0, "C": 0})
             conta[cat] += 1
 
     nomi_squadre = {s["id"]: s["squadra"] for s in dati["squadre"]}
-    for (id_sq, anno), conta in sorted(per_squadra_anno.items()):
+    # L'id può essere None quando il nome della squadra non è stato riconosciuto:
+    # quel caso è già segnalato sopra, qui basta non far esplodere l'ordinamento.
+    for (id_sq, anno), conta in sorted(
+        per_squadra_anno.items(),
+        key=lambda voce: (voce[0][0] is None, voce[0][0] or 0, voce[0][1]),
+    ):
         squadra = nomi_squadre.get(id_sq, f"squadra {id_sq}")
         if conta["A"] > MAX_CATEGORIA_A:
             avvisi.append(
@@ -400,7 +396,6 @@ def main() -> int:
 
     print(f"\nScritto {args.out}")
     print(f"  {len(dati['squadre'])} squadre")
-    print(f"  {len(dati['giocatori'])} giocatori")
     attivi = sum(1 for c in dati["contratti"] if c["attivo"])
     print(f"  {len(dati['contratti'])} contratti ({attivi} attivi)")
     print(f"  {len(dati['anni'])} stagioni: {', '.join(str(a) for a in dati['anni'])}")
