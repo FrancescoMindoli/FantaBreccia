@@ -178,8 +178,16 @@
     return selSquadra.value === 'tutte' ? squadre : [Number(selSquadra.value)];
   }
 
-  function anniDi(idSquadra) {
+  /**
+   * Anni di contratto di una squadra, **dalla stagione scelta in poi**.
+   *
+   * Il selettore non evidenzia soltanto l'anno in corso: nasconde anche il
+   * passato. Le stagioni già giocate non si possono più cambiare, e mostrarle
+   * insieme a quelle su cui puoi ancora decidere confondeva la lettura.
+   */
+  function anniDi(idSquadra, da) {
     return anni.filter(function (a) {
+      if (da !== undefined && a < da) return false;
       return contratti.some(function (c) {
         return c.idSquadra === idSquadra && a >= c.annoInizio && a <= c.annoFine;
       });
@@ -192,7 +200,7 @@
     var html = '';
 
     squadreScelte().forEach(function (id) {
-      var suoiAnni = anniDi(id);
+      var suoiAnni = anniDi(id, annoCorrente);
       if (!suoiAnni.length) return;
 
       var righe = '';
@@ -236,10 +244,14 @@
 
     squadreScelte().forEach(function (id) {
       anni.forEach(function (anno) {
+        // Coerente col resto della pagina: le stagioni prima di quella scelta
+        // non si guardano più. Segnalare un problema del 2026 mentre il 2026
+        // è nascosto ovunque sarebbe solo confondente.
+        if (anno < annoCorrente) return;
         var s = slot(id, anno);
         if (!s.totale || !s.sfora) return;
         var v = { id: id, anno: anno, motivi: s.motivi, cause: cause(id, anno, s) };
-        if (anno <= annoCorrente) ora.push(v); else futuri.push(v);
+        if (anno === annoCorrente) ora.push(v); else futuri.push(v);
       });
     });
 
@@ -366,8 +378,8 @@
 
     squadreScelte().forEach(function (id) {
       var suoi = contratti.filter(function (c) { return c.idSquadra === id; });
-      var suoiAnni = anniDi(id);
-      if (!suoi.length) return;
+      var suoiAnni = anniDi(id, annoCorrente);
+      if (!suoi.length || !suoiAnni.length) return;
 
       var righe = '';
       suoiAnni.forEach(function (anno) {
@@ -406,7 +418,7 @@
     var html = '';
 
     squadreScelte().forEach(function (id) {
-      var suoiAnni = anniDi(id);
+      var suoiAnni = anniDi(id, annoCorrente);
       if (!suoiAnni.length) return;
 
       if (squadreScelte().length > 1) html += '<h3>' + esc(nomeSquadra(id)) + '</h3>';
