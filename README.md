@@ -3,7 +3,7 @@
 Sito statico con il regolamento della lega e un simulatore per calcolare il
 costo delle riconferme.
 
-**Online:** https://FrancescoMindoli.github.io/FantacalcioRiconferme_github/
+**Online:** https://FrancescoMindoli.github.io/FantaBreccia/
 
 ## Contenuto
 
