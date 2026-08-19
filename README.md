@@ -60,6 +60,30 @@ git add . && git commit -m "Dati aggiornati" && git push
 
 `AnnoFine` dei contratti non si scrive: è sempre `AnnoInizio + 3`.
 
+### Calcolare i crediti della stagione nuova
+
+Le colonne bonus di `CreditiAnnoNuovo` non si compilano a mano: le calcola uno
+strumento a partire da classifica, coppa e crediti residui.
+
+```
+.venv\Scripts\python.exe strumenti\calcola_crediti.py --prova   mostra i conti
+.venv\Scripts\python.exe strumenti\calcola_crediti.py           scrive nell'Excel
+```
+
+La formula è quella del regolamento (§ 12–16):
+
+```
+budget = 1000 + residui + premio/malus classifica
+       + bonus miglior punteggio + bonus coppa
+       poi limitato fra 900 e 1100
+```
+
+Il bonus coppa spetta **solo a chi vince**: il secondo classificato prende 0.
+
+> Il RESET (partire da 950) non è gestito: nell'Excel non c'è una colonna che
+> lo registri. Se una squadra ha fatto reset, correggi la sua riga a mano dopo
+> aver lanciato lo strumento.
+
 ### Se manca Python
 
 ```

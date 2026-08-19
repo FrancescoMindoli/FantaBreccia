@@ -78,7 +78,7 @@ window.DATI = {
         "posizione": 1,
         "id": 8,
         "squadra": "Roul e il socio",
-        "punteggio": 2468,
+        "punteggio": 2486,
         "migliorPunteggio": true
       },
       {
@@ -209,82 +209,82 @@ window.DATI = {
       {
         "id": 1,
         "squadra": "Chentus",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": -5,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 1027
       },
       {
         "id": 2,
         "squadra": "MALLOREDDUS FC",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": -15,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 998
       },
       {
         "id": 3,
         "squadra": "Sporting Garra",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": 0,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 1034
       },
       {
         "id": 4,
         "squadra": "Whiteam FC",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": 10,
+        "coppa": 10,
+        "punteggio": 0,
+        "totale": 1030
       },
       {
         "id": 5,
         "squadra": "TurettaEPacciani FC",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": 15,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 1016
       },
       {
         "id": 6,
         "squadra": "Nkunku Settete",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": -20,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 984
       },
       {
         "id": 7,
         "squadra": "Mapi Group",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": 0,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 1033
       },
       {
         "id": 8,
         "squadra": "Roul e il socio",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": 25,
+        "coppa": 0,
+        "punteggio": 10,
+        "totale": 1048
       },
       {
         "id": 9,
         "squadra": "Compagnia Ascolana Sigari",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": 5,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 1019
       },
       {
         "id": 10,
         "squadra": "Tridente demoniaco",
-        "campionato": null,
-        "coppa": null,
-        "punteggio": null,
-        "totale": null
+        "campionato": -10,
+        "coppa": 0,
+        "punteggio": 0,
+        "totale": 1017
       }
     ]
   },
