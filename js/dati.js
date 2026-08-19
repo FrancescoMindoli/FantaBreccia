@@ -70,7 +70,62 @@ window.DATI = {
       "10": "Tridente demoniaco"
     }
   },
-  "contratti": [],
+  "contratti": [
+    {
+      "giocatore": "Adzic",
+      "annoNascita": 2006,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 21,
+      "attivo": true
+    },
+    {
+      "giocatore": "Casadei",
+      "annoNascita": 2003,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 11,
+      "attivo": true
+    },
+    {
+      "giocatore": "Dovbyk",
+      "annoNascita": 1997,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 24,
+      "attivo": true
+    },
+    {
+      "giocatore": "Mancini",
+      "annoNascita": 1996,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 31,
+      "attivo": true
+    },
+    {
+      "giocatore": "McTominay",
+      "annoNascita": 1996,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 122,
+      "attivo": true
+    },
+    {
+      "giocatore": "Pierotti",
+      "annoNascita": 2001,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    }
+  ],
   "svincoli": [],
   "classifiche": {
     "2026": [
