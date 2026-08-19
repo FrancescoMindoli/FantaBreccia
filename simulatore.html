@@ -26,16 +26,20 @@
 
   <header class="hero">
     <h1>Simulatore riconferme</h1>
-    <p>Inserisci quanto hai pagato il giocatore all'asta e vedi cosa ti costa tenerlo, anno per anno.</p>
+    <p>Quanto hai pagato il giocatore all'asta? Vedi subito cosa ti costa tenerlo, anno dopo anno.</p>
   </header>
 
-  <div class="card">
-    <div class="sim-input-row">
-      <div>
-        <label class="sim-label" for="prezzo">Prezzo pagato all'asta</label>
-        <input type="number" id="prezzo" value="20" min="1" step="1"
-               inputmode="numeric" autocomplete="off">
-      </div>
+  <form class="card sim-card" id="sim-form">
+    <label class="sim-label" for="prezzo">Prezzo pagato all'asta</label>
+
+    <div class="sim-riga">
+      <input type="number" id="prezzo" value="20" min="1" step="1"
+             inputmode="numeric" autocomplete="off" enterkeyhint="done">
+      <button type="submit" class="btn-calcola">Calcola</button>
+    </div>
+
+    <div class="sim-preset">
+      <span class="sim-preset-etichetta">Prova con</span>
       <div class="preset">
         <button type="button" data-prezzo="1">1</button>
         <button type="button" data-prezzo="20">20</button>
@@ -46,34 +50,29 @@
     </div>
 
     <p class="errore-input" id="errore" hidden></p>
+  </form>
 
-    <div id="risultati">
-      <div class="fascia-box">
-        <span class="fascia-valore" id="fascia-valore">+10%</span>
-        <span class="fascia-desc" id="fascia-desc"></span>
-      </div>
+  <div id="risultati">
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Quando</th>
-              <th class="num">Se lo tieni <span class="th-nota">crediti</span></th>
-              <th class="num">Se lo molli <span class="th-nota">penale</span></th>
-              <th>Cosa stai decidendo</th>
-            </tr>
-          </thead>
-          <tbody id="tabella-corpo"></tbody>
-        </table>
-      </div>
-
-      <p class="totale-riga" id="totale"></p>
+    <div class="fascia-box">
+      <span class="fascia-valore" id="fascia-valore">+10%</span>
+      <span class="fascia-desc" id="fascia-desc"></span>
     </div>
+
+    <h2>Anno per anno</h2>
+    <p class="nota-tabella">
+      Ogni anno è un'asta: decidi se <strong>riscattarlo</strong> e tenerlo
+      un'altra stagione, oppure <strong>svincolarlo</strong> pagando la penale.
+    </p>
+
+    <div class="anni-griglia" id="anni"></div>
+
+    <p class="totale-riga" id="totale"></p>
   </div>
 
   <h2>Come si leggono gli anni</h2>
 
-  <p>È la parte che genera più confusione, quindi conviene essere espliciti: <strong>ogni riga della tabella è un'asta</strong>, cioè un momento in cui decidi se tenere il giocatore o lasciarlo andare.</p>
+  <p>È la parte che genera più confusione, quindi conviene essere espliciti: <strong>ogni anno del contratto è un'asta</strong>, cioè un momento in cui decidi se tenere il giocatore o lasciarlo andare.</p>
 
   <div class="esempio">
     <span class="esempio-label">Esempio — un giocatore pagato 20 crediti all'asta</span>

@@ -1,26 +1,50 @@
 /*
  * simulatore.js — solo interfaccia.
  * Le formule stanno in calcoli.js e non vanno duplicate qui.
+ *
+ * Il risultato si aggiorna mentre scrivi; il pulsante "Calcola" serve a
+ * chiudere la tastiera sul telefono e a portare gli occhi sul risultato.
  */
 
 (function () {
   'use strict';
 
+  var form = document.getElementById('sim-form');
   var input = document.getElementById('prezzo');
   var fasciaValore = document.getElementById('fascia-valore');
   var fasciaDesc = document.getElementById('fascia-desc');
-  var corpo = document.getElementById('tabella-corpo');
+  var anniBox = document.getElementById('anni');
   var totale = document.getElementById('totale');
   var errore = document.getElementById('errore');
   var risultati = document.getElementById('risultati');
 
   var DESCRIZIONI = {
-    0: 'I giocatori pagati 1 credito costano 1 per tutti e quattro gli anni.',
-    10: 'Fascia da 2 a 49 crediti.',
-    15: 'Fascia da 50 a 99 crediti.',
-    20: 'Fascia da 100 a 299 crediti.',
-    30: 'Fascia da 300 crediti in su.'
+    0: 'I giocatori pagati 1 credito costano 1 per tutti e quattro gli anni: il costo non cresce mai.',
+    10: 'Fascia da 2 a 49 crediti: ogni anno costa il 10% in più del precedente.',
+    15: 'Fascia da 50 a 99 crediti: ogni anno costa il 15% in più del precedente.',
+    20: 'Fascia da 100 a 299 crediti: ogni anno costa il 20% in più del precedente.',
+    30: 'Fascia da 300 crediti in su: ogni anno costa il 30% in più del precedente.'
   };
+
+  /** Sottotitolo della scheda: che momento è, questo anno. */
+  function quando(anno) {
+    if (anno === 1) return 'l\'anno in cui lo riconfermi';
+    if (anno === 2) return 'la seconda asta da allora';
+    if (anno === 3) return 'la terza asta';
+    return 'l\'ultima asta del contratto';
+  }
+
+  /** La frase che spiega la scelta di quell'anno. */
+  function spiegazione(riga, prezzo) {
+    if (riga.anno === 1) {
+      return 'Firmi il contratto e paghi <strong>' + riga.costoRiscatto +
+        '</strong>. Se cambi idea durante la stagione stessa, lo lasci andare ' +
+        'pagando <strong>' + riga.costoSvincolo + '</strong> di penale.';
+    }
+    return 'Paghi <strong>' + riga.costoRiscatto + '</strong> per tenerlo ' +
+      'un altro anno, oppure <strong>' + riga.costoSvincolo + '</strong> di ' +
+      'penale e lo lasci andare.';
+  }
 
   function mostraErrore(messaggio) {
     risultati.hidden = true;
@@ -32,14 +56,14 @@
     var grezzo = input.value.trim();
 
     if (grezzo === '') {
-      mostraErrore('Inserisci il prezzo pagato all\'asta per vedere il calcolo.');
+      mostraErrore('Scrivi il prezzo pagato all\'asta per vedere il calcolo.');
       return;
     }
 
     var prezzo = Number(grezzo);
 
     if (!Number.isFinite(prezzo)) {
-      mostraErrore('Inserisci un numero valido.');
+      mostraErrore('Scrivi un numero valido.');
       return;
     }
     if (prezzo < 1) {
@@ -62,55 +86,61 @@
     fasciaValore.textContent = sim.fasciaLabel;
     fasciaDesc.textContent = DESCRIZIONI[sim.fasciaPercentuale] || '';
 
-    corpo.innerHTML = '';
+    // Una scheda per anno. I due numeri stanno in una griglia a colonne fisse,
+    // così riscatto e svincolo restano incolonnati fra loro e fra le schede.
+    var html = '';
     sim.anni.forEach(function (riga) {
-      var tr = document.createElement('tr');
+      html +=
+        '<article class="anno-card">' +
+          '<header class="anno-card-testa">' +
+            '<span class="anno-card-num">Anno ' + riga.anno + '</span>' +
+            '<span class="anno-card-quando">' + quando(riga.anno) + '</span>' +
+          '</header>' +
 
-      var tdAnno = document.createElement('td');
-      tdAnno.innerHTML = '<strong>Anno ' + riga.anno + '</strong>' +
-        '<span class="meta">' +
-        (riga.anno === 1
-          ? 'quando lo riconfermi'
-          : riga.anno + 'ª asta da allora') +
-        '</span>';
+          '<div class="scelte">' +
+            '<div class="scelta scelta-tieni">' +
+              '<span class="scelta-etichetta">Lo riscatti</span>' +
+              '<span class="scelta-num">' + riga.costoRiscatto + '</span>' +
+              '<span class="scelta-unita">' +
+                (riga.costoRiscatto === 1 ? 'credito' : 'crediti') + '</span>' +
+            '</div>' +
+            '<div class="scelta scelta-molli">' +
+              '<span class="scelta-etichetta">Lo svincoli</span>' +
+              '<span class="scelta-num">' + riga.costoSvincolo + '</span>' +
+              '<span class="scelta-unita">di penale</span>' +
+            '</div>' +
+          '</div>' +
 
-      var tdCosto = document.createElement('td');
-      tdCosto.className = 'num';
-      tdCosto.innerHTML = '<span class="costo">' + riga.costoRiscatto + '</span>';
+          '<p class="anno-card-spiega">' + spiegazione(riga, prezzo) + '</p>' +
 
-      var tdSvincolo = document.createElement('td');
-      tdSvincolo.className = 'num';
-      tdSvincolo.innerHTML =
-        '<span class="costo costo-ko">' + riga.costoSvincolo + '</span>' +
-        '<span class="meta">' + riga.anniRimanenti +
-        (riga.anniRimanenti === 1 ? ' anno residuo' : ' anni residui') + '</span>';
-
-      var tdSpiega = document.createElement('td');
-      tdSpiega.className = 'spiega';
-      tdSpiega.textContent = riga.anno === 1
-        ? 'Paghi ' + riga.costoRiscatto + ' crediti e lo riconfermi. Se lo molli '
-          + 'durante la stagione stessa, la penale è ' + riga.costoSvincolo + '.'
-        : 'Paghi ' + riga.costoRiscatto + ' crediti per riscattarlo, oppure '
-          + riga.costoSvincolo + ' di penale e lo lasci andare.';
-
-      tr.appendChild(tdAnno);
-      tr.appendChild(tdCosto);
-      tr.appendChild(tdSvincolo);
-      tr.appendChild(tdSpiega);
-      corpo.appendChild(tr);
+          '<p class="anno-card-nota">' + riga.anniRimanenti +
+            (riga.anniRimanenti === 1 ? ' anno' : ' anni') +
+            ' di contratto ancora da fare</p>' +
+        '</article>';
     });
-
-    // Le etichette delle schede su telefono vanno rimesse: le celle sono nuove
-    if (typeof window.preparaTabelle === 'function') window.preparaTabelle();
+    anniBox.innerHTML = html;
 
     var ultimo = sim.anni[sim.anni.length - 1].costoRiscatto;
     totale.innerHTML =
       'Se lo tieni per tutti e quattro gli anni spendi in totale <strong>' +
-      sim.costoTotale + ' crediti</strong>. Il quarto anno da solo ne costa <strong>' +
-      ultimo + '</strong>, contro i ' + prezzo + ' che hai pagato all\'asta.';
+      sim.costoTotale + ' crediti</strong>. Il quarto anno da solo ne costa ' +
+      '<strong>' + ultimo + '</strong>, contro i ' + prezzo +
+      ' che hai pagato all\'asta.';
   }
 
+  // Aggiornamento continuo mentre si scrive
   input.addEventListener('input', aggiorna);
+
+  // "Calcola" (e il tasto Invio della tastiera) chiudono la tastiera e
+  // portano il risultato sotto gli occhi. Il calcolo è già aggiornato.
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    aggiorna();
+    input.blur();
+    if (!risultati.hidden && risultati.scrollIntoView) {
+      risultati.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
 
   Array.prototype.forEach.call(
     document.querySelectorAll('.preset button'),
@@ -118,7 +148,6 @@
       bottone.addEventListener('click', function () {
         input.value = bottone.dataset.prezzo;
         aggiorna();
-        input.focus();
       });
     }
   );
