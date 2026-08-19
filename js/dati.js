@@ -82,7 +82,7 @@ window.DATI = {
     },
     {
       "giocatore": "Conti",
-      "annoNascita": 1997,
+      "annoNascita": 2006,
       "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -91,7 +91,7 @@ window.DATI = {
     },
     {
       "giocatore": "Donati",
-      "annoNascita": 1996,
+      "annoNascita": 2006,
       "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -100,7 +100,7 @@ window.DATI = {
     },
     {
       "giocatore": "Ferraro",
-      "annoNascita": 1996,
+      "annoNascita": 2006,
       "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -109,7 +109,7 @@ window.DATI = {
     },
     {
       "giocatore": "Gatti",
-      "annoNascita": 2001,
+      "annoNascita": 2006,
       "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -118,7 +118,7 @@ window.DATI = {
     },
     {
       "giocatore": "Perin",
-      "annoNascita": 2003,
+      "annoNascita": 2006,
       "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -136,7 +136,7 @@ window.DATI = {
     },
     {
       "giocatore": "Greco",
-      "annoNascita": 2008,
+      "annoNascita": 1996,
       "idSquadra": 2,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -154,7 +154,7 @@ window.DATI = {
     },
     {
       "giocatore": "Romano",
-      "annoNascita": 2008,
+      "annoNascita": 2001,
       "idSquadra": 2,
       "annoInizio": 2026,
       "annoFine": 2029,
