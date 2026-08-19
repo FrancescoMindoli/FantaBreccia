@@ -466,7 +466,6 @@ def main() -> int:
     else:
         print("\nNessuna incoerenza rilevata.")
 
-    print("\nOra: apri lega.html per vedere il risultato, poi commit e push.")
     return 0
 
 

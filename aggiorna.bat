@@ -48,25 +48,55 @@ if errorlevel 1 (
   goto :fine
 )
 
-rem --- 4. C'e' qualcosa da pubblicare? ---------------------------------
+rem --- 4. Cosa c'e' da fare? -------------------------------------------
 echo.
-echo [2/4] Controllo cosa e' cambiato...
+echo [2/4] Controllo cosa c'e' da pubblicare...
 echo.
-git add -A
-git diff --cached --stat
+
+git rev-parse --is-inside-work-tree >nul 2>&1
 if errorlevel 1 (
-  echo [ERRORE] Git non risponde. Sei nella cartella giusta?
+  echo [ERRORE] Questa non e' una cartella Git.
   goto :fine
 )
 
-git diff --cached --quiet
-if not errorlevel 1 (
-  echo Nessuna modifica: il sito e' gia' aggiornato.
+git add -A
+if errorlevel 1 (
+  echo [ERRORE] Git non risponde.
   goto :fine
+)
+
+rem Modifiche ai file non ancora salvate in un commit?
+set "DA_SALVARE=0"
+git diff --cached --quiet
+if errorlevel 1 set "DA_SALVARE=1"
+
+rem Commit gia' salvati ma mai pubblicati? E' il caso che la versione
+rem precedente di questo script non vedeva: diceva "gia' aggiornato"
+rem mentre il sito online era indietro di parecchi commit.
+set "DA_PUBBLICARE=0"
+git fetch -q origin 2>nul
+for /f %%i in ('git rev-list --count origin/main..HEAD 2^>nul') do set "DA_PUBBLICARE=%%i"
+
+if "!DA_SALVARE!"=="0" if "!DA_PUBBLICARE!"=="0" (
+  echo Tutto gia' pubblicato: il sito online e' aggiornato.
+  goto :fine
+)
+
+if "!DA_SALVARE!"=="1" (
+  echo File modificati da salvare:
+  echo.
+  git diff --cached --stat
+  echo.
+)
+
+if not "!DA_PUBBLICARE!"=="0" (
+  echo Ci sono !DA_PUBBLICARE! modifiche gia' salvate ma non ancora online:
+  echo.
+  git log --oneline origin/main..HEAD
+  echo.
 )
 
 rem --- 5. Conferma ------------------------------------------------------
-echo.
 echo -----------------------------------------------
 echo   Controlla gli avvisi qui sopra.
 echo   Se qualcosa non torna, rispondi N e correggi
@@ -76,19 +106,23 @@ echo.
 set /p RISPOSTA="Pubblico online? (S/N) "
 if /i not "!RISPOSTA!"=="S" (
   echo.
-  echo Annullato. Le modifiche restano sul tuo computer, non pubblicate.
-  echo Per annullare anche quelle:  git reset
+  echo Annullato. Niente e' stato pubblicato.
+  if "!DA_SALVARE!"=="1" echo Le modifiche ai file restano sul tuo computer.
   goto :fine
 )
 
 rem --- 6. Commit e push -------------------------------------------------
 echo.
-echo [3/4] Salvo le modifiche...
-for /f "tokens=1-3 delims=/ " %%a in ('date /t') do set "OGGI=%%a/%%b/%%c"
-git commit -q -m "Aggiornamento dati del %OGGI%"
-if errorlevel 1 (
-  echo [ERRORE] Il salvataggio e' fallito.
-  goto :fine
+if "!DA_SALVARE!"=="1" (
+  echo [3/4] Salvo le modifiche...
+  for /f "tokens=1-3 delims=/ " %%a in ('date /t') do set "OGGI=%%a/%%b/%%c"
+  git commit -q -m "Aggiornamento dati del !OGGI!"
+  if errorlevel 1 (
+    echo [ERRORE] Il salvataggio e' fallito.
+    goto :fine
+  )
+) else (
+  echo [3/4] Niente da salvare, passo alla pubblicazione.
 )
 
 echo [4/4] Pubblico su GitHub...
