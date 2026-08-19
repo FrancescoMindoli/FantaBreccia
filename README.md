@@ -25,6 +25,11 @@ Per provarlo in locale basta aprire `index.html` con un doppio click.
 
 ## Aggiornare il sito
 
+> 📘 **Per la procedura completa di fine stagione — cosa scrivere in quale
+> foglio, in che ordine, cosa lanciare e quali conti fa il sistema — vedi
+> [ComeGestireExcel.md](ComeGestireExcel.md).** Quello è il documento da
+> rileggere fra un anno; questo è solo un riassunto.
+
 Tutti i dati vengono da **`dati/Gestione.xlsx`**, che è la fonte unica.
 
 ```
