@@ -594,7 +594,106 @@ input[type="number"] { -moz-appearance: textfield; }
   box-shadow: 0 0 0 3px var(--orange-soft);
 }
 
-/* Riepilogo slot */
+/* --- Banner di avviso: rosso = adesso, giallo = in futuro --- */
+
+.banner {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  padding: 1rem 1.15rem;
+  border-radius: var(--r);
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+}
+.banner-icona { font-size: 1.3rem; line-height: 1.2; flex: 0 0 auto; }
+
+.banner-ko {
+  background: rgba(248, 113, 113, 0.13);
+  border: 1px solid rgba(248, 113, 113, 0.45);
+}
+.banner-ko .banner-icona, .banner-ko strong { color: var(--ko); }
+
+.banner-attenzione {
+  background: rgba(251, 191, 36, 0.11);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.banner-attenzione .banner-icona, .banner-attenzione strong { color: var(--warn); }
+
+.banner-ok {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.32);
+}
+.banner-ok .banner-icona, .banner-ok strong { color: var(--ok); }
+
+.banner-elenco { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+.banner-elenco li { margin-bottom: 0.5rem; line-height: 1.5; }
+.banner-elenco li:last-child { margin-bottom: 0; }
+.banner-causa {
+  display: block;
+  font-size: 0.84rem;
+  color: var(--text-2);
+  margin-top: 0.1rem;
+}
+.banner-nota {
+  font-size: 0.84rem;
+  color: var(--text-2);
+  margin: 0.6rem 0 0;
+  line-height: 1.5;
+}
+
+/* --- Tabella principale dei contratti --- */
+
+.tab-contratti .cella-nome { min-width: 11rem; }
+
+.cella-anno { min-width: 8.5rem; vertical-align: top; }
+.cella-vuota { color: var(--text-3); text-align: center; }
+
+/* La colonna dell'anno in corso e quelle con problemi si distinguono */
+.col-ora { background: rgba(91, 141, 239, 0.09); }
+th.col-ora { box-shadow: inset 0 -2px 0 var(--blue); }
+.col-ko { background: rgba(248, 113, 113, 0.1); }
+th.col-ko { box-shadow: inset 0 -2px 0 var(--ko); color: var(--ko); }
+td.col-ko.col-ora { background: rgba(248, 113, 113, 0.14); }
+
+/* Le due alternative, una sopra l'altra: tenerlo o mollarlo */
+.scelta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.scelta span {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-3);
+}
+.scelta b { font-size: 1.08rem; font-weight: 800; }
+.scelta-tieni b { color: var(--orange); }
+.scelta-molli b { color: var(--ko); font-size: 0.98rem; }
+
+.scelta-cat {
+  margin-top: 0.3rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.74rem;
+  color: var(--text-3);
+}
+.cat-cambio {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: rgba(167, 139, 250, 0.18);
+  color: var(--violet);
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Riepilogo slot (vecchio blocco, ancora usato altrove) */
 
 .slot-squadra {
   background: linear-gradient(160deg, rgba(31, 43, 68, 0.7), rgba(16, 24, 42, 0.85));
@@ -902,6 +1001,34 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
   table:not(.schede) { min-width: 0; }
   table:not(.schede) th,
   table:not(.schede) td { padding: 0.55rem 0.7rem; }
+
+  /* Contratti su telefono: ogni anno diventa una riga della scheda, con le
+     due alternative affiancate invece che impilate. */
+  .banner { padding: 0.85rem 0.95rem; gap: 0.6rem; }
+  .banner-icona { font-size: 1.1rem; }
+
+  table.schede .cella-anno,
+  table.schede .cella-vuota { min-width: 0; }
+
+  table.schede td.cella-anno {
+    display: block;
+    text-align: left;
+    padding: 0.5rem 0;
+  }
+  table.schede td.cella-anno::before {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  table.schede .scelta { display: inline-flex; margin-right: 1.1rem; }
+  table.schede .scelta-cat {
+    display: inline-block;
+    margin-top: 0.25rem;
+    border-top: none;
+    padding-top: 0;
+  }
+  /* L'anno problematico resta riconoscibile anche in scheda */
+  table.schede td.col-ko { box-shadow: inset 3px 0 0 var(--ko); padding-left: 0.6rem; }
+  table.schede td.col-ora { box-shadow: inset 3px 0 0 var(--blue); padding-left: 0.6rem; }
 
   /* Contratti: le celle degli anni tornano leggibili in verticale */
   table.schede tfoot, table.schede tfoot tr, table.schede tfoot td { display: block; width: 100%; }

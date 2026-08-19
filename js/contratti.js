@@ -1,10 +1,12 @@
 /*
- * contratti.js — contratti attivi, andamento per squadra, controllo età
- * e storico svincoli.
+ * contratti.js — chi è sotto contratto e quanto costa tenerlo o mollarlo.
  *
- * Ricalca la pagina Contratti del gestionale: le colonne sono ANNI SOLARI,
- * non "anno 1..4". Serve perché i contratti partono in stagioni diverse e
- * vanno confrontati sulla stessa scala temporale.
+ * La pagina risponde a una domanda sola: per ogni giocatore e per ogni anno,
+ * quanto pago se lo riscatto e quanto pago se lo svincolo. Tutto il resto
+ * (slot, categorie, avvisi) serve a spiegare quei numeri.
+ *
+ * Le colonne sono ANNI SOLARI: i contratti partono in stagioni diverse e
+ * vanno letti sulla stessa scala temporale.
  *
  * Nessuna formula qui dentro: costi, penali e categorie vengono da calcoli.js.
  */
@@ -15,17 +17,16 @@
   var errore = document.getElementById('errore');
   var selSquadra = document.getElementById('squadra-select');
   var selAnno = document.getElementById('anno-select');
-  var ricerca = document.getElementById('ricerca');
-
-  function avvisa(html) {
-    errore.innerHTML = html;
-    errore.hidden = false;
-  }
 
   function esc(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function avvisa(html) {
+    errore.innerHTML = html;
+    errore.hidden = false;
   }
 
   if (typeof window.DATI === 'undefined' || typeof window.Calcoli === 'undefined') {
@@ -36,15 +37,12 @@
   var D = window.DATI;
   var C = window.Calcoli;
 
-  var tutti = D.contratti || [];
-  var contratti = tutti.filter(function (c) { return c.attivo; });
+  var contratti = (D.contratti || []).filter(function (c) { return c.attivo; });
   var svincoli = D.svincoli || [];
 
   var nomiSquadre = {};
   (D.squadre || []).forEach(function (s) { nomiSquadre[s.id] = s.squadra; });
   function nomeSquadra(id) { return nomiSquadre[id] || ('Squadra ' + id); }
-
-  // --- Stato vuoto -------------------------------------------------------
 
   if (!contratti.length) {
     avvisa(
@@ -52,15 +50,15 @@
       'Compila il foglio <em>Contratti</em> in <code>dati\\Gestione.xlsx</code>, ' +
       'poi lancia <code>aggiorna.bat</code>.'
     );
-    ['sezione-avvisi', 'sezione-slot', 'sezione-andamento', 'sezione-griglia',
-     'sezione-eta', 'sezione-svincoli']
-      .forEach(function (id) { document.getElementById(id).hidden = true; });
+    ['sezione-tabella', 'sezione-slot', 'sezione-svincoli'].forEach(function (id) {
+      document.getElementById(id).hidden = true;
+    });
     document.querySelector('.filtri').hidden = true;
     document.getElementById('generato-il').textContent = D.generatoIl || '—';
     return;
   }
 
-  // --- Anni coperti ------------------------------------------------------
+  // --- Anni e squadre -----------------------------------------------------
 
   var anniSet = {};
   contratti.forEach(function (c) {
@@ -74,52 +72,52 @@
   });
   squadre.sort(function (a, b) { return a - b; });
 
-  // --- Filtri ------------------------------------------------------------
-
-  var o = document.createElement('option');
-  o.value = 'tutte';
-  o.textContent = 'Tutte le squadre';
-  selSquadra.appendChild(o);
+  // Con una sola squadra il selettore non serve: si mostra quella e basta.
+  if (squadre.length > 1) {
+    var tutte = document.createElement('option');
+    tutte.value = 'tutte';
+    tutte.textContent = 'Tutte le squadre';
+    selSquadra.appendChild(tutte);
+  }
   squadre.forEach(function (id) {
-    var x = document.createElement('option');
-    x.value = String(id);
-    x.textContent = nomeSquadra(id);
-    selSquadra.appendChild(x);
+    var o = document.createElement('option');
+    o.value = String(id);
+    o.textContent = nomeSquadra(id);
+    selSquadra.appendChild(o);
   });
 
   anni.forEach(function (a) {
-    var x = document.createElement('option');
-    x.value = String(a);
-    x.textContent = String(a);
-    selAnno.appendChild(x);
+    var o = document.createElement('option');
+    o.value = String(a);
+    o.textContent = String(a);
+    selAnno.appendChild(o);
   });
   selAnno.value = String(anni[0]);
 
-  // --- Calcoli di appoggio ----------------------------------------------
+  // --- Calcoli di appoggio -----------------------------------------------
 
-  /** Dettaglio di un contratto per ogni anno solare che copre. */
+  /** Costo, penale, categoria ed età di un contratto per ogni anno solare. */
   function dettaglio(c) {
     var durata = c.annoFine - c.annoInizio + 1;
-    var righe = {};
+    var out = {};
     var precedente = null;
     for (var i = 0; i < durata; i++) {
       var anno = c.annoInizio + i;
       var cat = C.categoriaPerEta(c.annoNascita, anno);
-      righe[anno] = {
-        annoContratto: i + 1,
-        eta: c.annoNascita ? anno - c.annoNascita : null,
+      out[anno] = {
+        riscatto: C.calcolaRiscatto(c.prezzo, i + 1),
+        svincolo: C.calcolaSvincolo(c.prezzo, durata - i),
         categoria: cat,
-        cambiata: precedente !== null && cat !== precedente,
-        costo: C.calcolaRiscatto(c.prezzo, i + 1),
-        penale: C.calcolaSvincolo(c.prezzo, durata - i)
+        eta: c.annoNascita ? anno - c.annoNascita : null,
+        cambiata: precedente !== null && cat !== precedente
       };
       precedente = cat;
     }
-    return righe;
+    return out;
   }
 
-  /** Conteggio slot di una squadra in un anno, con i motivi di sforamento. */
-  function slotSquadra(idSquadra, anno) {
+  /** Slot di una squadra in un anno, con i motivi dello sforamento. */
+  function slot(idSquadra, anno) {
     var conta = { A: 0, B: 0, C: 0 };
     contratti.forEach(function (c) {
       if (c.idSquadra !== idSquadra) return;
@@ -129,179 +127,223 @@
     var ab = conta.A + conta.B;
     var motivi = [];
     if (conta.A > C.MAX_CATEGORIA_A) {
-      motivi.push('categoria A ' + conta.A + '/' + C.MAX_CATEGORIA_A);
+      motivi.push(conta.A + ' giocatori in categoria A, il massimo è ' + C.MAX_CATEGORIA_A);
     }
     if (ab > C.MAX_A_PIU_B) {
-      motivi.push('A+B ' + ab + '/' + C.MAX_A_PIU_B);
+      motivi.push(ab + ' giocatori fra A e B, il massimo è ' + C.MAX_A_PIU_B);
     }
     return { A: conta.A, B: conta.B, C: conta.C, ab: ab,
              totale: ab + conta.C, sfora: motivi.length > 0, motivi: motivi };
   }
 
-  function badge(cat) {
-    var cl = cat === 'A' ? 'a' : cat === 'B' ? 'b' : 'c';
-    return '<span class="badge ' + cl + '">' + cat + '</span>';
-  }
-
-  function squadreVisibili(sel) {
-    return sel === 'tutte' ? squadre : [Number(sel)];
-  }
-
-  // --- 0. Avvisi: problemi di slot, adesso e negli anni futuri ----------
-
-  /**
-   * Perché una squadra sfora in un certo anno.
-   *
-   * Non basta dire "sei a 4 su 3": serve sapere chi lo ha causato, perché
-   * quasi sempre nessuno ha fatto nulla — è un giocatore che è invecchiato
-   * e ha cambiato categoria da solo.
-   */
-  function causeDelloSforamento(idSquadra, anno, slot) {
-    // Solo le categorie che c'entrano col limite violato: se sfora la A,
-    // un giocatore che passa da C a B non è la causa, e citarlo confonde.
+  /** Chi ha causato lo sforamento: chi cambia categoria, o i nuovi arrivi. */
+  function cause(idSquadra, anno, s) {
     var critiche = {};
-    if (slot.A > C.MAX_CATEGORIA_A) critiche.A = true;
-    if (slot.ab > C.MAX_A_PIU_B) { critiche.A = true; critiche.B = true; }
+    if (s.A > C.MAX_CATEGORIA_A) critiche.A = true;
+    if (s.ab > C.MAX_A_PIU_B) { critiche.A = true; critiche.B = true; }
 
-    var cambi = [];
-    var nuovi = [];
-
+    var testi = [];
     contratti.forEach(function (c) {
       if (c.idSquadra !== idSquadra) return;
       var d = dettaglio(c)[anno];
       if (!d || !critiche[d.categoria]) return;
-
-      if (c.annoInizio === anno) {
-        nuovi.push(c.giocatore);
-      } else if (d.cambiata) {
+      if (d.cambiata) {
         var prima = dettaglio(c)[anno - 1];
-        cambi.push(
-          c.giocatore + ' compie ' + d.eta + ' anni e passa da ' +
-          (prima ? prima.categoria : '?') + ' a ' + d.categoria
-        );
+        testi.push(c.giocatore + ' compie ' + d.eta + ' anni e passa da ' +
+                   (prima ? prima.categoria : '?') + ' a ' + d.categoria);
       }
     });
-
-    // Nessuna causa nuova: lo sforamento arriva dall'anno prima e prosegue.
-    // Senza dirlo sembrerebbe che manchi un'informazione.
-    var invariato = !cambi.length && !nuovi.length;
-
-    return { cambi: cambi, nuovi: nuovi, invariato: invariato };
+    return testi;
   }
 
-  function disegnaAvvisi(annoRif, sel) {
-    var contenitore = document.getElementById('avvisi');
-    var elenco = squadreVisibili(sel);
-    var problemi = [];
+  function badge(cat) {
+    return '<span class="badge ' + cat.toLowerCase() + '">' + cat + '</span>';
+  }
 
-    elenco.forEach(function (id) {
+  function squadreScelte() {
+    return selSquadra.value === 'tutte' ? squadre : [Number(selSquadra.value)];
+  }
+
+  // --- 1. Avviso: rosso se il problema è ora, giallo se è futuro ---------
+
+  function disegnaAvvisi(annoCorrente) {
+    var contenitore = document.getElementById('avvisi');
+    var ora = [];
+    var futuri = [];
+
+    squadreScelte().forEach(function (id) {
       anni.forEach(function (anno) {
-        var s = slotSquadra(id, anno);
+        var s = slot(id, anno);
         if (!s.totale || !s.sfora) return;
-        problemi.push({
-          id: id, anno: anno, motivi: s.motivi,
-          futuro: anno > annoRif,
-          cause: causeDelloSforamento(id, anno, s)
-        });
+        var voce = { id: id, anno: anno, motivi: s.motivi, cause: cause(id, anno, s) };
+        if (anno <= annoCorrente) ora.push(voce); else futuri.push(voce);
       });
     });
 
-    if (!problemi.length) {
+    if (!ora.length && !futuri.length) {
       contenitore.innerHTML =
-        '<div class="avviso-ok">' +
-          '<strong>✓ Nessun problema di slot.</strong> ' +
-          'Tutte le squadre rispettano i limiti in ogni anno di contratto, ' +
-          'anche tenendo conto di come cambieranno le categorie.' +
+        '<div class="banner banner-ok">' +
+          '<div class="banner-icona">✓</div>' +
+          '<div><strong>Nessun problema di slot.</strong> I limiti sono ' +
+          'rispettati in tutti gli anni di contratto, anche tenendo conto ' +
+          'di come cambieranno le categorie.</div>' +
         '</div>';
       return;
     }
 
-    var adesso = problemi.filter(function (p) { return !p.futuro; });
-    var dopo = problemi.filter(function (p) { return p.futuro; });
-
-    var html =
-      '<div class="avviso-testata">' +
-        '<strong>⚠️ ' + problemi.length +
-        (problemi.length === 1 ? ' problema di slot' : ' problemi di slot') + '</strong>' +
-        '<span>' +
-          (adesso.length ? adesso.length + ' da risolvere subito' : 'nessuno immediato') +
-          ' · ' +
-          (dopo.length ? dopo.length + ' in arrivo negli anni futuri' : 'nessuno in futuro') +
-        '</span>' +
-      '</div>';
-
-    function blocco(elenco, titolo, classe) {
-      if (!elenco.length) return '';
-      var voci = '';
-      elenco.forEach(function (p) {
-        var cause = '';
-        if (p.cause.cambi.length) {
-          cause += '<div class="avviso-causa"><span>Perché:</span> ' +
-            esc(p.cause.cambi.join(' · ')) + '</div>';
-        }
-        if (p.cause.nuovi.length) {
-          cause += '<div class="avviso-causa"><span>Chi occupa gli slot:</span> ' +
-            esc(p.cause.nuovi.join(' · ')) + '</div>';
-        }
-        if (p.cause.invariato) {
-          cause += '<div class="avviso-causa"><span>Perché:</span> ' +
-            'situazione invariata rispetto all\'anno precedente</div>';
-        }
-        voci +=
-          '<li>' +
-            '<div class="avviso-riga">' +
-              '<strong>' + p.anno + '</strong> — ' + esc(nomeSquadra(p.id)) +
-              ': <span class="ko">' + esc(p.motivi.join(' e ')) + '</span>' +
-            '</div>' + cause +
+    function voci(elenco) {
+      var html = '<ul class="banner-elenco">';
+      elenco.forEach(function (v) {
+        html += '<li><strong>' + v.anno + '</strong>' +
+          (squadreScelte().length > 1 ? ' · ' + esc(nomeSquadra(v.id)) : '') +
+          ' — ' + esc(v.motivi.join(' e ')) +
+          (v.cause.length
+            ? '<span class="banner-causa">' + esc(v.cause.join(' · ')) + '</span>'
+            : '') +
           '</li>';
       });
-      return '<div class="avviso-blocco ' + classe + '">' +
-        '<div class="avviso-titolo">' + titolo + '</div>' +
-        '<ul>' + voci + '</ul></div>';
+      return html + '</ul>';
     }
 
-    html += blocco(adesso, 'Da sistemare ora', 'avviso-ora');
-    html += blocco(dopo, 'In arrivo negli anni futuri', 'avviso-futuro');
+    var html = '';
 
-    html +=
-      '<p class="nota-tabella">' +
-        'Un contratto già firmato <strong>non viene annullato</strong> se la ' +
-        'squadra finisce sopra il limite: il regolamento non agisce ' +
-        'retroattivamente (<a href="regolamento.html#s2">§ 2</a>). Ma di quegli ' +
-        'sforamenti va tenuto conto nelle riconferme successive.' +
-      '</p>';
+    if (ora.length) {
+      html +=
+        '<div class="banner banner-ko">' +
+          '<div class="banner-icona">⚠</div>' +
+          '<div>' +
+            '<strong>Sei fuori dai limiti adesso.</strong>' +
+            voci(ora) +
+          '</div>' +
+        '</div>';
+    }
+
+    if (futuri.length) {
+      html +=
+        '<div class="banner banner-attenzione">' +
+          '<div class="banner-icona">⚠</div>' +
+          '<div>' +
+            '<strong>' +
+              (ora.length ? 'E in futuro peggiora.' :
+                'Adesso sei a posto, ma non lo resterai.') +
+            '</strong>' +
+            voci(futuri) +
+            '<p class="banner-nota">I contratti già firmati restano validi: ' +
+            'il regolamento non agisce retroattivamente. Ma di questi ' +
+            'sforamenti va tenuto conto nelle riconferme future.</p>' +
+          '</div>' +
+        '</div>';
+    }
 
     contenitore.innerHTML = html;
   }
 
-  // --- 1. Riepilogo slot dell'anno selezionato --------------------------
+  // --- 2. La tabella principale ------------------------------------------
 
-  function disegnaSlot(anno, sel) {
-    var elenco = squadreVisibili(sel);
+  function disegnaTabella(annoCorrente) {
+    var contenitore = document.getElementById('tabella');
+    var elenco = squadreScelte();
     var html = '';
 
-    if (elenco.length === 1) {
-      var s = slotSquadra(elenco[0], anno);
-      html =
-        '<div class="slot-numeri">' +
-          statistica('A · over 25', s.A, C.MAX_CATEGORIA_A, s.A > C.MAX_CATEGORIA_A) +
-          statistica('B · under 25', s.B, null, false) +
-          statistica('C · under 21', s.C, null, false) +
-          statistica('A + B', s.ab, C.MAX_A_PIU_B, s.ab > C.MAX_A_PIU_B) +
-        '</div>' +
-        (s.sfora
-          ? '<p class="esito-ko">✗ Limite superato: ' + esc(s.motivi.join(' · ')) + '</p>'
-          : '<p class="esito-ok">✓ Limiti rispettati nel ' + anno + '</p>');
-    } else {
+    elenco.forEach(function (id) {
+      var suoi = contratti.filter(function (c) { return c.idSquadra === id; });
+      if (!suoi.length) return;
+
+      // Quali anni interessano questa squadra
+      var suoiAnni = anni.filter(function (a) {
+        return suoi.some(function (c) { return a >= c.annoInizio && a <= c.annoFine; });
+      });
+
+      var intestazioni = '';
+      suoiAnni.forEach(function (a) {
+        var s = slot(id, a);
+        var classi = [];
+        if (a === annoCorrente) classi.push('col-ora');
+        if (s.sfora) classi.push('col-ko');
+        intestazioni +=
+          '<th class="' + classi.join(' ') + '">' + a +
+            (a === annoCorrente ? '<span class="th-nota">in corso</span>' : '') +
+            (s.sfora ? '<span class="th-nota">⚠ slot</span>' : '') +
+          '</th>';
+      });
+
       var righe = '';
-      var fuori = 0;
-      elenco.forEach(function (id) {
-        var s = slotSquadra(id, anno);
-        if (!s.totale) return;
-        if (s.sfora) fuori++;
+      suoi.sort(function (a, b) { return b.prezzo - a.prezzo; }).forEach(function (c) {
+        var d = dettaglio(c);
+        var celle = '';
+        suoiAnni.forEach(function (anno) {
+          var v = d[anno];
+          if (!v) { celle += '<td class="cella-vuota">—</td>'; return; }
+          var s = slot(id, anno);
+          var classi = ['cella-anno'];
+          if (anno === annoCorrente) classi.push('col-ora');
+          if (s.sfora) classi.push('col-ko');
+          celle +=
+            '<td class="' + classi.join(' ') + '">' +
+              '<div class="scelta scelta-tieni">' +
+                '<span>riscatti</span><b>' + v.riscatto + '</b></div>' +
+              '<div class="scelta scelta-molli">' +
+                '<span>svincoli</span><b>' + v.svincolo + '</b></div>' +
+              '<div class="scelta-cat">' + badge(v.categoria) +
+                (v.eta === null ? '' : ' ' + v.eta + ' anni') +
+                (v.cambiata ? '<span class="cat-cambio">cambio</span>' : '') +
+              '</div>' +
+            '</td>';
+        });
+
         righe +=
-          '<tr' + (s.sfora ? ' class="riga-ko"' : '') + '>' +
-            '<td><strong>' + esc(nomeSquadra(id)) + '</strong></td>' +
+          '<tr>' +
+            '<td class="cella-nome"><strong>' + esc(c.giocatore) + '</strong>' +
+              '<span class="meta">preso a ' + c.prezzo + ' nel ' + c.annoInizio +
+              (c.annoNascita ? ' · nato ' + c.annoNascita : '') + '</span></td>' +
+            celle +
+          '</tr>';
+      });
+
+      // Totali: quanto costa tenerli tutti, quanto costa mollarli tutti
+      var totTieni = '', totMolli = '';
+      suoiAnni.forEach(function (anno) {
+        var t = 0, m = 0;
+        suoi.forEach(function (c) {
+          var v = dettaglio(c)[anno];
+          if (v) { t += v.riscatto; m += v.svincolo; }
+        });
+        totTieni += '<td class="num"><strong>' + t + '</strong></td>';
+        totMolli += '<td class="num">' + m + '</td>';
+      });
+
+      html +=
+        (elenco.length > 1 ? '<h3>' + esc(nomeSquadra(id)) + '</h3>' : '') +
+        '<div class="table-wrap"><table class="tab-contratti">' +
+          '<thead><tr><th>Giocatore</th>' + intestazioni + '</tr></thead>' +
+          '<tbody>' + righe + '</tbody>' +
+          '<tfoot>' +
+            '<tr><td>Se li riscatti tutti</td>' + totTieni + '</tr>' +
+            '<tr><td>Se li svincoli tutti</td>' + totMolli + '</tr>' +
+          '</tfoot>' +
+        '</table></div>';
+    });
+
+    contenitore.innerHTML = html || '<p class="nota-tabella">Nessun contratto.</p>';
+  }
+
+  // --- 3. Dettaglio slot: spiega gli anni in rosso -----------------------
+
+  function disegnaSlot(annoCorrente) {
+    var contenitore = document.getElementById('slot');
+    var elenco = squadreScelte();
+    var html = '';
+
+    elenco.forEach(function (id) {
+      var righe = '';
+      anni.forEach(function (anno) {
+        var s = slot(id, anno);
+        if (!s.totale) return;
+        righe +=
+          '<tr class="' + (s.sfora ? 'riga-ko' : '') +
+            (anno === annoCorrente ? ' riga-ora' : '') + '">' +
+            '<td><strong>' + anno + '</strong>' +
+              (anno === annoCorrente ? ' <span class="badge b">in corso</span>' : '') + '</td>' +
             '<td class="num' + (s.A > C.MAX_CATEGORIA_A ? ' ko' : '') + '">' +
               s.A + '/' + C.MAX_CATEGORIA_A + '</td>' +
             '<td class="num">' + s.B + '</td>' +
@@ -310,244 +352,37 @@
               s.ab + '/' + C.MAX_A_PIU_B + '</td>' +
             '<td>' + (s.sfora
               ? '<span class="ko">' + esc(s.motivi.join(' · ')) + '</span>'
-              : '<span class="ok-muto">ok</span>') + '</td>' +
+              : '<span class="ok-muto">nei limiti</span>') + '</td>' +
           '</tr>';
       });
-      html =
-        '<p class="' + (fuori ? 'esito-ko' : 'esito-ok') + '">' +
-          (fuori
-            ? '✗ ' + anno + ': ' + fuori + (fuori === 1 ? ' squadra fuori regola' : ' squadre fuori regola')
-            : '✓ ' + anno + ': tutte le squadre rispettano i limiti') +
-        '</p>' +
-        '<div class="table-wrap"><table><thead><tr>' +
-          '<th>Squadra</th><th class="num">A</th><th class="num">B</th>' +
-          '<th class="num">C</th><th class="num">A+B</th><th>Note</th>' +
-        '</tr></thead><tbody>' + righe + '</tbody></table></div>';
-    }
-
-    document.getElementById('slot-riepilogo').innerHTML = html;
-  }
-
-  function statistica(etichetta, valore, limite, sfora) {
-    return '<div class="slot-stat' + (sfora ? ' slot-stat-ko' : '') + '">' +
-      '<div class="slot-valore">' + valore +
-        (limite !== null ? '<span>/' + limite + '</span>' : '') + '</div>' +
-      '<div class="slot-etichetta">' + etichetta + '</div>' +
-    '</div>';
-  }
-
-  // --- 2. Andamento per squadra: anni, slot e costi ---------------------
-
-  function disegnaAndamento(annoRif, sel) {
-    var html = '';
-
-    squadreVisibili(sel).forEach(function (id) {
-      var suoi = contratti.filter(function (c) { return c.idSquadra === id; });
-      if (!suoi.length) return;
-
-      var righe = '';
-      anni.forEach(function (anno) {
-        var s = slotSquadra(id, anno);
-        if (!s.totale) return;
-
-        var costo = 0, penale = 0, quanti = 0;
-        suoi.forEach(function (c) {
-          var d = dettaglio(c)[anno];
-          if (!d) return;
-          costo += d.costo;
-          penale += d.penale;
-          quanti++;
-        });
-
-        righe +=
-          '<tr' + (anno === annoRif ? ' class="riga-anno-rif"' : '') + '>' +
-            '<td><strong>' + anno + '</strong>' +
-              (anno === annoRif ? ' <span class="badge b">selezionato</span>' : '') + '</td>' +
-            '<td class="num">' + quanti + '</td>' +
-            '<td class="num' + (s.A > C.MAX_CATEGORIA_A ? ' ko' : '') + '">' +
-              s.A + '/' + C.MAX_CATEGORIA_A + '</td>' +
-            '<td class="num">' + s.B + '</td>' +
-            '<td class="num">' + s.C + '</td>' +
-            '<td class="num' + (s.ab > C.MAX_A_PIU_B ? ' ko' : '') + '">' +
-              s.ab + '/' + C.MAX_A_PIU_B + '</td>' +
-            '<td class="num">' + costo + '</td>' +
-            '<td class="num">' + penale + '</td>' +
-            '<td>' + (s.sfora
-              ? '<span class="ko">✗ ' + esc(s.motivi.join(' · ')) + '</span>'
-              : '<span class="ok-muto">✓</span>') + '</td>' +
-          '</tr>';
-      });
-
+      if (!righe) return;
       html +=
-        '<h3>' + esc(nomeSquadra(id)) + '</h3>' +
+        (elenco.length > 1 ? '<h3>' + esc(nomeSquadra(id)) + '</h3>' : '') +
         '<div class="table-wrap"><table><thead><tr>' +
-          '<th>Anno</th><th class="num">Giocatori</th>' +
-          '<th class="num">A</th><th class="num">B</th><th class="num">C</th>' +
-          '<th class="num">A+B</th>' +
-          '<th class="num">Costo riconferme</th><th class="num">Se svincoli tutti</th>' +
-          '<th>Esito</th>' +
+          '<th>Anno</th><th class="num">A</th><th class="num">B</th>' +
+          '<th class="num">C</th><th class="num">A+B</th><th>Esito</th>' +
         '</tr></thead><tbody>' + righe + '</tbody></table></div>';
     });
 
-    document.getElementById('andamento').innerHTML =
-      html || '<p class="nota-tabella">Nessun contratto da mostrare.</p>';
+    contenitore.innerHTML = html;
   }
 
-  // --- 3. Controllo età anno per anno ------------------------------------
+  // --- 4. Svincoli --------------------------------------------------------
 
-  function disegnaEta(annoRif, sel, filtro) {
-    var visibili = filtraContratti(sel, filtro);
-    if (!visibili.length) {
-      document.getElementById('eta-tabella').innerHTML =
-        '<p class="nota-tabella">Nessun giocatore corrisponde ai filtri.</p>';
-      return;
-    }
-
-    var intestazioni = '';
-    anni.forEach(function (a) {
-      intestazioni += '<th class="num' + (a === annoRif ? ' col-rif' : '') + '">' + a + '</th>';
-    });
-
-    var righe = '';
-    visibili.forEach(function (c) {
-      var d = dettaglio(c);
-      var celle = '';
-      anni.forEach(function (anno) {
-        var v = d[anno];
-        if (!v) { celle += '<td class="num vuota">—</td>'; return; }
-        var classi = ['num'];
-        if (anno === annoRif) classi.push('col-rif');
-        if (v.cambiata) classi.push('cella-cambio');
-        celle +=
-          '<td class="' + classi.join(' ') + '">' +
-            '<span class="eta">' + (v.eta === null ? '?' : v.eta) + '</span> ' +
-            badge(v.categoria) +
-            (v.cambiata ? '<span class="meta">cambio categoria</span>' : '') +
-          '</td>';
-      });
-
-      righe +=
-        '<tr>' +
-          '<td><strong>' + esc(c.giocatore) + '</strong>' +
-            '<span class="meta">' +
-              (c.annoNascita ? 'nato nel ' + c.annoNascita : '⚠️ anno di nascita mancante') +
-              ' · ' + esc(nomeSquadra(c.idSquadra)) +
-            '</span></td>' +
-          celle +
-        '</tr>';
-    });
-
-    document.getElementById('eta-tabella').innerHTML =
-      '<div class="table-wrap"><table><thead><tr><th>Giocatore</th>' +
-      intestazioni + '</tr></thead><tbody>' + righe + '</tbody></table></div>';
-  }
-
-  // --- 4. Griglia dei costi ----------------------------------------------
-
-  function filtraContratti(sel, filtro) {
-    return contratti.filter(function (c) {
-      if (sel !== 'tutte' && c.idSquadra !== Number(sel)) return false;
-      if (filtro && c.giocatore.toLowerCase().indexOf(filtro) === -1) return false;
-      return true;
-    });
-  }
-
-  function disegnaGriglia(annoRif, sel, filtro) {
-    var visibili = filtraContratti(sel, filtro);
-    var contenitore = document.getElementById('griglia');
-
-    if (!visibili.length) {
-      contenitore.innerHTML = '<p class="nota-tabella">Nessun giocatore corrisponde ai filtri.</p>';
-      return;
-    }
-
-    var intestazioni = '';
-    anni.forEach(function (a) {
-      var fuori = squadre.filter(function (id) { return slotSquadra(id, a).sfora; });
-      intestazioni +=
-        '<th class="num' + (a === annoRif ? ' col-rif' : '') +
-          (fuori.length ? ' col-conflitto' : '') + '">' + a +
-          (fuori.length ? '<span class="meta">⚠️ slot</span>' : '') +
-        '</th>';
-    });
-
-    var righe = '';
-    visibili.forEach(function (c) {
-      var d = dettaglio(c);
-      var celle = '';
-      anni.forEach(function (anno) {
-        var v = d[anno];
-        if (!v) { celle += '<td class="num vuota">—</td>'; return; }
-        var classi = ['num'];
-        if (anno === annoRif) classi.push('col-rif');
-        if (v.cambiata) classi.push('cella-cambio');
-        celle +=
-          '<td class="' + classi.join(' ') + '">' +
-            '<span class="costo">' + v.costo + '</span> ' + badge(v.categoria) +
-            '<span class="penale">svinc. ' + v.penale + '</span>' +
-          '</td>';
-      });
-
-      righe +=
-        '<tr>' +
-          '<td><strong>' + esc(c.giocatore) + '</strong>' +
-            '<span class="meta">' + esc(nomeSquadra(c.idSquadra)) +
-              ' · acquisto ' + c.prezzo + ' nel ' + c.annoInizio + '</span></td>' +
-          celle +
-        '</tr>';
-    });
-
-    // Totali e check, come nel gestionale
-    var totRiconferme = '', totSvincoli = '', check = '';
-    anni.forEach(function (anno) {
-      var tr = 0, ts = 0;
-      visibili.forEach(function (c) {
-        var v = dettaglio(c)[anno];
-        if (v) { tr += v.costo; ts += v.penale; }
-      });
-      totRiconferme += '<td class="num"><strong>' + tr + '</strong></td>';
-      totSvincoli += '<td class="num">' + ts + '</td>';
-
-      var fuori = squadreVisibili(sel).filter(function (id) {
-        return slotSquadra(id, anno).sfora;
-      });
-      check += fuori.length
-        ? '<td class="num ko">✗<span class="meta">' +
-            esc(fuori.map(function (id) {
-              return nomeSquadra(id) + ': ' + slotSquadra(id, anno).motivi.join(', ');
-            }).join(' · ')) + '</span></td>'
-        : '<td class="num ok-muto">✓</td>';
-    });
-
-    contenitore.innerHTML =
-      '<div class="table-wrap"><table><thead><tr><th>Giocatore</th>' +
-      intestazioni + '</tr></thead><tbody>' + righe + '</tbody>' +
-      '<tfoot>' +
-        '<tr><td>Totale riconferme</td>' + totRiconferme + '</tr>' +
-        '<tr><td>Totale se svincoli tutti</td>' + totSvincoli + '</tr>' +
-        '<tr><td>Limiti di slot</td>' + check + '</tr>' +
-      '</tfoot></table></div>';
-  }
-
-  // --- 5. Svincoli --------------------------------------------------------
-
-  function disegnaSvincoli(sel) {
+  function disegnaSvincoli() {
     var sezione = document.getElementById('sezione-svincoli');
     var elenco = svincoli.filter(function (s) {
-      return sel === 'tutte' || s.idSquadra === Number(sel);
+      return selSquadra.value === 'tutte' || s.idSquadra === Number(selSquadra.value);
     });
 
     if (!elenco.length) {
-      sezione.hidden = svincoli.length === 0;
-      document.getElementById('svincoli-tabella').innerHTML =
-        '<p class="nota-tabella">Nessuno svincolo registrato' +
-        (sel === 'tutte' ? '.' : ' per questa squadra.') + '</p>';
-      document.getElementById('svincoli-totale').innerHTML = '';
+      sezione.hidden = true;
       return;
     }
     sezione.hidden = false;
 
     var righe = '';
+    var perAnno = {};
     elenco.forEach(function (s) {
       righe +=
         '<tr>' +
@@ -555,61 +390,37 @@
             (s.note ? '<span class="meta">' + esc(s.note) + '</span>' : '') + '</td>' +
           '<td>' + esc(nomeSquadra(s.idSquadra)) + '</td>' +
           '<td class="num">' + s.anno + '</td>' +
-          '<td class="num">' + (s.anniRimanenti == null ? '—' : s.anniRimanenti) + '</td>' +
-          '<td class="num"><span class="costo costo-ko">−' + s.penale + '</span>' +
+          '<td class="num"><span class="ko">−' + s.penale + '</span>' +
             (s.penaleForzata ? '<span class="meta">forzata a mano</span>' : '') + '</td>' +
         '</tr>';
+      perAnno[s.anno] = (perAnno[s.anno] || 0) + s.penale;
     });
 
-    document.getElementById('svincoli-tabella').innerHTML =
+    var voci = Object.keys(perAnno).map(Number).sort().map(function (a) {
+      return 'asta ' + a + ': <strong class="ko">−' + perAnno[a] + '</strong>';
+    }).join(' · ');
+
+    document.getElementById('svincoli').innerHTML =
       '<div class="table-wrap"><table><thead><tr>' +
         '<th>Giocatore</th><th>Squadra</th><th class="num">Anno</th>' +
-        '<th class="num">Anni residui</th><th class="num">Penale</th>' +
-      '</tr></thead><tbody>' + righe + '</tbody></table></div>';
-
-    // Penali da togliere all'asta, raggruppate per anno e squadra
-    var perAnno = {};
-    elenco.forEach(function (s) {
-      (perAnno[s.anno] = perAnno[s.anno] || {});
-      perAnno[s.anno][s.idSquadra] = (perAnno[s.anno][s.idSquadra] || 0) + s.penale;
-    });
-
-    var voci = '';
-    Object.keys(perAnno).map(Number).sort(function (a, b) { return b - a; })
-      .forEach(function (anno) {
-        Object.keys(perAnno[anno]).map(Number).sort().forEach(function (id) {
-          voci += '<li><strong>' + esc(nomeSquadra(id)) + '</strong> — asta ' + anno +
-                  ': <strong class="ko">−' + perAnno[anno][id] + '</strong> crediti</li>';
-        });
-      });
-
-    document.getElementById('svincoli-totale').innerHTML =
-      '<div class="callout warn"><span class="callout-title">Crediti da togliere all\'asta</span>' +
-      '<ul>' + voci + '</ul>' +
-      '<p>Le penali si sottraggono ai crediti spendibili della stagione in cui ' +
-      'lo svincolo avviene (<a href="regolamento.html#s8">regolamento § 8</a>).</p></div>';
+        '<th class="num">Penale</th>' +
+      '</tr></thead><tbody>' + righe + '</tbody></table></div>' +
+      '<p class="nota-tabella">Crediti da togliere: ' + voci + '.</p>';
   }
 
   // --- Avvio --------------------------------------------------------------
 
   function aggiorna() {
     var anno = Number(selAnno.value);
-    var sel = selSquadra.value;
-    var filtro = ricerca.value.trim().toLowerCase();
-
-    disegnaAvvisi(anno, sel);
-    disegnaSlot(anno, sel);
-    disegnaAndamento(anno, sel);
-    disegnaEta(anno, sel, filtro);
-    disegnaGriglia(anno, sel, filtro);
-    disegnaSvincoli(sel);
-
+    disegnaAvvisi(anno);
+    disegnaTabella(anno);
+    disegnaSlot(anno);
+    disegnaSvincoli();
     if (typeof window.preparaTabelle === 'function') window.preparaTabelle();
   }
 
   selSquadra.addEventListener('change', aggiorna);
   selAnno.addEventListener('change', aggiorna);
-  ricerca.addEventListener('input', aggiorna);
 
   document.getElementById('generato-il').textContent = D.generatoIl || '—';
   aggiorna();

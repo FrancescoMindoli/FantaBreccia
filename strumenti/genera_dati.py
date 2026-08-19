@@ -81,7 +81,8 @@ def leggi_foglio(wb, nome: str) -> list[dict]:
         if any(c is not None and str(c).strip() != "" for c in r)
     ]
     if len(righe) < 2:
-        print(f"  ! foglio '{nome}' senza dati")
+        # Solo l'intestazione: è uno stato legittimo (Svincoli è vuoto finché
+        # non ne fai uno), non un problema da segnalare.
         return []
 
     intestazioni = [str(h).strip() if h is not None else "" for h in righe[0]]

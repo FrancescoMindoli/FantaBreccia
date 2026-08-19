@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fanta Breccia — Contratti</title>
-<meta name="description" content="I giocatori sotto contratto squadra per squadra: costi anno per anno, controllo delle età e degli slot, storico svincoli.">
+<meta name="description" content="I giocatori sotto contratto e quanto costa, anno per anno, riscattarli oppure svincolarli.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,75 +26,52 @@
 
   <header class="hero">
     <h1>Contratti</h1>
-    <p>Chi è sotto contratto, quanto costa tenerlo e come cambiano le categorie con il passare degli anni.</p>
+    <p>Chi hai sotto contratto e quanto ti costa, anno per anno, tenerlo oppure lasciarlo andare.</p>
   </header>
 
   <div class="filtri">
-    <div class="filtro">
+    <div class="filtro filtro-largo">
       <label class="sim-label" for="squadra-select">Squadra</label>
       <select id="squadra-select" class="select"></select>
     </div>
     <div class="filtro">
-      <label class="sim-label" for="anno-select">Anno di riferimento</label>
+      <label class="sim-label" for="anno-select">Stagione in corso</label>
       <select id="anno-select" class="select"></select>
-    </div>
-    <div class="filtro filtro-largo">
-      <label class="sim-label" for="ricerca">Cerca giocatore</label>
-      <input type="search" id="ricerca" class="select" placeholder="nome…" autocomplete="off">
     </div>
   </div>
 
   <p class="errore-input" id="errore" hidden></p>
 
-  <section id="sezione-avvisi">
-    <h2>Avvisi</h2>
-    <div id="avvisi"></div>
+  <!-- 1. L'avviso, se c'è qualcosa che non va -->
+  <div id="avvisi"></div>
+
+  <!-- 2. Il cuore della pagina: chi hai e quanto costa -->
+  <section id="sezione-tabella">
+    <h2>I tuoi giocatori</h2>
+    <p class="nota-tabella">
+      Per ogni anno vedi le due alternative: <strong>quanto paghi per
+      riscattarlo</strong> e tenerlo un altro anno, oppure <strong>quanto paghi
+      di penale</strong> per lasciarlo andare. Gli anni segnati in rosso sono
+      quelli in cui la squadra sfora i limiti di slot.
+    </p>
+    <div id="tabella"></div>
   </section>
 
+  <!-- 3. Il dettaglio degli slot, che spiega i rossi -->
   <section id="sezione-slot">
-    <h2>Slot nell'anno selezionato</h2>
+    <h2>Slot anno per anno</h2>
     <p class="nota-tabella">
-      I limiti valgono <strong>per squadra</strong>: massimo 3 in categoria A e
-      massimo 6 sommando A e B. La categoria C non occupa posti
+      Massimo <strong>3 giocatori in categoria A</strong> e <strong>6 sommando
+      A e B</strong>. La categoria C non occupa posti
       (<a href="regolamento.html#s2">regolamento § 2</a>).
     </p>
-    <div id="slot-riepilogo"></div>
+    <div id="slot"></div>
   </section>
 
-  <section id="sezione-andamento">
-    <h2>Andamento per squadra</h2>
-    <p class="nota-tabella">
-      Anno per anno: quanti giocatori sotto contratto, come si distribuiscono
-      nelle categorie, quanto costano le riconferme e quanto costerebbe
-      svincolarli tutti.
-    </p>
-    <div id="andamento"></div>
-  </section>
-
-  <section id="sezione-eta">
-    <h2>Controllo delle età</h2>
-    <p class="nota-tabella">
-      L'età di ciascun giocatore nei quattro anni di contratto, con la categoria
-      corrispondente. Le celle marcate sono quelle in cui il giocatore
-      <strong>cambia categoria</strong>: è lì che una squadra può ritrovarsi
-      sopra il limite senza aver fatto nulla.
-    </p>
-    <div id="eta-tabella"></div>
-  </section>
-
-  <section id="sezione-griglia">
-    <h2>Costi anno per anno</h2>
-    <p class="nota-tabella">
-      In ogni cella: il costo per riconfermarlo quell'anno, la categoria, e
-      sotto la penale se invece lo svincoli.
-    </p>
-    <div id="griglia"></div>
-  </section>
-
+  <!-- 4. Svincoli già fatti -->
   <section id="sezione-svincoli">
-    <h2>Svincoli</h2>
-    <div id="svincoli-tabella"></div>
-    <div id="svincoli-totale"></div>
+    <h2>Svincoli registrati</h2>
+    <div id="svincoli"></div>
   </section>
 
 </main>

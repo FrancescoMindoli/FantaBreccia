@@ -32,18 +32,27 @@ except ImportError:
 RADICE = Path(__file__).resolve().parent.parent
 XLSX = RADICE / "dati" / "Gestione.xlsx"
 
-# --- Regole economiche (regolamento § 12–16) ---------------------------------
-BASE = 1000
-TETTO_MAX = 1100
-TETTO_MIN = 900
-BONUS_MIGLIOR_PUNTEGGIO = 10
-
-# Il bonus coppa è per POSIZIONE: solo chi vince prende 10, il secondo niente.
-BONUS_COPPA = {1: 10}
-
-PREMI_MALUS_CLASSIFICA = {
-    1: 25, 2: 15, 3: 10, 4: 5, 5: 0,
-    6: 0, 7: -5, 8: -10, 9: -15, 10: -20,
+# --- Regole economiche -------------------------------------------------------
+#
+# Non sono costanti: si leggono dal foglio RegoleCrediti, come nel gestionale
+# le si leggeva dalla tabella `credit_rules`. Così un premio si cambia
+# nell'Excel e non in questo file.
+#
+# Questi valori servono solo come rete di sicurezza se il foglio manca o è
+# incompleto, e corrispondono a DEFAULT_RULES di modules/economia.py.
+PREDEFINITE = {
+    "base": {1: 1000},
+    "reset": {1: 950},
+    "tetto_max": {1: 1100},
+    "tetto_min": {1: 900},
+    "riparazione": {1: 50},
+    "best_score": {1: 10},
+    # Il bonus coppa è per POSIZIONE: solo chi vince prende 10.
+    "coppa": {1: 10},
+    "classifica": {
+        1: 25, 2: 15, 3: 10, 4: 5, 5: 0,
+        6: 0, 7: -5, 8: -10, 9: -15, 10: -20,
+    },
 }
 
 
@@ -54,6 +63,41 @@ def intero(valore, predefinito=None):
         return int(float(valore))
     except (TypeError, ValueError):
         return predefinito
+
+
+def carica_regole(wb, avvisi):
+    """Legge il foglio RegoleCrediti: categoria -> {posizione: valore}.
+
+    Una posizione vuota vale 1, come fa `get_effective_rules()` del gestionale
+    con `posizione or 1`: è per questo che il bonus coppa finisce su {1: 10} e
+    il secondo classificato non prende nulla.
+    """
+    if "RegoleCrediti" not in wb.sheetnames:
+        avvisi.append("foglio RegoleCrediti assente: uso i valori predefiniti")
+        return {k: dict(v) for k, v in PREDEFINITE.items()}
+
+    regole: dict = {}
+    for r in leggi(wb["RegoleCrediti"]):
+        categoria = str(r.get("Categoria") or "").strip()
+        valore = intero(r.get("Valore"))
+        if not categoria or valore is None:
+            continue
+        posizione = intero(r.get("Posizione")) or 1
+        regole.setdefault(categoria, {})[posizione] = valore
+
+    for categoria, valori in PREDEFINITE.items():
+        if categoria not in regole:
+            avvisi.append(f"regola '{categoria}' assente nel foglio: uso il predefinito")
+            regole[categoria] = dict(valori)
+    return regole
+
+
+def valore(regole, categoria, posizione=1):
+    """Valore di una regola, con ripiego sul predefinito se manca."""
+    v = regole.get(categoria, {}).get(posizione)
+    if v is not None:
+        return v
+    return PREDEFINITE.get(categoria, {}).get(posizione, 0)
 
 
 def leggi(ws):
@@ -81,6 +125,19 @@ def main() -> int:
         return 1
 
     wb = openpyxl.load_workbook(XLSX)
+
+    avvisi: list[str] = []
+    regole = carica_regole(wb, avvisi)
+    base = valore(regole, "base")
+    tetto_max = valore(regole, "tetto_max")
+    tetto_min = valore(regole, "tetto_min")
+    bonus_punteggio_pieno = valore(regole, "best_score")
+
+    print(f"Regole: base {base}, tetti {tetto_min}-{tetto_max}, "
+          f"miglior punteggio +{bonus_punteggio_pieno}, "
+          f"coppa 1o +{valore(regole, 'coppa', 1)}")
+    for a in avvisi:
+        print(f"  ! {a}")
 
     squadre = {}
     for r in leggi(wb["AnagraficaSquadre"]):
@@ -140,16 +197,16 @@ def main() -> int:
                 continue
 
             posizione = riga_cl["posizione"]
-            campionato = PREMI_MALUS_CLASSIFICA.get(posizione, 0)
-            punteggio = BONUS_MIGLIOR_PUNTEGGIO if riga_cl["miglior"] else 0
+            campionato = valore(regole, "classifica", posizione)
+            punteggio = bonus_punteggio_pieno if riga_cl["miglior"] else 0
 
             pos_coppa = coppa.get(anno, {}).get(idx)
-            bonus_coppa = BONUS_COPPA.get(pos_coppa, 0) if pos_coppa else 0
+            bonus_coppa = valore(regole, "coppa", pos_coppa) if pos_coppa else 0
 
             resid = residui.get(anno, {}).get(idx, 0)
 
-            grezzo = BASE + resid + campionato + bonus_coppa + punteggio
-            budget = min(max(grezzo, TETTO_MIN), TETTO_MAX)
+            grezzo = base + resid + campionato + bonus_coppa + punteggio
+            budget = min(max(grezzo, tetto_min), tetto_max)
 
             segnale = ""
             if budget != grezzo:

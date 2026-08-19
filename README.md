@@ -57,6 +57,7 @@ git add . && git commit -m "Dati aggiornati" && git push
 | `Coppa` | Podio della coppa |
 | `CreditiAsta` | Crediti avanzati a fine stagione |
 | `CreditiAnnoNuovo` | Budget della stagione nuova |
+| `RegoleCrediti` | Premi, malus, tetti e crediti di partenza |
 
 ### Il foglio Contratti
 
@@ -114,12 +115,30 @@ strumento a partire da classifica, coppa e crediti residui.
 La formula è quella del regolamento (§ 12–16):
 
 ```
-budget = 1000 + residui + premio/malus classifica
+budget = base + residui + premio/malus classifica
        + bonus miglior punteggio + bonus coppa
-       poi limitato fra 900 e 1100
+       poi limitato fra tetto minimo e tetto massimo
 ```
 
-Il bonus coppa spetta **solo a chi vince**: il secondo classificato prende 0.
+I valori **non sono scritti nel codice**: si leggono dal foglio
+`RegoleCrediti`, che riproduce la tabella `credit_rules` del vecchio
+gestionale. Per cambiare un premio si modifica quel foglio e si rilancia lo
+strumento — nessun file Python da toccare.
+
+| Categoria | Significato |
+|---|---|
+| `base` | Crediti di partenza all'asta (1000) |
+| `reset` | Partenza per chi fa RESET (950) |
+| `tetto_max` / `tetto_min` | Limiti del budget (1100 / 900) |
+| `classifica` | Premio o malus per posizione, una riga per posizione |
+| `best_score` | Bonus miglior punteggio (10) |
+| `coppa` | Bonus per posizione in coppa |
+| `riparazione` | Crediti dell'asta di riparazione (50) |
+
+> **Il bonus coppa spetta solo a chi vince.** La riga ha posizione 1: una
+> posizione diversa non trova regola e vale 0. È lo stesso comportamento del
+> gestionale, dove `posizione or 1` normalizzava la regola su quella singola
+> posizione.
 
 > Il RESET (partire da 950) non è gestito: nell'Excel non c'è una colonna che
 > lo registri. Se una squadra ha fatto reset, correggi la sua riga a mano dopo

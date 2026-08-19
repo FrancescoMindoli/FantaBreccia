@@ -3,7 +3,7 @@
  * Per aggiornarlo: modifica l'Excel e rilancia lo script.
  */
 window.DATI = {
-  "generatoIl": "2026-08-19",
+  "generatoIl": "2026-08-20",
   "squadre": [
     {
       "id": 1,
