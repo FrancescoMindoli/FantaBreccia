@@ -1,11 +1,11 @@
 /*
- * stagioni.js — albo d'oro e risultati stagione per stagione.
+ * stagioni.js — medagliere storico e risultati stagione per stagione.
  *
- * L'ordine della pagina è quello con cui si guardano le cose: prima l'albo
- * d'oro, che riassume tutta la storia della lega; poi si sceglie una stagione
- * e se ne vedono classifica, coppa e crediti.
+ * La pagina si legge dall'alto: prima il medagliere, che riassume tutta la
+ * storia della lega in una classifica; poi si sceglie una stagione, e da lì
+ * in giù è tutto relativo a quella.
  *
- * Non calcola nulla: albo d'oro, medagliere e budget arrivano già pronti da
+ * Non calcola nulla: medagliere, albo d'oro e budget arrivano già pronti da
  * js/dati.js, prodotto da strumenti/genera_dati.py.
  */
 
@@ -48,85 +48,46 @@
 
   function numero(v) { return (v === null || v === undefined) ? '—' : String(v); }
 
-  // --- 1. Albo d'oro ------------------------------------------------------
+  function segnato(v) {
+    if (v === null || v === undefined) return '—';
+    if (v > 0) return '<span class="pos">+' + v + '</span>';
+    if (v < 0) return '<span class="neg">' + v + '</span>';
+    return '0';
+  }
 
-  function disegnaAlbo() {
-    var contenitore = document.getElementById('albo');
+  // --- 1. Medagliere ------------------------------------------------------
 
-    if (!albo.length) {
+  function disegnaMedagliere() {
+    var contenitore = document.getElementById('medagliere');
+
+    if (!medagliere.length) {
       contenitore.innerHTML =
-        '<p class="nota-tabella">Nessuna stagione conclusa: l\'albo d\'oro ' +
+        '<p class="nota-tabella">Nessuna stagione conclusa: il medagliere ' +
         'si popola da solo appena compili una classifica.</p>';
       return;
     }
 
-    // Il campione in carica, in evidenza
-    var ultimo = albo[0];
-    var vetrina = '';
-    if (ultimo.campione) {
-      vetrina =
-        '<div class="vetrina">' +
-          '<div class="vetrina-coppa">🏆</div>' +
-          '<div>' +
-            '<div class="vetrina-etichetta">Campione ' + ultimo.anno + '</div>' +
-            '<div class="vetrina-nome">' + esc(ultimo.campione.squadra) + '</div>' +
-            '<div class="vetrina-meta">' +
-              esc(allenatori[ultimo.campione.id] || '') +
-              (ultimo.campione.punteggio != null
-                ? ' · ' + ultimo.campione.punteggio + ' punti' : '') +
-            '</div>' +
-          '</div>' +
-        '</div>';
-    }
-
-    // Una riga per edizione
     var righe = '';
-    albo.forEach(function (v) {
-      function chi(x, medaglia) {
-        return x ? medaglia + ' ' + esc(x.squadra) : '—';
-      }
-      righe +=
-        '<tr>' +
-          '<td><strong>' + v.anno + '</strong></td>' +
-          '<td>' + chi(v.campione, '🥇') + '</td>' +
-          '<td>' + chi(v.secondo, '🥈') + '</td>' +
-          '<td>' + chi(v.terzo, '🥉') + '</td>' +
-          '<td>' + (v.coppa ? '🏆 ' + esc(v.coppa.squadra) : '—') + '</td>' +
-          '<td>' + (v.migliorPunteggio
-            ? esc(v.migliorPunteggio.squadra) +
-              '<span class="meta">' + v.migliorPunteggio.punteggio + ' punti</span>'
-            : '—') + '</td>' +
-        '</tr>';
-    });
-
-    // Medagliere
-    var med = '';
     medagliere.forEach(function (m) {
-      med +=
-        '<tr>' +
+      righe +=
+        '<tr' + (m.posizione <= 3 ? ' data-pos="' + m.posizione + '"' : '') + '>' +
+          '<td class="num">' + m.posizione + '</td>' +
           '<td><strong>' + esc(m.squadra) + '</strong>' +
             '<span class="meta">' + esc(allenatori[m.id] || '') + '</span></td>' +
           '<td class="num medaglia-oro">' + m.ori + '</td>' +
           '<td class="num medaglia-argento">' + m.argenti + '</td>' +
           '<td class="num medaglia-bronzo">' + m.bronzi + '</td>' +
           '<td class="num">' + m.coppe + '</td>' +
-          '<td class="num">' + m.miglioriPunteggi + '</td>' +
+          '<td class="num">' + m.punteggio + '</td>' +
         '</tr>';
     });
 
     contenitore.innerHTML =
-      vetrina +
-      '<h3>Edizione per edizione</h3>' +
       '<div class="table-wrap"><table><thead><tr>' +
-        '<th>Anno</th><th>Campione</th><th>Secondo</th><th>Terzo</th>' +
-        '<th>Coppa</th><th>Miglior punteggio</th>' +
-      '</tr></thead><tbody>' + righe + '</tbody></table></div>' +
-      '<h3>Medagliere</h3>' +
-      '<div class="table-wrap"><table><thead><tr>' +
-        '<th>Squadra</th><th class="num">🥇</th><th class="num">🥈</th>' +
-        '<th class="num">🥉</th><th class="num">🏆 Coppe</th>' +
-        '<th class="num">Miglior punt.</th>' +
-      '</tr></thead><tbody>' + med + '</tbody></table></div>';
+        '<th class="num">#</th><th>Squadra</th>' +
+        '<th class="num">🥇</th><th class="num">🥈</th><th class="num">🥉</th>' +
+        '<th class="num">🏆</th><th class="num">Punti totali</th>' +
+      '</tr></thead><tbody>' + righe + '</tbody></table></div>';
   }
 
   // --- 2. Filtro dell'anno ------------------------------------------------
@@ -157,6 +118,8 @@
     var classifica = D.classifiche[anno] || [];
     var coppa = D.coppa[anno] || [];
     var budget = (D.budget || {})[anno] || [];
+    var edizione = albo.filter(function (v) { return String(v.anno) === String(anno); })[0];
+
     var html = '<h2>Stagione ' + anno + '</h2>';
 
     if (!classifica.length && !coppa.length && !budget.length) {
@@ -165,7 +128,25 @@
       return;
     }
 
-    // Stagione non ancora giocata: dirlo, invece di mostrare tabelle vuote
+    // Il campione dell'anno scelto, in evidenza
+    if (edizione && edizione.campione) {
+      html +=
+        '<div class="vetrina">' +
+          '<div class="vetrina-coppa">🏆</div>' +
+          '<div>' +
+            '<div class="vetrina-etichetta">Campione ' + anno + '</div>' +
+            '<div class="vetrina-nome">' + esc(edizione.campione.squadra) + '</div>' +
+            '<div class="vetrina-meta">' +
+              esc(allenatori[edizione.campione.id] || '') +
+              (edizione.campione.punteggio != null
+                ? ' · ' + edizione.campione.punteggio + ' punti' : '') +
+              (edizione.coppa
+                ? ' · coppa a ' + esc(edizione.coppa.squadra) : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+
     if (!classifica.length) {
       html +=
         '<div class="banner banner-attenzione">' +
@@ -198,7 +179,6 @@
           '<th class="num">Punteggio</th>' +
         '</tr></thead><tbody>' + righe + '</tbody></table></div>';
 
-      // La classifica segue i punti di campionato, non i fantapunti totali
       var conPunteggio = classifica.filter(function (r) { return r.punteggio != null; });
       if (conPunteggio.length > 1) {
         var top = conPunteggio.slice().sort(function (a, b) {
@@ -246,8 +226,8 @@
       });
       html +=
         '<h3>Crediti portati all\'asta ' + anno + '</h3>' +
-        '<p class="nota-tabella">Ricavati dalla stagione ' +
-          (budget[0].daStagione) + ': crediti avanzati più premi e malus ' +
+        '<p class="nota-tabella">Ricavati dalla stagione ' + budget[0].daStagione +
+          ': crediti avanzati più premi e malus ' +
           '(<a href="regolamento.html#s12">regolamento § 12–17</a>).</p>' +
         '<div class="table-wrap"><table><thead><tr>' +
           '<th>Squadra</th><th class="num">Avanzati</th>' +
@@ -259,13 +239,6 @@
     contenitore.innerHTML = html;
   }
 
-  function segnato(v) {
-    if (v === null || v === undefined) return '—';
-    if (v > 0) return '<span class="pos">+' + v + '</span>';
-    if (v < 0) return '<span class="neg">' + v + '</span>';
-    return '0';
-  }
-
   // --- Avvio ---------------------------------------------------------------
 
   function mostra(anno) {
@@ -274,7 +247,7 @@
     if (typeof window.preparaTabelle === 'function') window.preparaTabelle();
   }
 
-  disegnaAlbo();
+  disegnaMedagliere();
 
   if (!stagioni.length) {
     document.getElementById('sezione-filtro').hidden = true;

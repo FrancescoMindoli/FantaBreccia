@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fanta Breccia — Stagioni</title>
-<meta name="description" content="Albo d'oro, classifiche, coppa e crediti stagione per stagione.">
+<meta name="description" content="Medagliere storico, classifiche, coppa e crediti stagione per stagione.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,27 +26,30 @@
 
   <header class="hero">
     <h1>Stagioni</h1>
-    <p>L'albo d'oro della lega, e i risultati di ciascuna stagione.</p>
+    <p>Il medagliere di sempre, e i risultati di ciascuna stagione.</p>
   </header>
 
   <p class="errore-input" id="errore" hidden></p>
 
-  <!-- 1. Albo d'oro: tutte le edizioni insieme -->
-  <section id="sezione-albo">
-    <h2>Albo d'oro</h2>
-    <div id="albo"></div>
+  <!-- 1. Il medagliere, come una classifica -->
+  <section id="sezione-medagliere">
+    <h2>Medagliere</h2>
+    <p class="nota-tabella">
+      Ordinato per ori, poi argenti, poi bronzi. A parità di medaglie conta
+      il punteggio totalizzato nelle stagioni giocate.
+    </p>
+    <div id="medagliere"></div>
   </section>
 
-  <!-- 2. Il filtro dell'anno -->
+  <!-- 2. Il filtro: da qui in giù è tutto relativo all'anno scelto -->
   <section id="sezione-filtro">
-    <h2>Una stagione alla volta</h2>
     <div class="anno-bar">
       <span class="anno-label">Stagione</span>
       <div class="anno-scelte" id="anno-scelte"></div>
     </div>
   </section>
 
-  <!-- 3. Risultati e crediti della stagione scelta -->
+  <!-- 3. Tutto il resto, filtrato -->
   <section id="sezione-stagione">
     <div id="stagione"></div>
   </section>

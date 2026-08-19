@@ -312,13 +312,24 @@ def costruisci_albo_doro(dati: dict) -> None:
     per_anno = []
     medaglie: dict = {}
 
+    def scheda(idx):
+        return medaglie.setdefault(idx, {"ori": 0, "argenti": 0, "bronzi": 0,
+                                         "coppe": 0, "miglioriPunteggi": 0,
+                                         "stagioni": 0, "punteggio": 0})
+
     def conta(idx, chiave):
-        v = medaglie.setdefault(idx, {"ori": 0, "argenti": 0, "bronzi": 0,
-                                      "coppe": 0, "miglioriPunteggi": 0})
-        v[chiave] += 1
+        scheda(idx)[chiave] += 1
 
     for anno_str, classifica in dati["classifiche"].items():
         anno = int(anno_str)
+        # Ogni squadra presente in classifica accumula stagioni e punti: sono
+        # il criterio di spareggio del medagliere fra chi ha le stesse medaglie.
+        for r in classifica:
+            v = scheda(r["id"])
+            v["stagioni"] += 1
+            if r["punteggio"] is not None:
+                v["punteggio"] = round(v["punteggio"] + r["punteggio"], 2)
+
         podio = {r["posizione"]: r for r in classifica if r["posizione"] in (1, 2, 3)}
         migliore = next((r for r in classifica if r["migliorPunteggio"]), None)
         coppa = dati["coppa"].get(anno_str, [])
@@ -359,9 +370,12 @@ def costruisci_albo_doro(dati: dict) -> None:
     medagliere = []
     for idx, v in medaglie.items():
         medagliere.append({"id": idx, "squadra": nomi.get(idx, f"Squadra {idx}"), **v})
-    # Ordine olimpico: prima gli ori, poi argenti, poi bronzi, poi le coppe
+    # Ordine olimpico — ori, argenti, bronzi — e a parità di medaglie vince
+    # chi ha totalizzato più punti nelle stagioni giocate.
     medagliere.sort(key=lambda m: (-m["ori"], -m["argenti"], -m["bronzi"],
-                                   -m["coppe"], m["squadra"]))
+                                   -m["punteggio"], m["squadra"]))
+    for posizione, m in enumerate(medagliere, start=1):
+        m["posizione"] = posizione
 
     dati["alboDoro"] = {"perAnno": per_anno, "medagliere": medagliere}
 

@@ -77,6 +77,19 @@ Una riga per contratto.
 Se lo stesso giocatore compare in due contratti attivi, lo script avvisa: o è
 un doppione, o sono due omonimi da distinguere nel nome.
 
+> ⚠️ **Dati di esempio da cancellare.** I contratti di *Whiteam FC*,
+> *MALLOREDDUS FC* e *Sporting Garra* sono **inventati**, inseriti per far
+> vedere i tre casi che la pagina Contratti sa riconoscere:
+>
+> | Squadra | Cosa dimostra |
+> |---|---|
+> | Whiteam FC | Avviso **rosso**: già fuori dai limiti nella stagione in corso |
+> | Sporting Garra | Avviso **giallo** sul secondo limite: A+B sfora dal 2027, quando gli Under 21 crescono |
+> | MALLOREDDUS FC | Nessun avviso: tutto in regola per l'intera durata dei contratti |
+>
+> Solo *Chentus* ha contratti veri, importati dal gestionale. Cancella le righe
+> inventate quando inserirai i dati reali.
+
 ### Il foglio Svincoli
 
 | Colonna | Cosa scrivere |

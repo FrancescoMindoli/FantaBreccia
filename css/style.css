@@ -135,12 +135,14 @@ body {
 }
 
 .nav-brand {
-  font-weight: 800;
-  font-size: 0.98rem;
-  letter-spacing: -0.01em;
+  font-weight: 850;
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
+  letter-spacing: -0.025em;
   text-decoration: none;
   white-space: nowrap;
-  background: var(--gradient);
+  padding-right: 0.5rem;
+  /* Sfumatura arancio → blu: è l'identità del sito, non un dettaglio */
+  background: linear-gradient(100deg, var(--orange) 0%, var(--orange-2) 35%, var(--blue) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -945,28 +947,113 @@ input[type="number"] { -moz-appearance: textfield; }
 }
 .g-eta { white-space: nowrap; }
 
-/* --- Chip dei nomi nel dettaglio slot --- */
+/* --- Dettaglio slot: una scheda per anno, nomi in colonna --- */
 
-.cella-chip { line-height: 2; }
-.cella-chip .vuoto { color: var(--text-3); }
-.ko-bordo { box-shadow: inset 3px 0 0 var(--ko); }
-
-.chip {
-  display: inline-block;
-  padding: 0.1rem 0.55rem;
-  margin: 0 0.25rem 0.25rem 0;
-  border-radius: 999px;
-  background: var(--elevated);
+.slot-anno {
+  background: linear-gradient(160deg, rgba(31, 43, 68, 0.6), rgba(16, 24, 42, 0.8));
   border: 1px solid var(--line);
-  font-size: 0.78rem;
-  white-space: nowrap;
+  border-radius: var(--r-l);
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.7rem;
 }
-.chip-cambio {
-  border-color: rgba(167, 139, 250, 0.5);
-  background: rgba(167, 139, 250, 0.14);
+.slot-anno-ko { border-color: rgba(248, 113, 113, 0.4); }
+.slot-anno-ora { box-shadow: inset 3px 0 0 var(--blue); }
+
+.slot-anno-testa {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+.slot-anno-num {
+  font-size: 1.15rem;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+}
+.slot-anno-ko-testo { color: var(--ko); font-size: 0.84rem; font-weight: 650; }
+.slot-anno-ok-testo { color: var(--ok); font-size: 0.84rem; font-weight: 650; }
+
+.slot-colonne {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.slot-col {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  padding: 0.5rem 0.6rem;
+  min-width: 0;
+}
+.slot-col-ko {
+  border-color: rgba(248, 113, 113, 0.45);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.slot-col-testa {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid var(--line);
+}
+.slot-col-nome {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 800;
+  color: var(--text-3);
+}
+.slot-col-conto {
+  font-weight: 850;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+.slot-col-conto i { font-style: normal; font-weight: 600; color: var(--text-3); }
+.slot-col-ko .slot-col-conto { color: var(--ko); }
+
+/* I nomi impilati: vanno a capo invece di sfondare la colonna */
+.slot-col-elenco { list-style: none; margin: 0; padding: 0; }
+.slot-col-elenco li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  padding: 0.15rem 0;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+.slot-col-elenco li span {
+  color: var(--text-3);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.slot-col-elenco li.nome-cambio {
   color: var(--violet);
   font-weight: 650;
 }
+.slot-col-elenco li.nome-cambio::after {
+  content: '↑';
+  color: var(--violet);
+  font-size: 0.7rem;
+}
+.slot-col-vuota { color: var(--text-3); font-size: 0.82rem; margin: 0; }
+
+.slot-anno-ab {
+  font-size: 0.84rem;
+  color: var(--text-2);
+  margin: 0.7rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+.slot-anno-ab strong { font-variant-numeric: tabular-nums; }
 
 .cat-cambio {
   display: inline-block;
@@ -1202,8 +1289,8 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
     min-height: 0;
   }
   .nav-brand {
-    font-size: 0.9rem;
-    padding: 0.55rem 0 0.35rem;
+    font-size: 1.2rem;
+    padding: 0.5rem 0 0.35rem;
   }
   .nav-links {
     margin-left: 0;
@@ -1300,8 +1387,9 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
   .g-prezzo b { font-size: 1.3rem; }
   .g-anni { grid-template-columns: repeat(2, 1fr); }
 
-  /* I chip del dettaglio slot restano leggibili in verticale */
-  table.schede .cella-chip { line-height: 1.9; text-align: right; }
+  /* Dettaglio slot: le tre categorie una sotto l'altra invece che affiancate */
+  .slot-colonne { grid-template-columns: 1fr; gap: 0.45rem; }
+  .slot-anno { padding: 0.8rem 0.85rem; }
 
   /* Contratti: le celle degli anni tornano leggibili in verticale */
   table.schede tfoot, table.schede tfoot tr, table.schede tfoot td { display: block; width: 100%; }

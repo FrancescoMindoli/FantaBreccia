@@ -409,40 +409,55 @@
       var suoiAnni = anniDi(id);
       if (!suoiAnni.length) return;
 
-      var righe = '';
+      if (squadreScelte().length > 1) html += '<h3>' + esc(nomeSquadra(id)) + '</h3>';
+
+      // Una scheda per anno, con tre colonne di nomi impilati. In tabella i
+      // nomi affiancati sfondavano la cella: qui ogni categoria ha la sua
+      // colonna e i nomi vanno a capo naturalmente.
       suoiAnni.forEach(function (anno) {
         var s = slot(id, anno);
 
-        function elenco(cat) {
-          if (!s.chi[cat].length) return '<span class="vuoto">—</span>';
-          return s.chi[cat].map(function (c) {
+        function colonna(cat, titolo, limite, valore, sfora) {
+          var nomi = s.chi[cat].map(function (c) {
             var d = dettaglio(c)[anno];
-            return '<span class="chip' + (d && d.cambiata ? ' chip-cambio' : '') + '">' +
-              esc(c.giocatore) + '</span>';
+            return '<li' + (d && d.cambiata ? ' class="nome-cambio"' : '') + '>' +
+              esc(c.giocatore) +
+              (d && d.eta !== null ? '<span>' + d.eta + '</span>' : '') +
+              '</li>';
           }).join('');
+
+          return '<div class="slot-col' + (sfora ? ' slot-col-ko' : '') + '">' +
+            '<div class="slot-col-testa">' +
+              '<span class="slot-col-nome">' + titolo + '</span>' +
+              '<span class="slot-col-conto">' + valore +
+                (limite === null ? '' : '<i>/' + limite + '</i>') + '</span>' +
+            '</div>' +
+            (nomi ? '<ul class="slot-col-elenco">' + nomi + '</ul>'
+                  : '<p class="slot-col-vuota">nessuno</p>') +
+          '</div>';
         }
 
-        righe +=
-          '<tr class="' + (s.sfora ? 'riga-ko' : '') +
-            (anno === annoCorrente ? ' riga-ora' : '') + '">' +
-            '<td><strong>' + anno + '</strong>' +
-              (s.sfora ? '<span class="meta ko">' + esc(s.motivi.join(' · ')) + '</span>' : '') +
-            '</td>' +
-            '<td class="cella-chip' + (s.A > C.MAX_CATEGORIA_A ? ' ko-bordo' : '') + '">' +
-              elenco('A') + '</td>' +
-            '<td class="cella-chip">' + elenco('B') + '</td>' +
-            '<td class="cella-chip">' + elenco('C') + '</td>' +
-          '</tr>';
+        html +=
+          '<article class="slot-anno' + (s.sfora ? ' slot-anno-ko' : '') +
+            (anno === annoCorrente ? ' slot-anno-ora' : '') + '">' +
+            '<header class="slot-anno-testa">' +
+              '<span class="slot-anno-num">' + anno + '</span>' +
+              (anno === annoCorrente
+                ? '<span class="badge b">stagione in corso</span>' : '') +
+              (s.sfora
+                ? '<span class="slot-anno-ko-testo">✗ ' + esc(s.motivi.join(' · ')) + '</span>'
+                : '<span class="slot-anno-ok-testo">✓ nei limiti</span>') +
+            '</header>' +
+            '<div class="slot-colonne">' +
+              colonna('A', 'Over 25', C.MAX_CATEGORIA_A, s.A, s.A > C.MAX_CATEGORIA_A) +
+              colonna('B', 'Under 25', null, s.B, false) +
+              colonna('C', 'Under 21', null, s.C, false) +
+            '</div>' +
+            '<p class="slot-anno-ab">Over 25 + Under 25: <strong' +
+              (s.ab > C.MAX_A_PIU_B ? ' class="ko"' : '') + '>' + s.ab +
+              ' / ' + C.MAX_A_PIU_B + '</strong></p>' +
+          '</article>';
       });
-
-      html +=
-        (squadreScelte().length > 1 ? '<h3>' + esc(nomeSquadra(id)) + '</h3>' : '') +
-        '<div class="table-wrap"><table><thead><tr>' +
-          '<th>Anno</th>' +
-          '<th>Over 25 <span class="th-nota">max ' + C.MAX_CATEGORIA_A + '</span></th>' +
-          '<th>Under 25 <span class="th-nota">con O25, max ' + C.MAX_A_PIU_B + '</span></th>' +
-          '<th>Under 21 <span class="th-nota">illimitati</span></th>' +
-        '</tr></thead><tbody>' + righe + '</tbody></table></div>';
     });
 
     document.getElementById('slot').innerHTML = html;

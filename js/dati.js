@@ -124,6 +124,150 @@ window.DATI = {
       "annoFine": 2029,
       "prezzo": 1,
       "attivo": true
+    },
+    {
+      "giocatore": "Dumfries",
+      "annoNascita": 1996,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 55,
+      "attivo": true
+    },
+    {
+      "giocatore": "Liberali",
+      "annoNascita": 2008,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Sommer",
+      "annoNascita": 1988,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 18,
+      "attivo": true
+    },
+    {
+      "giocatore": "Zeroli",
+      "annoNascita": 2008,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 2,
+      "attivo": true
+    },
+    {
+      "giocatore": "Esposito",
+      "annoNascita": 2005,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 9,
+      "attivo": true
+    },
+    {
+      "giocatore": "Fazzini",
+      "annoNascita": 2004,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 26,
+      "attivo": true
+    },
+    {
+      "giocatore": "Orsolini",
+      "annoNascita": 1997,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 74,
+      "attivo": true
+    },
+    {
+      "giocatore": "Pafundi",
+      "annoNascita": 2005,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 12,
+      "attivo": true
+    },
+    {
+      "giocatore": "Politano",
+      "annoNascita": 1993,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 120,
+      "attivo": true
+    },
+    {
+      "giocatore": "Volpato",
+      "annoNascita": 2004,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 30,
+      "attivo": true
+    },
+    {
+      "giocatore": "Zaccagni",
+      "annoNascita": 1995,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 88,
+      "attivo": true
+    },
+    {
+      "giocatore": "Barella",
+      "annoNascita": 1997,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 95,
+      "attivo": true
+    },
+    {
+      "giocatore": "Bastoni",
+      "annoNascita": 1999,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 62,
+      "attivo": true
+    },
+    {
+      "giocatore": "Camarda",
+      "annoNascita": 2008,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 3,
+      "attivo": true
+    },
+    {
+      "giocatore": "Dimarco",
+      "annoNascita": 1997,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 48,
+      "attivo": true
+    },
+    {
+      "giocatore": "Vlahovic",
+      "annoNascita": 2000,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 210,
+      "attivo": true
     }
   ],
   "svincoli": [],
@@ -384,7 +528,10 @@ window.DATI = {
         "argenti": 0,
         "bronzi": 0,
         "coppe": 0,
-        "miglioriPunteggi": 1
+        "miglioriPunteggi": 1,
+        "stagioni": 1,
+        "punteggio": 2486,
+        "posizione": 1
       },
       {
         "id": 5,
@@ -393,7 +540,10 @@ window.DATI = {
         "argenti": 1,
         "bronzi": 0,
         "coppe": 0,
-        "miglioriPunteggi": 0
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2471,
+        "posizione": 2
       },
       {
         "id": 4,
@@ -402,7 +552,94 @@ window.DATI = {
         "argenti": 0,
         "bronzi": 1,
         "coppe": 1,
-        "miglioriPunteggi": 0
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2419.5,
+        "posizione": 3
+      },
+      {
+        "id": 3,
+        "squadra": "Sporting Garra",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2480,
+        "posizione": 4
+      },
+      {
+        "id": 9,
+        "squadra": "Compagnia Ascolana Sigari",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2433,
+        "posizione": 5
+      },
+      {
+        "id": 2,
+        "squadra": "MALLOREDDUS FC",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2400,
+        "posizione": 6
+      },
+      {
+        "id": 10,
+        "squadra": "Tridente demoniaco",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2396,
+        "posizione": 7
+      },
+      {
+        "id": 6,
+        "squadra": "Nkunku Settete",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2395.5,
+        "posizione": 8
+      },
+      {
+        "id": 7,
+        "squadra": "Mapi Group",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2392.5,
+        "posizione": 9
+      },
+      {
+        "id": 1,
+        "squadra": "Chentus",
+        "ori": 0,
+        "argenti": 0,
+        "bronzi": 0,
+        "coppe": 0,
+        "miglioriPunteggi": 0,
+        "stagioni": 1,
+        "punteggio": 2384,
+        "posizione": 10
       }
     ]
   },
