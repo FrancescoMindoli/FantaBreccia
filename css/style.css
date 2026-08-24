@@ -128,15 +128,11 @@ body {
   display: flex;
   align-items: center;
   gap: 2px;
-  margin-left: 0.25rem;
+  margin-left: auto;
   /* Su schermi larghi stanno in riga; su telefono vanno a capo (§ 10):
      mai una barra che scorre, altrimenti l'ultima voce resta nascosta. */
   flex-wrap: wrap;
 }
-
-/* Le pagine di consultazione dei dati stanno a destra, staccate dalle
-   pagine di regole: sono due usi diversi del sito. */
-.nav-links.nav-right { margin-left: auto; }
 
 .nav-brand {
   font-weight: 850;
@@ -1295,14 +1291,13 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
   /* Navigazione: logo su una riga, voci su quella sotto, tutte visibili
      senza scorrere. Con cinque voci in riga singola l'ultima usciva fuori. */
   .nav-inner {
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     gap: 0;
     padding-bottom: 0.4rem;
     min-height: 0;
   }
   .nav-brand {
-    flex: 0 0 100%;
     font-size: 1.2rem;
     padding: 0.5rem 0 0.35rem;
   }
@@ -1311,7 +1306,6 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
     gap: 0.25rem;
     justify-content: flex-start;
   }
-  .nav-links.nav-right { margin-left: auto; }
   .nav-link {
     padding: 5px 9px;
     font-size: 0.78rem;
