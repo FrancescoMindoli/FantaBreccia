@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fanta Breccia — Regolamento</title>
-<meta name="description" content="Il regolamento di gioco del Fanta Breccia: fasce di goal, modificatore di difesa, calciomercato, formazioni e multe, sostituzioni, rinvii, voti.">
+<meta name="description" content="Il regolamento del Fanta Breccia: fasce di goal, modificatore di difesa pesante, calciomercato, formazioni e multe, crediti, premi e malus.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,30 +26,26 @@
 
   <header class="hero">
     <h1>Regolamento</h1>
-    <p>Le regole di gioco della lega: punteggi, mercato, formazioni, sostituzioni. Le <strong>riconferme</strong> hanno una pagina tutta loro: <a href="index.html">Riconferme</a>.</p>
+    <p>Le regole della lega: punteggi, mercato, formazioni, crediti, premi. Le <strong>riconferme</strong> sono spiegate per esteso nella loro pagina: <a href="index.html">Riconferme</a>.</p>
   </header>
 
   <nav class="toc">
     <h2>Indice</h2>
     <ol>
       <li><a href="#s1">Fasce di goal</a></li>
-      <li><a href="#s2">Modificatore di difesa</a></li>
+      <li><a href="#s2">Modificatore di difesa pesante</a></li>
       <li><a href="#s3">Calciomercato</a></li>
-      <li><a href="#s4">Asterischi</a></li>
-      <li><a href="#s5">Formazione non inserita</a></li>
-      <li><a href="#s6">Panchina e sostituzioni</a></li>
-      <li><a href="#s7">Operazioni di mercato interno</a></li>
-      <li><a href="#s8">Rimborso crediti</a></li>
-      <li><a href="#s9">Partite rinviate</a></li>
-      <li><a href="#s10">Ruoli, voti e consegna</a></li>
-      <li><a href="#s11">Capitano e switch</a></li>
-      <li><a href="#s12">Premi e malus di fine stagione</a></li>
+      <li><a href="#s4">Formazione non inserita</a></li>
+      <li><a href="#s5">Panchina e sostituzioni</a></li>
+      <li><a href="#s6">Operazioni di mercato interno</a></li>
+      <li><a href="#s7">Partite rinviate</a></li>
+      <li><a href="#s8">Ruoli, voti e consegna</a></li>
+      <li><a href="#s9">Capitano e switch</a></li>
+      <li><a href="#s10">Crediti e budget</a></li>
+      <li><a href="#s11">Premi e malus di fine stagione</a></li>
+      <li><a href="#s12">Riconferme e svincoli — in sintesi</a></li>
     </ol>
   </nav>
-
-  <div class="callout info">
-    <p>Questo è il regolamento di gioco. Tutto ciò che riguarda riconferme, contratti, svincoli, crediti d'asta e premi di classifica è nella pagina <a href="index.html"><strong>Riconferme</strong></a>, che è il testo che fa fede su quella materia.</p>
-  </div>
 
 
   <section class="sezione" id="s1">
@@ -72,14 +68,16 @@
   </section>
 
   <section class="sezione" id="s2">
-    <h2><span class="num">§ 2</span> Modificatore di difesa</h2>
+    <h2><span class="num">§ 2</span> Modificatore di difesa pesante</h2>
     <div class="table-wrap">
       <table>
         <thead><tr><th class="num">Media difesa</th><th class="num">Bonus</th></tr></thead>
         <tbody>
           <tr><td class="num">6</td><td class="num pos">+1</td></tr>
+          <tr><td class="num">6,25</td><td class="num pos">+2</td></tr>
           <tr><td class="num">6,5</td><td class="num pos">+3</td></tr>
-          <tr><td class="num">7</td><td class="num pos">+6</td></tr>
+          <tr><td class="num">6,75</td><td class="num pos">+4</td></tr>
+          <tr><td class="num">7</td><td class="num pos">+5</td></tr>
         </tbody>
       </table>
     </div>
@@ -90,76 +88,80 @@
     <h2><span class="num">§ 3</span> Calciomercato</h2>
     <p>Quando un giocatore lascia il campionato, la squadra recupera parte dei crediti spesi:</p>
     <ul>
-      <li>partenza nella <strong>finestra estiva</strong> → si riprendono i <strong>2/3</strong> del prezzo</li>
+      <li>partenza nella <strong>finestra estiva</strong> → si riprendono i <strong>2/3</strong></li>
       <li>partenza nella <strong>finestra invernale</strong> → si riprende <strong>la metà</strong></li>
     </ul>
-    <p><strong>Deroga mercato arabo.</strong> Fino al <strong>20 settembre</strong>: a chi esce un giocatore, lo sostituisce pescando dagli svincolati, senza aspettare l'asta di riparazione.</p>
+    <p><strong>Asterischi:</strong> si aspetta l'<strong>asta di riparazione</strong> per sostituirli.</p>
+    <p><strong>Deroga mercato arabo.</strong> Fino al <strong>20 settembre</strong>, a chi esce un giocatore lo sostituisce pescando dagli svincolati, senza aspettare l'asta di riparazione.</p>
     <p><strong>Gli svincolati costano sempre 1 credito.</strong></p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s4">
-    <h2><span class="num">§ 4</span> Asterischi</h2>
-    <p>Per i giocatori con asterisco si <strong>aspetta l'asta di riparazione</strong> per sostituirli, salvo la deroga del mercato arabo di cui al § 3.</p>
+    <h2><span class="num">§ 4</span> Formazione non inserita</h2>
+    <p>Se la formazione non viene inserita entra <strong>l'ultima schierata</strong>, con un malus di <strong>−3</strong>.</p>
+    <p>Alla <strong>terza volta nel girone</strong> scatta una <strong>multa di dieci euro</strong>, e così ogni tre formazioni non inserite. A fine girone il conteggio <strong>si azzera</strong>.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s5">
-    <h2><span class="num">§ 5</span> Formazione non inserita</h2>
-    <p>Se la formazione non viene inserita, entra <strong>l'ultima schierata</strong> con un malus di <strong>−3</strong>.</p>
-    <p>Alla <strong>terza volta nel girone</strong> scatta una <strong>multa di dieci euro</strong>. La multa si ripete ogni tre formazioni non inserite. Il conteggio <strong>si azzera a fine girone</strong>.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s6">
-    <h2><span class="num">§ 6</span> Panchina e sostituzioni</h2>
+    <h2><span class="num">§ 5</span> Panchina e sostituzioni</h2>
     <ul>
-      <li>Panchina: <strong>tutti</strong> i giocatori disponibili</li>
+      <li>Panchina: <strong>tutti</strong></li>
       <li><strong>5 cambi</strong></li>
       <li><strong>Nessun cambio modulo</strong></li>
     </ul>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
+  <section class="sezione" id="s6">
+    <h2><span class="num">§ 6</span> Operazioni di mercato interno</h2>
+    <p><strong>5 acquisti</strong> e <strong>5 scambi/svincoli</strong>, intesi come operazioni in generale.</p>
+    <a class="back-top" href="#top">↑ Torna all'indice</a>
+  </section>
+
   <section class="sezione" id="s7">
-    <h2><span class="num">§ 7</span> Operazioni di mercato interno</h2>
-    <p>Per stagione ogni squadra dispone di <strong>5 acquisti</strong> e <strong>5 scambi/svincoli</strong>, intesi come operazioni in generale.</p>
+    <h2><span class="num">§ 7</span> Partite rinviate</h2>
+    <ul>
+      <li><strong>6 politico</strong> se la partita non viene recuperata entro la giornata successiva</li>
+      <li>se nella stessa giornata sono rinviate <strong>2 o più partite</strong>, si aspettano i recuperi in ogni caso</li>
+    </ul>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s8">
-    <h2><span class="num">§ 8</span> Rimborso crediti</h2>
-    <p>All'<strong>asta di riparazione invernale</strong> vengono rimborsati <strong>50 crediti</strong> a ogni squadra, una sola volta per sessione.</p>
+    <h2><span class="num">§ 8</span> Ruoli, voti e consegna</h2>
+    <ul>
+      <li><strong>Ruoli:</strong> predefiniti</li>
+      <li><strong>Voti:</strong> Fantagazzetta live</li>
+      <li><strong>Termine ultimo di consegna:</strong> il minimo possibile</li>
+    </ul>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s9">
-    <h2><span class="num">§ 9</span> Partite rinviate</h2>
-    <ul>
-      <li><strong>6 politico</strong> se la partita non viene recuperata entro la giornata successiva</li>
-      <li>se nella stessa giornata sono rinviate <strong>3 o più partite</strong>, si aspettano i recuperi in ogni caso</li>
-    </ul>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s10">
-    <h2><span class="num">§ 10</span> Ruoli, voti e consegna</h2>
-    <ul>
-      <li><strong>Ruoli:</strong> predefiniti</li>
-      <li><strong>Voti:</strong> Fantagazzetta live</li>
-      <li><strong>Termine ultimo di consegna della formazione:</strong> il minimo possibile</li>
-    </ul>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s11">
-    <h2><span class="num">§ 11</span> Capitano e switch</h2>
+    <h2><span class="num">§ 9</span> Capitano e switch</h2>
     <p>Capitano: <strong>no</strong>. Switch: <strong>no</strong>.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
-  <section class="sezione" id="s12">
-    <h2><span class="num">§ 12</span> Premi e malus di fine stagione</h2>
+  <section class="sezione" id="s10">
+    <h2><span class="num">§ 10</span> Crediti e budget</h2>
+    <p>Il budget d'asta è dato da:</p>
+<pre><code>1000 crediti
++ crediti rimasti dalla stagione precedente
++ crediti premio dell'anno precedente</code></pre>
+    <p>I crediti residui contano perché le riconferme hanno un costo aggiuntivo: chi tiene molti giocatori sotto contratto arriva all'asta con meno soldi da spendere.</p>
+    <div class="callout warn">
+      <span class="callout-title">Tetto e pavimento</span>
+      <p>Budget massimo <strong>1100</strong>, budget minimo <strong>900</strong>. Quello che avanza oltre 1100 si perde.</p>
+    </div>
+    <p>All'<strong>asta di riparazione</strong> vengono dati <strong>50 crediti</strong> a ogni squadra.</p>
+    <a class="back-top" href="#top">↑ Torna all'indice</a>
+  </section>
+
+  <section class="sezione" id="s11">
+    <h2><span class="num">§ 11</span> Premi e malus di fine stagione</h2>
     <p>La posizione in classifica modifica il budget della stagione successiva:</p>
     <div class="table-wrap">
       <table>
@@ -177,19 +179,55 @@
         </tbody>
       </table>
     </div>
-    <p>A questi si aggiungono due bonus, cumulabili tra loro:</p>
+
+    <div class="callout">
+      <span class="callout-title">Bonus senior per chi vince</span>
+      <p>Oltre ai +25 crediti, la <strong>prima classificata</strong> ottiene un <strong>riscatto bonus senior</strong>: può riconfermare <strong>4 senior e 2 junior</strong> invece di 3 e 3. Non è un giocatore riconfermato in più, è uno slot che cambia categoria.</p>
+    </div>
+
+    <p>Due bonus si aggiungono, cumulabili tra loro:</p>
     <ul>
       <li><strong>+10</strong> — miglior punteggio della stagione</li>
       <li><strong>+10</strong> — vittoria della coppa</li>
     </ul>
-    <p>Chi fa doppietta prende <strong>+20</strong>. Come questi crediti entrano nel budget d'asta è spiegato nella pagina <a href="index.html#crediti">Riconferme, § 7</a>.</p>
+    <p>Chi fa doppietta prende <strong>+20</strong>.</p>
+    <a class="back-top" href="#top">↑ Torna all'indice</a>
+  </section>
+
+  <section class="sezione" id="s12">
+    <h2><span class="num">§ 12</span> Riconferme e svincoli — in sintesi</h2>
+
+    <div class="callout info">
+      <p>Qui solo i numeri secchi. Come funzionano davvero — contratti, categorie, anni, esempi — è spiegato nella pagina <a href="index.html"><strong>Riconferme</strong></a>.</p>
+    </div>
+
+    <h3>Costo delle riconferme</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Prezzo d'asta</th><th class="num">Aumento annuo</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="num">costo fisso 1</td></tr>
+          <tr><td>2 – 49</td><td class="num">+10%</td></tr>
+          <tr><td>50 – 99</td><td class="num">+15%</td></tr>
+          <tr><td>100 – 299</td><td class="num">+20%</td></tr>
+          <tr><td>300 e oltre</td><td class="num">+30%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La fascia si fissa sul <strong>prezzo pagato all'asta</strong> e <strong>resta quella per tutto il contratto</strong>, anche quando il costo cresciuto sfora la soglia della fascia successiva.</p>
+
+    <h3>Svincoli</h3>
+    <p><strong>10% del prezzo d'asta per ogni anno di contratto rimanente</strong>, arrotondato per eccesso.</p>
+
+    <h3>Reset</h3>
+    <p>Si può fare <strong>reset</strong>: non si riconferma nessuno, si svincolano tutti <strong>senza costi</strong> e si riparte da <strong>950 crediti</strong>. Ha senso solo se ci sono contratti in essere.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
 </main>
 
 <footer>
-  <p>Fanta Breccia — regolamento di gioco. Per le riconferme vedi la pagina <a href="index.html">Riconferme</a>.</p>
+  <p>Fanta Breccia — regolamento. Per le riconferme vedi la pagina <a href="index.html">Riconferme</a>.</p>
   <p>Regolamento aggiornato al 24 agosto 2026.</p>
 </footer>
 
