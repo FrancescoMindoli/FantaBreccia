@@ -314,32 +314,6 @@
   <p>Ogni movimento di crediti viene registrato con la sua motivazione: acquisti, riconferme, svincoli, residui, premi, malus, bonus, riparazione, reset. In qualsiasi momento si può ricostruire come sei arrivato al saldo che hai.</p>
 
 
-  <h2 id="formule">8. Le formule esatte</h2>
-
-  <p>Per chi vuole il testo secco, senza giri di parole:</p>
-
-<pre><code>costo_anno_1 = ceil( prezzo_acquisto × (1 + percentuale) )
-costo_anno_n = ceil( costo_anno_(n−1) × (1 + percentuale) )
-
-penale       = ceil( prezzo_acquisto × 10% × anni_rimanenti )
-
-anni_rimanenti = anno_fine − anno_corrente + 1
-anno_fine      = anno_inizio + 3</code></pre>
-
-  <p>Per il prezzo 1 il costo è 1 in tutti e quattro gli anni. Se gli anni rimanenti sono 0, la penale è 0. Se il giocatore esce dal listone, la penale è 0 in ogni caso.</p>
-
-  <h3>Cosa NON è in vigore</h3>
-
-  <p>Queste regole circolano ma <strong>non fanno parte</strong> del regolamento base, quindi non si applicano:</p>
-
-  <ul>
-    <li>fasce ≤10 / 11–20 / 21–30 / &gt;30</li>
-    <li>raddoppio del prezzo per acquisti di gennaio</li>
-    <li>arrotondamento a 2 decimali</li>
-    <li>formula esponenziale con arrotondamento solo alla fine</li>
-    <li>altre soglie, categorie, bonus o malus non presenti nel regolamento base</li>
-  </ul>
-
 
   <div class="callout info" style="margin-top:56px">
     <span class="callout-title">E adesso?</span>
