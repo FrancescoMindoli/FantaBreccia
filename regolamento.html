@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fanta Breccia — Regolamento integrale</title>
-<meta name="description" content="Il regolamento completo del Fanta Breccia: riconferme, categorie, fasce di costo, svincoli, crediti, premi e malus.">
+<title>Fanta Breccia — Regolamento</title>
+<meta name="description" content="Il regolamento di gioco del Fanta Breccia: fasce di goal, modificatore di difesa, calciomercato, formazioni e multe, sostituzioni, rinvii, voti.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,11 +13,13 @@
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">Fanta Breccia</a>
     <div class="nav-links">
-      <a class="nav-link" href="index.html">Come funziona</a>
-      <a class="nav-link" href="stagioni.html">Stagioni</a>
-      <a class="nav-link" href="contratti.html">Contratti</a>
+      <a class="nav-link" href="index.html">Riconferme</a>
       <a class="nav-link" href="simulatore.html">Simulatore</a>
       <a class="nav-link active" href="regolamento.html">Regolamento</a>
+    </div>
+    <div class="nav-links nav-right">
+      <a class="nav-link" href="stagioni.html">Stagioni</a>
+      <a class="nav-link" href="contratti.html">Contratti</a>
     </div>
   </div>
 </nav>
@@ -25,333 +27,146 @@
 <main id="top">
 
   <header class="hero">
-    <h1>Regolamento integrale</h1>
-    <p>Il testo completo e formale. Per una spiegazione discorsiva vedi <a href="index.html">Come funziona</a>.</p>
+    <h1>Regolamento</h1>
+    <p>Le regole di gioco della lega: punteggi, mercato, formazioni, sostituzioni. Le <strong>riconferme</strong> hanno una pagina tutta loro: <a href="index.html">Riconferme</a>.</p>
   </header>
 
   <nav class="toc">
     <h2>Indice</h2>
     <ol>
-      <li><a href="#s1">Riconferme</a></li>
-      <li><a href="#s2">Categorie e limiti</a></li>
-      <li><a href="#s3">Idoneità alla riconferma</a></li>
-      <li><a href="#s4">Fasce di costo</a></li>
-      <li><a href="#s5">Calcolo ricorsivo</a></li>
-      <li><a href="#s6">Arrotondamento</a></li>
-      <li><a href="#s7">Esempi ufficiali</a></li>
-      <li><a href="#s8">Svincolo</a></li>
-      <li><a href="#s9">Anni rimanenti</a></li>
-      <li><a href="#s10">Ciclo di vita</a></li>
-      <li><a href="#s11">RESET</a></li>
-      <li><a href="#s12">Crediti iniziali</a></li>
-      <li><a href="#s13">Tetto massimo e minimo</a></li>
-      <li><a href="#s14">Crediti residui</a></li>
-      <li><a href="#s15">Premi e malus di classifica</a></li>
-      <li><a href="#s16">Premi aggiuntivi</a></li>
-      <li><a href="#s17">Asta di riparazione</a></li>
-      <li><a href="#s18">Storico crediti</a></li>
-      <li><a href="#s20">Regole non implementate</a></li>
+      <li><a href="#s1">Fasce di goal</a></li>
+      <li><a href="#s2">Modificatore di difesa</a></li>
+      <li><a href="#s3">Calciomercato</a></li>
+      <li><a href="#s4">Asterischi</a></li>
+      <li><a href="#s5">Formazione non inserita</a></li>
+      <li><a href="#s6">Panchina e sostituzioni</a></li>
+      <li><a href="#s7">Operazioni di mercato interno</a></li>
+      <li><a href="#s8">Rimborso crediti</a></li>
+      <li><a href="#s9">Partite rinviate</a></li>
+      <li><a href="#s10">Ruoli, voti e consegna</a></li>
+      <li><a href="#s11">Capitano e switch</a></li>
     </ol>
   </nav>
 
   <div class="callout info">
-    <p>La numerazione delle sezioni segue quella del documento normativo interno, così che i riferimenti restino validi. Le sezioni <strong>19</strong> e <strong>21</strong> descrivono aspetti tecnici del gestionale e non riguardano i partecipanti: per questo non compaiono qui.</p>
+    <p>Questo è il regolamento di gioco. Tutto ciò che riguarda riconferme, contratti, svincoli, crediti d'asta e premi di classifica è nella pagina <a href="index.html"><strong>Riconferme</strong></a>, che è il testo che fa fede su quella materia.</p>
   </div>
 
 
   <section class="sezione" id="s1">
-    <h2><span class="num">§ 1</span> Riconferme (contratto di 4 anni)</h2>
-    <p>Quando un giocatore viene riconfermato, viene creato un contratto di <strong>4 anni</strong>. La squadra mantiene la giurisdizione sul giocatore per tutta la durata.</p>
-    <p>Il contratto è definito da: anno di inizio, anno di fine (pari all'anno di inizio più 3), prezzo pagato all'asta — <strong>immutabile</strong> — e stato attivo o chiuso.</p>
-    <p>Non è obbligatorio riconfermare alcun giocatore.</p>
+    <h2><span class="num">§ 1</span> Fasce di goal</h2>
+    <p>Il punteggio della squadra si converte in goal secondo queste soglie:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="num">Punteggio</th><th class="num">Goal</th></tr></thead>
+        <tbody>
+          <tr><td class="num">66</td><td class="num">1</td></tr>
+          <tr><td class="num">72</td><td class="num">2</td></tr>
+          <tr><td class="num">77</td><td class="num">3</td></tr>
+          <tr><td class="num">81</td><td class="num">4</td></tr>
+          <tr><td class="num">85</td><td class="num">5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nota-tabella">La progressione continua con lo stesso passo oltre il quinto goal.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s2">
-    <h2><span class="num">§ 2</span> Categorie e limiti delle riconferme</h2>
-    <p>Ogni squadra può riconfermare all'interno della propria rosa. Le categorie si calcolano <strong>in base all'età relativa della stagione di riferimento</strong>.</p>
-
+    <h2><span class="num">§ 2</span> Modificatore di difesa</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Categoria</th><th>Limite</th><th>Requisito</th></tr></thead>
+        <thead><tr><th class="num">Media difesa</th><th class="num">Bonus</th></tr></thead>
         <tbody>
-          <tr><td><span class="badge a">A</span></td><td>3</td><td>Qualsiasi età</td></tr>
-          <tr><td><span class="badge b">B</span></td><td>Nessuno dedicato, ma A+B ≤ 6</td><td>Età ≤ 25 nella stagione di riferimento</td></tr>
-          <tr><td><span class="badge c">C</span></td><td>Illimitato</td><td>Età ≤ 21 nella stagione di riferimento</td></tr>
+          <tr><td class="num">6</td><td class="num pos">+1</td></tr>
+          <tr><td class="num">6,5</td><td class="num pos">+3</td></tr>
+          <tr><td class="num">7</td><td class="num pos">+6</td></tr>
         </tbody>
       </table>
-    </div>
-
-    <p><strong>Logica dei limiti aggregati.</strong> Il limite dedicato della categoria A è sempre 3. La categoria B non ha un limite proprio, ma la somma A+B non può superare 6 in qualsiasi momento. La categoria C è completamente al di fuori di questi conteggi e rimane illimitata.</p>
-
-    <div class="esempio">
-      <span class="esempio-label">Esempio numerico — stagione 2026</span>
-      <p>Una squadra può avere 3 giocatori del 1999 (categoria A) più 3 giocatori nati nel 2001 (categoria B, età 25 nel 2026): 6 su 6 nella fascia A+B. A questi si aggiunge un numero illimitato di giocatori nati dal 2005 in poi (categoria C, under-21).</p>
-      <p>Nel 2027 i giocatori del 2001 compiono 26 anni e diventano categoria A. Si crea così un potenziale conflitto — 4 giocatori in categoria A a fronte di un massimo di 3 — che il sistema <strong>rileva e segnala, ma non blocca retroattivamente</strong> sui contratti già firmati.</p>
     </div>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s3">
-    <h2><span class="num">§ 3</span> Validazione dell'idoneità alla riconferma</h2>
-    <p>Prima di ogni riconferma vengono verificate quattro condizioni:</p>
-    <ol>
-      <li>Il giocatore è nella rosa della squadra.</li>
-      <li>Il giocatore non ha un contratto attivo.</li>
-      <li>Il giocatore rientra in una categoria (A, B o C), sempre in base all'età della stagione corrente.</li>
-      <li>I limiti sono rispettati: categoria A ≤ 3 (dedicato), A+B ≤ 6 (aggregato), categoria C illimitata.</li>
-    </ol>
+    <h2><span class="num">§ 3</span> Calciomercato</h2>
+    <p>Quando un giocatore lascia il campionato, la squadra recupera parte dei crediti spesi:</p>
+    <ul>
+      <li>partenza nella <strong>finestra estiva</strong> → si riprendono i <strong>2/3</strong> del prezzo</li>
+      <li>partenza nella <strong>finestra invernale</strong> → si riprende <strong>la metà</strong></li>
+    </ul>
+    <p><strong>Deroga mercato arabo.</strong> Fino al <strong>20 settembre</strong>: a chi esce un giocatore, lo sostituisce pescando dagli svincolati, senza aspettare l'asta di riparazione.</p>
+    <p><strong>Gli svincolati costano sempre 1 credito.</strong></p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s4">
-    <h2><span class="num">§ 4</span> Fasce di costo delle riconferme</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Prezzo iniziale</th><th class="num">Aumento</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td class="num">Costo fisso 1</td></tr>
-          <tr><td>2 – 49</td><td class="num">+10%</td></tr>
-          <tr><td>50 – 99</td><td class="num">+15%</td></tr>
-          <tr><td>100 – 299</td><td class="num">+20%</td></tr>
-          <tr><td>≥ 300</td><td class="num">+30%</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p><strong>Casi di confine:</strong></p>
-    <ul>
-      <li><code>1</code> → fissato a 1 per tutti gli anni</li>
-      <li><code>49</code> → fascia 10% &nbsp;·&nbsp; <code>50</code> → fascia 15%</li>
-      <li><code>99</code> → fascia 15% &nbsp;·&nbsp; <code>100</code> → fascia 20%</li>
-      <li><code>299</code> → fascia 20% &nbsp;·&nbsp; <code>300</code> → fascia 30%</li>
-    </ul>
+    <h2><span class="num">§ 4</span> Asterischi</h2>
+    <p>Per i giocatori con asterisco si <strong>aspetta l'asta di riparazione</strong> per sostituirli, salvo la deroga del mercato arabo di cui al § 3.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s5">
-    <h2><span class="num">§ 5</span> Calcolo ricorsivo del costo</h2>
-    <p>Il costo di riconferma è calcolato <strong>ricorsivamente anno per anno</strong>:</p>
-<pre><code>costo_anno_1 = prezzo_acquisto × (1 + percentuale)
-costo_anno_1 = arrotondato per eccesso all'intero
-
-costo_anno_2 = costo_anno_1 × (1 + percentuale)
-costo_anno_2 = arrotondato per eccesso all'intero
-
-... e così via per gli anni 3 e 4</code></pre>
-    <p>Per il prezzo 1 il costo è 1 in tutti e quattro gli anni.</p>
+    <h2><span class="num">§ 5</span> Formazione non inserita</h2>
+    <p>Se la formazione non viene inserita, entra <strong>l'ultima schierata</strong> con un malus di <strong>−3</strong>.</p>
+    <p>Alla <strong>terza volta nel girone</strong> scatta una <strong>multa di dieci euro</strong>. La multa si ripete ogni tre formazioni non inserite. Il conteggio <strong>si azzera a fine girone</strong>.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s6">
-    <h2><span class="num">§ 6</span> Arrotondamento</h2>
-    <p>Tutti i costi delle riconferme e degli svincoli sono <strong>arrotondati all'intero superiore</strong>.</p>
-    <p>Esempi: <code>22,0 → 22</code> &nbsp;·&nbsp; <code>24,2 → 25</code> &nbsp;·&nbsp; <code>27,5 → 28</code> &nbsp;·&nbsp; <code>30,8 → 31</code></p>
+    <h2><span class="num">§ 6</span> Panchina e sostituzioni</h2>
+    <ul>
+      <li>Panchina: <strong>tutti</strong> i giocatori disponibili</li>
+      <li><strong>5 cambi</strong></li>
+      <li><strong>Nessun cambio modulo</strong></li>
+    </ul>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s7">
-    <h2><span class="num">§ 7</span> Esempi ufficiali</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th class="num">Prezzo</th><th class="num">Anno 1</th><th class="num">Anno 2</th><th class="num">Anno 3</th><th class="num">Anno 4</th></tr></thead>
-        <tbody>
-          <tr><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
-          <tr><td class="num">20</td><td class="num">22</td><td class="num">25</td><td class="num">28</td><td class="num">31</td></tr>
-          <tr><td class="num">70</td><td class="num">81</td><td class="num">94</td><td class="num">109</td><td class="num">126</td></tr>
-          <tr><td class="num">150</td><td class="num">180</td><td class="num">216</td><td class="num">260</td><td class="num">312</td></tr>
-          <tr><td class="num">310</td><td class="num">403</td><td class="num">524</td><td class="num">682</td><td class="num">887</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <h2><span class="num">§ 7</span> Operazioni di mercato interno</h2>
+    <p>Per stagione ogni squadra dispone di <strong>5 acquisti</strong> e <strong>5 scambi/svincoli</strong>, intesi come operazioni in generale.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s8">
-    <h2><span class="num">§ 8</span> Svincolo</h2>
-    <p>Penale di svincolo:</p>
-<pre><code>penale = prezzo_acquisto × 10% × anni_rimanenti</code></pre>
-    <p>con arrotondamento all'intero superiore.</p>
-    <div class="esempio">
-      <span class="esempio-label">Esempio ufficiale</span>
-      <p><code>35 × 10% × 3 = 10,5</code> → penale = <strong>11</strong></p>
-    </div>
-    <p>Se gli anni rimanenti sono 0, la penale è 0.</p>
-    <p>Lo svincolo chiude il contratto, registra la penale nello storico crediti e impedisce doppio svincolo od operazioni su contratti già chiusi.</p>
-
-    <h3>Uscita dal listone</h3>
-    <p>Se il giocatore, per qualsiasi motivo, <strong>non è più presente nel listone</strong> (cessione a un campionato estero, svincolo dal club, ritiro, esclusione o altra causa), <strong>non è dovuta alcuna penale</strong>: il contratto si chiude e il giocatore è svincolato a <strong>0 crediti</strong>, indipendentemente dagli anni rimanenti.</p>
+    <h2><span class="num">§ 8</span> Rimborso crediti</h2>
+    <p>All'<strong>asta di riparazione invernale</strong> vengono rimborsati <strong>50 crediti</strong> a ogni squadra, una sola volta per sessione.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s9">
-    <h2><span class="num">§ 9</span> Anni rimanenti</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Anno contratto</th><th class="num">Anni rimanenti</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td class="num">4</td></tr>
-          <tr><td>2</td><td class="num">3</td></tr>
-          <tr><td>3</td><td class="num">2</td></tr>
-          <tr><td>4</td><td class="num">1</td></tr>
-          <tr><td>Terminato</td><td class="num">0</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Gli anni rimanenti sono calcolati <strong>esclusivamente</strong> sui dati del contratto:</p>
-<pre><code>anni_rimanenti = anno_fine − anno_corrente + 1</code></pre>
-
-    <h3>Cosa significa "anno" in concreto</h3>
-
-    <p>Ogni anno di contratto corrisponde a <strong>un'asta</strong>: un momento in cui la squadra decide se tenere il giocatore o lasciarlo andare.</p>
-
+    <h2><span class="num">§ 9</span> Partite rinviate</h2>
     <ul>
-      <li><strong>Anno 1</strong> è l'anno in cui il giocatore viene riconfermato. La penale dell'anno 1 è quella che si paga svincolandolo <em>durante quella stessa stagione</em>, per esempio a gennaio.</li>
-      <li><strong>Anno 2</strong> è la seconda asta da quando è stato riconfermato: si paga la cifra dell'anno 2 per riscattarlo, oppure la penale corrispondente per non riscattarlo.</li>
-      <li><strong>Anni 3 e 4</strong> seguono la stessa logica, fino alla scadenza del contratto.</li>
+      <li><strong>6 politico</strong> se la partita non viene recuperata entro la giornata successiva</li>
+      <li>se nella stessa giornata sono rinviate <strong>3 o più partite</strong>, si aspettano i recuperi in ogni caso</li>
     </ul>
-
-    <div class="esempio">
-      <span class="esempio-label">Esempio — giocatore pagato 20 all'asta</span>
-      <p>
-        <strong>Anno 1:</strong> lo riconfermi pagando 22. Se lo svincoli nella stagione stessa, 8 di penale.<br>
-        <strong>Anno 2:</strong> lo riscatti pagando 25, oppure paghi 6 di penale e lo lasci andare.<br>
-        <strong>Anno 3:</strong> 28 per riscattarlo, oppure 4 di penale.<br>
-        <strong>Anno 4:</strong> 31 per riscattarlo, oppure 2 di penale.
-      </p>
-      <p>Più il contratto avanza, più costa tenerlo e meno costa lasciarlo andare.</p>
-    </div>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s10">
-    <h2><span class="num">§ 10</span> Ciclo di vita</h2>
-<pre><code>giocatore acquistato
-        ↓
-possibile riconferma (se eleggibile)
-        ↓
-contratto di 4 anni
-        ↓
-riconferma (nuovo contratto)
-        oppure
-svincolo (penale)
-        ↓
-fine contratto</code></pre>
+    <h2><span class="num">§ 10</span> Ruoli, voti e consegna</h2>
+    <ul>
+      <li><strong>Ruoli:</strong> predefiniti</li>
+      <li><strong>Voti:</strong> Fantagazzetta live</li>
+      <li><strong>Termine ultimo di consegna della formazione:</strong> il minimo possibile</li>
+    </ul>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
   <section class="sezione" id="s11">
-    <h2><span class="num">§ 11</span> RESET</h2>
-    <p>Il RESET significa:</p>
-    <ul>
-      <li>non riconfermare nessun giocatore</li>
-      <li>non effettuare svincoli</li>
-      <li>non mantenere i contratti di riconferma</li>
-      <li>partire con <strong>950 crediti</strong> anziché 1000 per l'asta</li>
-    </ul>
-    <p>Il RESET è una scelta esplicita della squadra e <strong>non può essere eseguito due volte nella stessa stagione</strong>.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s12">
-    <h2><span class="num">§ 12</span> Crediti iniziali</h2>
-    <p>L'asta parte da <strong>1000 crediti</strong>. A questi si aggiungono i crediti rimasti dalla stagione precedente e i crediti premio o malus della stagione precedente.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s13">
-    <h2><span class="num">§ 13</span> Tetto massimo e minimo</h2>
-<pre><code>budget massimo = 1100
-budget minimo  =  900</code></pre>
-    <p>Se il calcolo supera 1100 il budget viene fissato a 1100; se scende sotto 900 viene fissato a 900.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s14">
-    <h2><span class="num">§ 14</span> Crediti residui</h2>
-    <p>I crediti non spesi nella stagione precedente vengono riportati alla stagione successiva:</p>
-<pre><code>1000 iniziali
-− 850 spesi
-= 150 residui</code></pre>
-    <p>I 150 sono inclusi nel calcolo del budget successivo, salvo il tetto di cui al § 13.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s15">
-    <h2><span class="num">§ 15</span> Premi e malus di classifica</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th class="num">Posizione</th><th class="num">Modifica</th></tr></thead>
-        <tbody>
-          <tr><td class="num">1</td><td class="num pos">+25</td></tr>
-          <tr><td class="num">2</td><td class="num pos">+15</td></tr>
-          <tr><td class="num">3</td><td class="num pos">+10</td></tr>
-          <tr><td class="num">4</td><td class="num pos">+5</td></tr>
-          <tr><td class="num">5</td><td class="num">0</td></tr>
-          <tr><td class="num">6</td><td class="num">0</td></tr>
-          <tr><td class="num">7</td><td class="num neg">−5</td></tr>
-          <tr><td class="num">8</td><td class="num neg">−10</td></tr>
-          <tr><td class="num">9</td><td class="num neg">−15</td></tr>
-          <tr><td class="num">10</td><td class="num neg">−20</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Ogni valore è registrato nello storico crediti con motivazione esplicita.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s16">
-    <h2><span class="num">§ 16</span> Premi aggiuntivi</h2>
-<pre><code>Miglior punteggio = +10
-Coppa             = +10</code></pre>
-    <p>Una singola squadra può ricevere entrambi i bonus, per un totale di <strong>+20</strong>. I due movimenti restano distinguibili nello storico.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s17">
-    <h2><span class="num">§ 17</span> Asta di riparazione</h2>
-    <p>All'asta di riparazione vengono restituiti <strong>+50 crediti</strong> a ogni squadra. Il movimento è assegnato <strong>una sola volta per sessione</strong>.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s18">
-    <h2><span class="num">§ 18</span> Storico crediti</h2>
-    <p>Ogni movimento di crediti viene registrato con la squadra, la variazione e la motivazione. Sono registrati:</p>
-    <ul>
-      <li>acquisti</li>
-      <li>riconferme</li>
-      <li>svincoli</li>
-      <li>crediti residui</li>
-      <li>premi e malus di classifica</li>
-      <li>bonus miglior punteggio</li>
-      <li>bonus coppa</li>
-      <li>+50 asta di riparazione</li>
-      <li>RESET</li>
-    </ul>
-    <p>Lo storico permette di ricostruire in ogni momento il saldo della squadra.</p>
-    <a class="back-top" href="#top">↑ Torna all'indice</a>
-  </section>
-
-  <section class="sezione" id="s20">
-    <h2><span class="num">§ 20</span> Regole NON implementate</h2>
-    <p>Le seguenti regole <strong>non</strong> sono in vigore, perché non presenti nel regolamento base:</p>
-    <ul>
-      <li>fasce ≤10 / 11–20 / 21–30 / &gt;30</li>
-      <li>raddoppio del prezzo per acquisti di gennaio</li>
-      <li>arrotondamento a 2 decimali</li>
-      <li>formula esponenziale con arrotondamento solo alla fine</li>
-      <li>altre soglie, categorie, bonus o malus non presenti nel regolamento base</li>
-    </ul>
+    <h2><span class="num">§ 11</span> Capitano e switch</h2>
+    <p>Capitano: <strong>no</strong>. Switch: <strong>no</strong>.</p>
     <a class="back-top" href="#top">↑ Torna all'indice</a>
   </section>
 
 </main>
 
 <footer>
-  <p>Fanta Breccia — regolamento integrale. Questo è il testo che fa fede.</p>
-  <p>Regolamento aggiornato al 19 agosto 2026.</p>
+  <p>Fanta Breccia — regolamento di gioco. Per le riconferme vedi la pagina <a href="index.html">Riconferme</a>.</p>
+  <p>Regolamento aggiornato al 24 agosto 2026.</p>
 </footer>
 
+<script src="js/anni.js"></script>
 <script src="js/tabelle.js"></script>
 </body>
 </html>

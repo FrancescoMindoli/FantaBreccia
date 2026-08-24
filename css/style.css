@@ -128,11 +128,15 @@ body {
   display: flex;
   align-items: center;
   gap: 2px;
-  margin-left: auto;
+  margin-left: 0.25rem;
   /* Su schermi larghi stanno in riga; su telefono vanno a capo (§ 10):
      mai una barra che scorre, altrimenti l'ultima voce resta nascosta. */
   flex-wrap: wrap;
 }
+
+/* Le pagine di consultazione dei dati stanno a destra, staccate dalle
+   pagine di regole: sono due usi diversi del sito. */
+.nav-links.nav-right { margin-left: auto; }
 
 .nav-brand {
   font-weight: 850;
@@ -354,6 +358,9 @@ td.num { font-weight: 600; }
   margin: -0.4rem 0 1.2rem;
   line-height: 1.55;
 }
+
+/* Inciso secondario dentro una riga di testo o di tabella */
+.muted { color: var(--text-3); font-size: var(--t-small); }
 
 /* Etichette e valori */
 
@@ -1288,13 +1295,14 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
   /* Navigazione: logo su una riga, voci su quella sotto, tutte visibili
      senza scorrere. Con cinque voci in riga singola l'ultima usciva fuori. */
   .nav-inner {
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 0;
     padding-bottom: 0.4rem;
     min-height: 0;
   }
   .nav-brand {
+    flex: 0 0 100%;
     font-size: 1.2rem;
     padding: 0.5rem 0 0.35rem;
   }
@@ -1303,6 +1311,7 @@ footer p { margin: 0 auto 0.4rem; max-width: 42ch; }
     gap: 0.25rem;
     justify-content: flex-start;
   }
+  .nav-links.nav-right { margin-left: auto; }
   .nav-link {
     padding: 5px 9px;
     font-size: 0.78rem;

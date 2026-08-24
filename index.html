@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fanta Breccia — Come funziona</title>
-<meta name="description" content="Le regole del Fanta Breccia spiegate in modo semplice: riconferme, contratti di 4 anni, fasce di costo, svincoli e crediti.">
+<title>Fanta Breccia — Riconferme</title>
+<meta name="description" content="Le riconferme del Fanta Breccia: contratti di 4 anni, categorie, fasce di costo, svincoli, RESET e crediti.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,11 +13,13 @@
   <div class="nav-inner">
     <a class="nav-brand" href="index.html">Fanta Breccia</a>
     <div class="nav-links">
-      <a class="nav-link active" href="index.html">Come funziona</a>
-      <a class="nav-link" href="stagioni.html">Stagioni</a>
-      <a class="nav-link" href="contratti.html">Contratti</a>
+      <a class="nav-link active" href="index.html">Riconferme</a>
       <a class="nav-link" href="simulatore.html">Simulatore</a>
       <a class="nav-link" href="regolamento.html">Regolamento</a>
+    </div>
+    <div class="nav-links nav-right">
+      <a class="nav-link" href="stagioni.html">Stagioni</a>
+      <a class="nav-link" href="contratti.html">Contratti</a>
     </div>
   </div>
 </nav>
@@ -25,8 +27,8 @@
 <main>
 
   <header class="hero">
-    <h1>Come funziona il Fanta Breccia</h1>
-    <p>Tutto quello che ti serve sapere per capire riconferme, contratti e crediti. In cinque minuti.</p>
+    <h1>Le riconferme</h1>
+    <p>Tutto quello che ti serve sapere su riconferme, contratti, svincoli e crediti. In cinque minuti. Per le regole di gioco della lega — fasce di goal, modificatore, mercato, formazioni — vedi il <a href="regolamento.html">regolamento</a>.</p>
   </header>
 
   <div class="callout info">
@@ -42,7 +44,7 @@
   </div>
 
 
-  <h2>1. La riconferma</h2>
+  <h2 id="riconferma">1. La riconferma</h2>
 
   <p>A fine stagione puoi decidere di tenere alcuni giocatori della tua rosa invece di rimetterli all'asta. Si chiama <strong>riconferma</strong>.</p>
 
@@ -55,7 +57,7 @@
   </div>
 
 
-  <h2>2. Chi puoi riconfermare</h2>
+  <h2 id="categorie">2. Chi puoi riconfermare</h2>
 
   <p>Non puoi tenere chiunque, e non quanti ne vuoi. I giocatori si dividono in tre categorie in base all'età che hanno <em>nella stagione di riferimento</em>:</p>
 
@@ -66,8 +68,8 @@
       </thead>
       <tbody>
         <tr><td><span class="badge a">A</span></td><td>Qualsiasi età</td><td><strong>Massimo 3</strong></td></tr>
-        <tr><td><span class="badge b">B</span></td><td>Fino a 25 anni</td><td>Nessun limite proprio</td></tr>
-        <tr><td><span class="badge c">C</span></td><td>Fino a 21 anni</td><td><strong>Illimitati</strong></td></tr>
+        <tr><td><span class="badge b">B</span></td><td>Fino a 25 anni <span class="muted">(stagione <span data-anno="stagioneLabel">2026/27</span>: nati dal 1/1/<span data-anno="natoB">2001</span> in poi)</span></td><td>Nessun limite proprio</td></tr>
+        <tr><td><span class="badge c">C</span></td><td>Fino a 21 anni <span class="muted">(stagione <span data-anno="stagioneLabel">2026/27</span>: nati dal 1/1/<span data-anno="natoC">2005</span> in poi)</span></td><td><strong>Illimitati</strong></td></tr>
       </tbody>
     </table>
   </div>
@@ -75,21 +77,21 @@
   <p>C'è però un vincolo che lega le prime due categorie: <strong>A e B insieme non possono mai superare 6</strong>. La categoria C è fuori da questo conteggio: i giovanissimi non ti occupano posti.</p>
 
   <div class="esempio">
-    <span class="esempio-label">Esempio — stagione 2026</span>
-    <p>Puoi riconfermare 3 giocatori del 1999 (categoria A, il tuo massimo) più 3 nati nel 2001 (categoria B, hanno 25 anni nel 2026). Sei a 6 su 6 nella fascia A+B: non puoi aggiungerne altri.</p>
-    <p>Ma puoi ancora riconfermare <strong>quanti under-21 vuoi</strong>, cioè nati dal 2005 in poi. Loro non contano.</p>
+    <span class="esempio-label">Esempio — stagione <span data-anno="stagione">2026</span></span>
+    <p>Puoi riconfermare 3 giocatori del <span data-anno="natoA">1999</span> (categoria A, il tuo massimo) più 3 nati nel <span data-anno="natoB">2001</span> (categoria B, hanno 25 anni nel <span data-anno="stagione">2026</span>). Sei a 6 su 6 nella fascia A+B: non puoi aggiungerne altri.</p>
+    <p>Ma puoi ancora riconfermare <strong>quanti under-21 vuoi</strong>, cioè nati dal <span data-anno="natoC">2005</span> in poi. Loro non contano.</p>
   </div>
 
   <div class="callout warn">
     <span class="callout-title">Attenzione: le categorie si spostano ogni anno</span>
-    <p>Quei giocatori del 2001 nel 2027 compiono 26 anni e passano da B ad A. Se ne avevi 3 già in A, ti ritrovi con più giocatori in categoria A di quanti ne siano ammessi.</p>
+    <p>Quei giocatori del <span data-anno="natoB">2001</span> nel <span data-anno="prossima">2027</span> compiono 26 anni e passano da B ad A. Se ne avevi 3 già in A, ti ritrovi con più giocatori in categoria A di quanti ne siano ammessi.</p>
     <p>I contratti già firmati <strong>restano validi</strong> — nessuno te li annulla a posteriori. Ma il sistema te lo segnala, e nelle riconferme successive dovrai tenerne conto. Pensaci <em>prima</em> di riempire la categoria A.</p>
   </div>
 
   <p>Perché una riconferma sia valida servono infine quattro condizioni, tutte insieme: il giocatore è nella tua rosa, non ha già un contratto attivo, rientra in una delle tre categorie, e i limiti qui sopra sono rispettati.</p>
 
 
-  <h2>3. Quanto costa tenerlo</h2>
+  <h2 id="fasce">3. Quanto costa tenerlo</h2>
 
   <p>Ogni anno di contratto costa più del precedente. Di quanto, dipende da quello che avevi pagato il giocatore all'asta: più era caro, più cresce in fretta.</p>
 
@@ -115,7 +117,7 @@
   </div>
 
 
-  <h2>4. Come cresce il costo, anno per anno</h2>
+  <h2 id="crescita">4. Come cresce il costo, anno per anno</h2>
 
   <p>L'aumento non si calcola sempre sul prezzo iniziale: si calcola <strong>sul costo dell'anno precedente</strong>. È interesse composto, e la differenza sui quattro anni è notevole.</p>
 
@@ -154,7 +156,7 @@
   </div>
 
 
-  <h2>5. Liberarsi di un giocatore</h2>
+  <h2 id="svincolo">5. Liberarsi di un giocatore</h2>
 
   <p>Se un contratto non ti conviene più, puoi <strong>svincolare</strong> il giocatore prima della scadenza. Non è gratis: paghi una penale.</p>
 
@@ -213,7 +215,7 @@
   </div>
 
 
-  <h2>6. Il ciclo di una stagione</h2>
+  <h2 id="ciclo">6. Il ciclo di una stagione</h2>
 
   <p>L'ordine delle cose è sempre lo stesso:</p>
 
@@ -232,7 +234,7 @@
   <p>Il prezzo è che parti dall'asta con <strong>950 crediti invece di 1000</strong>. È una scelta esplicita, e si può fare <strong>una sola volta per stagione</strong>.</p>
 
 
-  <h2>7. I crediti</h2>
+  <h2 id="crediti">7. I crediti</h2>
 
   <h3>Da dove parti</h3>
 
@@ -293,18 +295,46 @@
   <p>Ogni movimento di crediti viene registrato con la sua motivazione: acquisti, riconferme, svincoli, residui, premi, malus, bonus, riparazione, reset. In qualsiasi momento si può ricostruire come sei arrivato al saldo che hai.</p>
 
 
+  <h2 id="formule">8. Le formule esatte</h2>
+
+  <p>Per chi vuole il testo secco, senza giri di parole:</p>
+
+<pre><code>costo_anno_1 = ceil( prezzo_acquisto × (1 + percentuale) )
+costo_anno_n = ceil( costo_anno_(n−1) × (1 + percentuale) )
+
+penale       = ceil( prezzo_acquisto × 10% × anni_rimanenti )
+
+anni_rimanenti = anno_fine − anno_corrente + 1
+anno_fine      = anno_inizio + 3</code></pre>
+
+  <p>Per il prezzo 1 il costo è 1 in tutti e quattro gli anni. Se gli anni rimanenti sono 0, la penale è 0. Se il giocatore esce dal listone, la penale è 0 in ogni caso.</p>
+
+  <h3>Cosa NON è in vigore</h3>
+
+  <p>Queste regole circolano ma <strong>non fanno parte</strong> del regolamento base, quindi non si applicano:</p>
+
+  <ul>
+    <li>fasce ≤10 / 11–20 / 21–30 / &gt;30</li>
+    <li>raddoppio del prezzo per acquisti di gennaio</li>
+    <li>arrotondamento a 2 decimali</li>
+    <li>formula esponenziale con arrotondamento solo alla fine</li>
+    <li>altre soglie, categorie, bonus o malus non presenti nel regolamento base</li>
+  </ul>
+
+
   <div class="callout info" style="margin-top:56px">
     <span class="callout-title">E adesso?</span>
-    <p><a href="simulatore.html"><strong>Prova il simulatore</strong></a> per calcolare i costi dei tuoi giocatori, oppure leggi il <a href="regolamento.html"><strong>regolamento integrale</strong></a> per il testo completo e formale.</p>
+    <p><a href="simulatore.html"><strong>Prova il simulatore</strong></a> per calcolare i costi dei tuoi giocatori, oppure leggi il <a href="regolamento.html"><strong>regolamento</strong></a> per le regole di gioco della lega.</p>
   </div>
 
 </main>
 
 <footer>
-  <p>Fanta Breccia — pagina informativa. In caso di discordanza fa fede il <a href="regolamento.html">regolamento integrale</a>.</p>
+  <p>Fanta Breccia — questa pagina è il testo che fa fede per le riconferme. Le regole di gioco della lega sono nel <a href="regolamento.html">regolamento</a>.</p>
   <p>Regolamento aggiornato al 19 agosto 2026.</p>
 </footer>
 
+<script src="js/anni.js"></script>
 <script src="js/tabelle.js"></script>
 </body>
 </html>

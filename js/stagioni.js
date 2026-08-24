@@ -228,7 +228,7 @@
         '<h3>Crediti portati all\'asta ' + anno + '</h3>' +
         '<p class="nota-tabella">Ricavati dalla stagione ' + budget[0].daStagione +
           ': crediti avanzati più premi e malus ' +
-          '(<a href="regolamento.html#s12">regolamento § 12–17</a>).</p>' +
+          '(<a href="index.html#crediti">Riconferme, § 7 — I crediti</a>).</p>' +
         '<div class="table-wrap"><table><thead><tr>' +
           '<th>Squadra</th><th class="num">Avanzati</th>' +
           '<th class="num">Campionato</th><th class="num">Coppa</th>' +
