@@ -347,7 +347,7 @@ window.DATI = {
       "idSquadra": 8,
       "annoInizio": 2026,
       "annoFine": 2029,
-      "prezzo": 5,
+      "prezzo": 10,
       "attivo": true
     },
     {
