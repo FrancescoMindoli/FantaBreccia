@@ -252,15 +252,6 @@ window.DATI = {
       "attivo": true
     },
     {
-      "giocatore": "Baturina",
-      "annoNascita": 2003,
-      "idSquadra": 5,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 108,
-      "attivo": true
-    },
-    {
       "giocatore": "Butez",
       "annoNascita": 1995,
       "idSquadra": 5,
@@ -383,7 +374,7 @@ window.DATI = {
       "idSquadra": 8,
       "annoInizio": 2026,
       "annoFine": 2029,
-      "prezzo": 210,
+      "prezzo": 218,
       "attivo": true
     },
     {
