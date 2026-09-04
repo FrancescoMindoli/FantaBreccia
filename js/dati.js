@@ -42,7 +42,7 @@ window.DATI = {
     },
     {
       "id": 8,
-      "allenatore": "CariBam & sickroul",
+      "allenatore": "CariBam & sickraoul",
       "squadra": "Raoul e il socio"
     },
     {
@@ -598,7 +598,7 @@ window.DATI = {
       },
       "8": {
         "crediti": 13,
-        "nome": "CariBam & sickroul"
+        "nome": "CariBam & sickraoul"
       },
       "9": {
         "crediti": 14,
