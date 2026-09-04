@@ -60,7 +60,7 @@ Foglio **`Classifiche`**, una riga per squadra.
 
 | Anno | Posizione | ID | Punteggio | Miglior Punteggio | Squadra |
 |---|---|---|---|---|---|
-| 2026 | 1 | 8 | 2486 | 1 | Roul e il socio |
+| 2026 | 1 | 8 | 2486 | 1 | Raoul e il socio |
 | 2026 | 2 | 5 | 2471 | 0 | TurettaEPacciani FC |
 
 - **Anno** — la stagione che hai appena finito (2026)
@@ -87,7 +87,7 @@ Foglio **`Coppa`**, due righe: finalista vincente e perdente.
 | Anno | Posizione | ID | Squadra |
 |---|---|---|---|
 | 2026 | 1 | 4 | Whiteam FC |
-| 2026 | 2 | 8 | Roul e il socio |
+| 2026 | 2 | 8 | Raoul e il socio |
 
 > 💰 **Solo il primo prende il bonus.** Il secondo classificato riceve 0
 > crediti. Non è una dimenticanza: è la regola, scritta nel foglio
@@ -132,7 +132,7 @@ Vedrai una tabella così:
 ```
 === Stagione 2026 → budget 2027 ===
 Squadra                      Pos  Camp Coppa  Punt  Resid  Budget
-Roul e il socio                1   +25    +0   +10     13    1048
+Raoul e il socio               1   +25    +0   +10     13    1048
 Whiteam FC                     3   +10   +10    +0     10    1030
 Nkunku Settete                10   -20    +0    +0      4     984
 ```

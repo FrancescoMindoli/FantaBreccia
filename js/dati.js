@@ -43,7 +43,7 @@ window.DATI = {
     {
       "id": 8,
       "allenatore": "CariBam & sickroul",
-      "squadra": "Roul e il socio"
+      "squadra": "Raoul e il socio"
     },
     {
       "id": 9,
@@ -65,7 +65,7 @@ window.DATI = {
       "5": "TurettaEPacciani FC",
       "6": "Nkunku Settete",
       "7": "Mapi Group",
-      "8": "Roul e il socio",
+      "8": "Raoul e il socio",
       "9": "Compagnia Ascolana Sigari",
       "10": "Tridente demoniaco"
     }
@@ -483,7 +483,7 @@ window.DATI = {
       {
         "posizione": 1,
         "id": 8,
-        "squadra": "Roul e il socio",
+        "squadra": "Raoul e il socio",
         "punteggio": 2486,
         "migliorPunteggio": true
       },
@@ -562,7 +562,7 @@ window.DATI = {
       {
         "posizione": 2,
         "id": 8,
-        "squadra": "Roul e il socio"
+        "squadra": "Raoul e il socio"
       }
     ]
   },
@@ -670,7 +670,7 @@ window.DATI = {
       },
       {
         "id": 8,
-        "squadra": "Roul e il socio",
+        "squadra": "Raoul e il socio",
         "campionato": 25,
         "coppa": 0,
         "punteggio": 10,
@@ -703,7 +703,7 @@ window.DATI = {
         "anno": 2026,
         "campione": {
           "id": 8,
-          "squadra": "Roul e il socio",
+          "squadra": "Raoul e il socio",
           "punteggio": 2486
         },
         "secondo": {
@@ -722,7 +722,7 @@ window.DATI = {
         },
         "migliorPunteggio": {
           "id": 8,
-          "squadra": "Roul e il socio",
+          "squadra": "Raoul e il socio",
           "punteggio": 2486
         }
       }
@@ -730,7 +730,7 @@ window.DATI = {
     "medagliere": [
       {
         "id": 8,
-        "squadra": "Roul e il socio",
+        "squadra": "Raoul e il socio",
         "ori": 1,
         "argenti": 0,
         "bronzi": 0,
@@ -924,7 +924,7 @@ window.DATI = {
       },
       {
         "id": 8,
-        "squadra": "Roul e il socio",
+        "squadra": "Raoul e il socio",
         "campionato": 25,
         "coppa": 0,
         "punteggio": 10,
