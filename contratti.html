@@ -43,7 +43,18 @@
 
   <p class="errore-input" id="errore" hidden></p>
 
-  <!-- 1. Il check anno per anno, prima di ogni altra cosa -->
+  <!-- 1. I giocatori, uno per scheda: è la cosa che si viene a cercare -->
+  <section id="sezione-giocatori">
+    <h2>I tuoi giocatori</h2>
+    <p class="nota-tabella">
+      Per ogni anno le due alternative: <strong>riscatti</strong> è quanto paghi
+      per tenerlo un altro anno, <strong>svincoli</strong> è la penale se lo
+      lasci andare.
+    </p>
+    <div id="giocatori"></div>
+  </section>
+
+  <!-- 2. Il check anno per anno, subito sotto i giocatori -->
   <section id="sezione-riepilogo">
     <h2>Slot, dalla stagione scelta in poi</h2>
     <p class="nota-tabella">
@@ -53,17 +64,6 @@
     </p>
     <div id="riepilogo"></div>
     <div id="avvisi"></div>
-  </section>
-
-  <!-- 2. I giocatori, uno per scheda -->
-  <section id="sezione-giocatori">
-    <h2>I tuoi giocatori</h2>
-    <p class="nota-tabella">
-      Per ogni anno le due alternative: <strong>riscatti</strong> è quanto paghi
-      per tenerlo un altro anno, <strong>svincoli</strong> è la penale se lo
-      lasci andare.
-    </p>
-    <div id="giocatori"></div>
   </section>
 
   <!-- 3. I totali -->

@@ -1,10 +1,10 @@
 /*
  * contratti.js — chi è sotto contratto e quanto costa tenerlo o mollarlo.
  *
- * Ordine della pagina, dal generale al particolare:
- *   1. riepilogo anno per anno: gli slot sono a posto o no
- *   2. gli avvisi, con il perché
- *   3. una scheda per giocatore, con i costi anno per anno
+ * Ordine della pagina: prima chi hai, poi se stai nei limiti.
+ *   1. una scheda per giocatore, con i costi anno per anno
+ *   2. riepilogo anno per anno: gli slot sono a posto o no
+ *   3. gli avvisi, con il perché
  *   4. quanto costa in totale riscattarli o svincolarli tutti
  *   5. dettaglio slot: chi occupa quale categoria, anno per anno
  *   6. svincoli già registrati
@@ -55,7 +55,7 @@
   (D.squadre || []).forEach(function (s) { nomiSquadre[s.id] = s.squadra; });
   function nomeSquadra(id) { return nomiSquadre[id] || ('Squadra ' + id); }
 
-  var SEZIONI = ['sezione-riepilogo', 'sezione-giocatori', 'sezione-totali',
+  var SEZIONI = ['sezione-giocatori', 'sezione-riepilogo', 'sezione-totali',
                  'sezione-slot', 'sezione-svincoli'];
 
   if (!contratti.length) {
@@ -194,7 +194,7 @@
     });
   }
 
-  // --- 1. Riepilogo: il check anno per anno ------------------------------
+  // --- 2. Riepilogo: il check anno per anno ------------------------------
 
   function disegnaRiepilogo(annoCorrente) {
     var html = '';
@@ -237,7 +237,7 @@
     document.getElementById('riepilogo').innerHTML = html;
   }
 
-  // --- 2. Avvisi ----------------------------------------------------------
+  // --- 3. Avvisi ----------------------------------------------------------
 
   function disegnaAvvisi(annoCorrente) {
     var ora = [], futuri = [];
@@ -302,7 +302,7 @@
     contenitore.innerHTML = html;
   }
 
-  // --- 3. Una scheda per giocatore ---------------------------------------
+  // --- 1. Una scheda per giocatore ---------------------------------------
 
   function disegnaGiocatori(annoCorrente) {
     var html = '';
@@ -516,9 +516,9 @@
 
   function aggiorna() {
     var anno = Number(selAnno.value);
+    disegnaGiocatori(anno);
     disegnaRiepilogo(anno);
     disegnaAvvisi(anno);
-    disegnaGiocatori(anno);
     disegnaTotali(anno);
     disegnaSlot(anno);
     disegnaSvincoli();
