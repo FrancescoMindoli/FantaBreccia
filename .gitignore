@@ -6,6 +6,13 @@
 ~$*.xlsx
 *.xlsx#
 
+# Gli screenshot delle rose pesano decine di MB e questo repository è pubblico:
+# una volta in cronologia se li porterebbe dietro ogni clone, per sempre.
+# I CSV della stessa cartella restano versionati: sono pochi KB e servono come
+# traccia dell'asta.
+dati/**/*.PNG
+dati/**/*.png
+
 # Database e altri formati che qui non servono
 *.db
 *.sqlite

@@ -1,0 +1,151 @@
+squadra,giocatore,prezzo,Riscatto,motivoRiscatto
+Chentus,McTominay,122,Si,costo 147 contro FVM 215 - il miglior surplus della rosa; titolare inamovibile del Napoli di Allegri con Lobotka; vale uno slot O25 pieno
+Chentus,Locatelli,9,Si,costo 10 per FVM 47 - regista titolare della Juve di Spalletti; rendimento da 50+ crediti pagato come un fondo scala
+Chentus,Mancini,31,Si,costo 35 per FVM 54 - braccetto titolare nella difesa a 3 di Gasperini; bonus da palla inattiva e prezzo sotto mercato
+Chentus,Casadei,11,Si,costo 13 e classe 2003 quindi occupa slot U25 non O25; titolare del Torino di Abate; margine di crescita altissimo
+Chentus,Adzic,21,Si,costo 24 ma classe 2006 = slot U21 illimitato quindi non consuma nulla; passato al Sassuolo di Aquilani per giocare titolare
+Chentus,Coco,1,dubbio,costo 1 per un titolare fisso del Torino sarebbe regalato; il problema è che è O25 e i 3 slot valgono di più su McTominay Locatelli e Mancini
+Chentus,Pierotti,1,dubbio,costo 1 e titolare del Lecce di Di Francesco; stessa situazione di Coco - ottimo valore ma slot O25 esauriti
+Chentus,Delprato,11,dubbio,costo 13 titolare del Parma di Cuesta; buon prezzo ma FVM 22 non giustifica bruciare uno slot O25
+Chentus,Suzuki,13,dubbio,costo 15 portiere titolare del Parma; FVM solo 8 perche la difesa gialloblu subisce molto - meglio un portiere all asta
+Chentus,Dovbyk,24,dubbio,costo 27 ed è passato al Bologna di Tedesco da titolare; FVM 8 lo svaluta ma il cambio squadra può rilanciarlo - scommessa
+Chentus,Thuram,306,No,costo 398 contro FVM 270 - quasi il 40% del budget per un giocatore che vale meno di quanto costa; da lasciare e ricomprare all asta
+Chentus,De Gea,85,No,costo 98 per FVM 28 - portiere fortissimo ma pagato tre volte il valore e la Fiorentina di Grosso ha cambiato tutta la difesa
+Chentus,Bonazzoli,4,No,la Cremonese è retrocessa in Serie B quindi il giocatore esce dal listone
+Compagnia Ascolana Sigari,Douvikas,24,Si,costo 27 contro FVM 200 - il singolo affare più clamoroso della lega; centravanti titolare del Como di Fabregas
+Compagnia Ascolana Sigari,Hermoso,6,Si,costo 7 per FVM 25 - titolare nella difesa a 3 della Roma di Gasperini; prezzo irrisorio
+Compagnia Ascolana Sigari,Cataldi,1,Si,costo 1 per FVM 17 - alla Lazio di Gattuso è chioccia del centrocampo; a questa cifra è impossibile sbagliare
+Compagnia Ascolana Sigari,Atta,30,Si,costo 33 per FVM 85 e classe 2002 quindi slot U25; passato dall Udinese alla Fiorentina da titolare - salto di categoria
+Compagnia Ascolana Sigari,Perrone,35,Si,costo 39 per FVM 50 classe 2003 slot U25; play titolare del Como accanto a Da Cunha
+Compagnia Ascolana Sigari,Paleari,1,dubbio,costo 1 portiere titolare del Torino; valore assoluto ma è O25 e i 3 slot sono già presi da Douvikas Hermoso e Cataldi
+Compagnia Ascolana Sigari,Frattesi,13,dubbio,costo 15 ed è passato alla Lazio dove Gattuso lo vede titolare; FVM 10 è vecchio e sottostima il nuovo ruolo
+Compagnia Ascolana Sigari,Celik,5,dubbio,costo 6 ma con l arrivo di Molina alla Roma perde la fascia destra; buon prezzo scarsa titolarità
+Compagnia Ascolana Sigari,Esposito F.P.,45,dubbio,costo 50 classe 2005 slot U25; all Inter è chiuso da Lautaro e Thuram ma il talento è da prima punta futura
+Compagnia Ascolana Sigari,Ederson D.S.,46,dubbio,costo 53 per FVM 30 - titolare dell Atalanta ma con Sarri il centrocampo cambia principi e i bonus caleranno
+Compagnia Ascolana Sigari,Bastoni,56,dubbio,costo 65 per FVM 40 - titolare Inter e difensore top ma il prezzo supera il valore di listino
+Compagnia Ascolana Sigari,Soulè,187,No,costo 225 contro FVM 85 - titolare della Roma ma pagarlo un quinto del budget non ha senso; da riprendere all asta a meno
+Compagnia Ascolana Sigari,Sommer,100,No,costo 115 per un portiere di 38 anni scaricato dall Inter dopo gli arrivi di Provedel e la promozione di Martinez
+Compagnia Ascolana Sigari,Zambo Anguissa,50,No,costo 58 ed è in uscita dal Napoli; con Allegri gli inamovibili sono Lobotka e McTominay
+MALLOREDDUS FC,Simeone,42,Si,costo 47 contro FVM 99 - passato al Torino di Abate come centravanti titolare; miglior rapporto valore prezzo della rosa
+MALLOREDDUS FC,Fagioli,1,Si,costo 1 per FVM 35 - regista titolare della Fiorentina; a un credito è pura rendita
+MALLOREDDUS FC,Rrahmani,25,Si,costo 28 per FVM 45 - centrale titolare del Napoli; difesa solida con Allegri e tanti clean sheet attesi
+MALLOREDDUS FC,Tiago Gabriel,3,Si,costo 4 per FVM 25 classe 2004 slot U25; titolare del Lecce e in crescita costante
+MALLOREDDUS FC,Obert,1,Si,costo 1 classe 2002 slot U25; titolare del Cagliari di Pisacane confermato
+MALLOREDDUS FC,Colombo,31,Si,costo 35 classe 2002 slot U25; passato al Genoa di De Rossi come centravanti titolare - finalmente una maglia sua
+MALLOREDDUS FC,Nicolussi Caviglia,1,dubbio,costo 1 e titolare del Parma; valore enorme ma è O25 e i 3 slot vanno su Simeone Fagioli e Rrahmani
+MALLOREDDUS FC,Gabbia,10,dubbio,costo 11 titolare del Milan di Amorim nella difesa a 3; ottimo prezzo ma slot O25 esauriti
+MALLOREDDUS FC,Wesley,50,dubbio,costo 58 per FVM 46 classe 2003; titolare della Roma sulla fascia ma il prezzo è già pieno
+MALLOREDDUS FC,Thuram K.,69,dubbio,costo 80 per FVM 41 - titolare Juve ma si paga il nome più del rendimento fantacalcistico
+MALLOREDDUS FC,Carnesecchi,92,dubbio,costo 106 per FVM 80 - portiere titolare Atalanta ma con Sarri e una difesa nuova i clean sheet sono un incognita
+MALLOREDDUS FC,Orsolini,157,dubbio,costo 189 per FVM 150 - resta il top del Bologna ma quasi un quinto del budget su un 29enne
+MALLOREDDUS FC,Kilicsoy,93,No,costo 107 per FVM 7 - al Cagliari è chiuso da Sebastiano Esposito e Borrelli; errore d asta da azzerare
+MALLOREDDUS FC,Dumfries,79,No,costo 91 ed è stato ceduto dall Inter; fuori dal perimetro Serie A
+MALLOREDDUS FC,Vardy,24,No,la Cremonese è retrocessa in Serie B
+Mapi Group,Zaniolo,35,Si,costo 39 contro FVM 100 - titolare dell Udinese di Runjaic riscattato a titolo definitivo; il miglior surplus della rosa
+Mapi Group,Ostigard,3,Si,costo 4 per FVM 50 - titolare della difesa del Genoa; a questa cifra è il classico riscatto obbligato
+Mapi Group,Ekkelenkamp,16,Si,costo 18 per FVM 51 - mezzala titolare dell Udinese con licenza di inserimento; prezzo ridicolo
+Mapi Group,Konè I.,1,Si,costo 1 per FVM 67 classe 2003 slot U25; al Sassuolo di Aquilani ha spazio - rendita a costo zero
+Mapi Group,Diao,7,Si,costo 8 per FVM 30 classe 2003 slot U25; esterno titolare del Como di Fabregas
+Mapi Group,Scalvini,19,Si,costo 21 classe 2003 slot U25; titolare della difesa a 4 di Sarri all Atalanta se tiene fisicamente
+Mapi Group,Idzes,1,dubbio,costo 1 titolare del Sassuolo; valore netto ma è O25 e gli slot vanno su Zaniolo Ostigard ed Ekkelenkamp
+Mapi Group,Lucumì,1,dubbio,costo 1 titolare del Bologna; identica situazione di Idzes - ottimo affare bloccato dagli slot
+Mapi Group,N Dicka,33,dubbio,costo 37 per FVM 51 - titolare della Roma; buon margine ma serve uno slot O25 che vale di più altrove
+Mapi Group,Svilar,103,dubbio,costo 124 per FVM 105 - miglior portiere della Serie A ma il prezzo è ormai pieno
+Mapi Group,Konè M.,62,dubbio,costo 72 per FVM 39 - titolare Roma ma si paga oltre il valore di listino
+Mapi Group,Palestra,31,dubbio,costo 35 per FVM 75 classe 2005 slot U25; l Atalanta lo ha ceduto e finche non si sa dove finisce resta un rischio
+Mapi Group,Leao,260,No,costo 312 contro FVM 80 - Amorim lo ha scaricato e il Milan chiede 40-60 milioni; rischio concreto che lasci la Serie A entro il 1 settembre
+Mapi Group,Politano,72,No,costo 83 per FVM 31 - titolare Napoli ma 33 anni e bonus in calo; si ricompra all asta a molto meno
+Mapi Group,Openda,54,No,costo 63 per FVM 8 - con l arrivo di Kolo Muani alla Juve è finito dietro nelle gerarchie
+Mapi Group,Zhegrova,60,No,costo 69 per FVM 12 - fuori dalle rotazioni di Spalletti
+Nkunku Settete,Kalulu,27,Si,costo 30 contro FVM 68 - titolare fisso della difesa della Juve; il miglior affare di una rosa costosa
+Nkunku Settete,Okoye,2,Si,costo 3 per FVM 14 - portiere titolare dell Udinese a tre crediti; con 984 di budget è ossigeno puro
+Nkunku Settete,Solet,32,Si,costo 36 per FVM 55 classe 2004 slot U25; titolare Udinese e profilo da rivendita
+Nkunku Settete,Miranda J.,27,Si,costo 30 classe 2003 slot U25; terzino titolare del Bologna di Tedesco
+Nkunku Settete,Scamacca,110,dubbio,costo 132 per FVM 95 - titolare del nuovo Atalanta di Sarri ma il prezzo supera il valore e il budget è il più basso della lega
+Nkunku Settete,Berardi,107,dubbio,costo 129 per FVM 90 - resta il faro del Sassuolo ma a 32 anni e con quel costo il rischio infortuni pesa
+Nkunku Settete,Caqueret,3,dubbio,costo 4 per FVM 18 - prezzo ottimo ma al Como non è titolare nel 4-2-3-1 di Fabregas
+Nkunku Settete,Nkunku,65,dubbio,costo 75 per FVM 43 - titolare da trequartista con Amorim ma si paga sopra il valore
+Nkunku Settete,Isaksen,50,dubbio,costo 58 per FVM 35 - titolare della Lazio di Gattuso ma continuità di rendimento mai dimostrata
+Nkunku Settete,Sucic P.,55,dubbio,costo 64 per FVM 21 classe 2002 slot U25; titolare Inter ma pochi bonus per il fantacalcio
+Nkunku Settete,Pulisic,167,No,costo 201 contro FVM 100 - fortissimo e titolare ma un quinto del budget per un valore dimezzato
+Nkunku Settete,Ferguson E.,176,No,costo 212 per FVM 12 - alla Roma è dietro a Malen Castro e Dybala; il peggior contratto potenziale della lega
+Nkunku Settete,Lukaku,31,No,costo 35 ed è in uscita dal Napoli dopo l arrivo a titolo definitivo di Hojlund
+Nkunku Settete,Leali,14,No,ceduto dal Genoa che ha preso Bijlow come titolare
+Raoul e il socio,Dimarco,73,Si,costo 84 contro FVM 320 - il miglior rapporto valore prezzo dell intera lega; esterno titolare Inter con assist e punizioni
+Raoul e il socio,Malen,109,Si,costo 131 contro FVM 350 - punta titolare della Roma di Gasperini e primo slot d attacco del listone; affare enorme
+Raoul e il socio,Falcone,1,Si,costo 1 per FVM 35 - portiere titolare del Lecce; a un credito è il miglior portiere per rapporto qualità prezzo
+Raoul e il socio,Ramon,10,Si,costo 11 per FVM 23 classe 2003 slot U25; centrale titolare del Como
+Raoul e il socio,Jashari,1,Si,costo 1 classe 2002 slot U25; titolare del centrocampo di Amorim al Milan - crescita garantita
+Raoul e il socio,Bartesaghi,25,Si,costo 28 classe 2005 slot U25; titolare del Milan sulla corsia mancina a 21 anni
+Raoul e il socio,Gaetano,1,dubbio,costo 1 ed è passato all Atalanta di Sarri da titolare; affare vero ma i 3 slot O25 vanno su Dimarco Malen e Falcone
+Raoul e il socio,Motta,1,dubbio,costo 1 portiere titolare della Lazio; stessa situazione di Gaetano - slot O25 saturi
+Raoul e il socio,Neres,4,dubbio,costo 5 per FVM 15 - al Napoli è nelle rotazioni di Allegri ma ha molto mercato in uscita
+Raoul e il socio,De Bruyne,114,dubbio,costo 137 per FVM 92 - qualità assoluta ma 35 anni e prezzo sopra valore; da valutare se avanza budget
+Raoul e il socio,Dybala,91,dubbio,costo 105 per FVM 50 - titolare Roma ma fragilità fisica cronica e costo doppio rispetto al valore
+Raoul e il socio,De Ketelaere,94,dubbio,costo 109 per FVM 59 - titolare Atalanta ma con Sarri cambia sistema e il prezzo è già pieno
+Raoul e il socio,Modric,51,dubbio,costo 59 per FVM 90 - il valore c è ma a 41 anni e fuori dagli undici di Amorim è una scommessa
+Raoul e il socio,David,183,No,costo 220 per FVM 28 - alla Juve è dietro a Kolo Muani e Openda ed è lui stesso sul mercato
+Raoul e il socio,Fullkrug,12,No,costo 14 ma con l arrivo di Goncalo Ramos al Milan è fuori dal progetto
+Sporting Garra,Calhanoglu,91,Si,costo 105 contro FVM 190 - regista e rigorista titolare dell Inter; bonus garantiti e surplus altissimo
+Sporting Garra,Rabiot,98,Si,costo 113 contro FVM 195 - titolare del centrocampo di Amorim; uno dei tre centrocampisti più redditizi del listone
+Sporting Garra,Vlasic,41,Si,costo 46 contro FVM 100 - trequartista titolare e rigorista del Torino; prezzo dimezzato rispetto al valore
+Sporting Garra,Taylor K.,18,Si,costo 20 per FVM 52 classe 2003 slot U25; titolare della Lazio di Gattuso
+Sporting Garra,Rowe,17,Si,costo 19 per FVM 49 classe 2002 slot U25; esterno titolare del Bologna
+Sporting Garra,Rodriguez Je.,6,Si,costo 7 per FVM 27 classe 2003 slot U25; nelle rotazioni offensive del Como
+Sporting Garra,Ahanor,5,Si,costo 6 e classe 2008 = slot U21 illimitato quindi gratis a livello di vincoli; già titolare nell Atalanta di Sarri
+Sporting Garra,Bisseck,1,dubbio,costo 1 per FVM 41 titolare della difesa a 3 dell Inter; affare pazzesco ma i 3 slot O25 valgono di più su Calhanoglu Rabiot e Vlasic
+Sporting Garra,Lauriente,43,dubbio,costo 48 per FVM 82 - titolare del Sassuolo con ottimo margine; primo escluso per saturazione slot
+Sporting Garra,Akanji,35,dubbio,costo 39 per FVM 64 - riscattato dall Inter e titolare; stesso problema di slot
+Sporting Garra,Vasquez,16,dubbio,costo 18 per FVM 26 - titolare della difesa del Genoa; buon prezzo slot saturi
+Sporting Garra,Comuzzo,10,dubbio,costo 11 classe 2005 slot U25; passato al Torino da titolare - da tenere se si liberano slot U25
+Sporting Garra,Dodò,46,dubbio,costo 53 per FVM 30 - titolare Fiorentina ma si paga sopra valore
+Sporting Garra,Martinez L.,309,No,costo 402 contro FVM 315 - il riscatto più caro possibile; oltre il 39% del budget per un valore inferiore al costo
+Sporting Garra,Di Gregorio,101,No,costo 122 per FVM 30 - portiere titolare Juve ma pagato quattro volte il valore
+Sporting Garra,Acerbi,12,No,ceduto dall Inter e fuori dai radar
+Tridente demoniaco,Pavlovic,33,Si,costo 37 per FVM 60 - titolare della difesa a 3 di Amorim al Milan; miglior margine della rosa
+Tridente demoniaco,Gila,20,Si,costo 22 - passato dalla Lazio al Milan dove Amorim lo vede titolare; salto di squadra che ne alza il rendimento
+Tridente demoniaco,Muric,5,Si,costo 6 per un portiere titolare del Sassuolo; in una lega da 1000 crediti un portiere di ruolo a 6 è oro
+Tridente demoniaco,Fazzini,1,Si,costo 1 classe 2003 slot U25; passato al Cagliari di Pisacane da titolare nel 3-5-2
+Tridente demoniaco,Stulic,1,dubbio,costo 1 e centravanti titolare del Lecce; ottimo valore ma il terzo slot O25 è conteso
+Tridente demoniaco,Cristante,18,dubbio,costo 20 per FVM 26 - titolare della Roma di Gasperini; margine positivo ma sottile
+Tridente demoniaco,Bernabè,21,dubbio,costo 24 per FVM 23 - regista titolare del Parma; prezzo esattamente a valore quindi nessun vantaggio
+Tridente demoniaco,Maignan,100,dubbio,costo 120 per FVM 88 - miglior portiere del Milan ma il costo supera il valore
+Tridente demoniaco,Zielinski,53,dubbio,costo 61 per FVM 60 - valore in linea al prezzo ma all Inter non è titolare
+Tridente demoniaco,Vergara,25,dubbio,costo 28 classe 2003 slot U25; al Napoli di Allegri lo spazio è tutto da verificare
+Tridente demoniaco,Kempf,8,dubbio,costo 9 per FVM 18 - prezzo minimo ma al Como è fuori dagli undici
+Tridente demoniaco,Hojlund,302,No,costo 393 contro FVM 213 - il 39% del budget; è titolare del Napoli ma si perde quasi metà del valore nel riscatto
+Tridente demoniaco,Kean,269,No,costo 350 contro FVM 40 - crollo verticale della valutazione di listino; il riscatto peggiore possibile della lega
+Tridente demoniaco,Carlos Augusto,40,No,costo 44 per FVM 15 - all Inter è chiuso da Dimarco e Spence
+Tridente demoniaco,Pedro,1,No,ceduto dalla Lazio di Gattuso
+TurettaEPacciani FC,McKennie,1,Si,costo 1 contro FVM 107 - il singolo riscatto più conveniente di tutta la lega; titolare della Juve di Spalletti a un credito
+TurettaEPacciani FC,Butez,21,Si,costo 24 contro FVM 95 - portiere titolare del Como reduce da 19 clean sheet; affare clamoroso
+TurettaEPacciani FC,Lobotka,5,Si,costo 6 per FVM 20 - inamovibile del Napoli di Allegri; a sei crediti è regalato
+TurettaEPacciani FC,Baturina,54,Si,costo 63 per FVM 95 classe 2003 slot U25; trequartista titolare del Como in esplosione
+TurettaEPacciani FC,Paz N.,181,Si,costo 218 per FVM 245 classe 2004 slot U25; è rimasto al Como ed è il miglior centrocampista del listone - unico big che conviene riscattare
+TurettaEPacciani FC,Fadera,1,Si,costo 1 classe 2002 slot U25; costa nulla e occupa uno slot altrimenti inutilizzato
+TurettaEPacciani FC,Yildiz,251,dubbio,costo 302 contro FVM 182 - top assoluto e titolare Juve ma insieme a Paz N farebbe 520 crediti su due giocatori cioè metà budget
+TurettaEPacciani FC,Heggem,6,dubbio,costo 7 titolare del Bologna; buon prezzo ma slot O25 già assegnati a McKennie Butez e Lobotka
+TurettaEPacciani FC,Spinazzola,30,dubbio,costo 33 per FVM 33 - titolare Napoli ma prezzo esattamente a valore e 33 anni
+TurettaEPacciani FC,Bremer,70,dubbio,costo 81 per FVM 74 - difensore top della Juve ma nessun margine e storia di infortuni gravi
+TurettaEPacciani FC,Elmas,1,dubbio,costo 1 per FVM 13 - jolly del Napoli utile solo se avanzano slot
+TurettaEPacciani FC,Skorupski,30,dubbio,costo 33 per FVM 14 - titolare del Bologna ma con Butez in rosa il secondo portiere non serve
+TurettaEPacciani FC,Vlahovic,189,No,costo 227 - ha lasciato la Juve a parametro zero e la destinazione è ancora incerta; rischio concreto che non sia in Serie A
+TurettaEPacciani FC,Zaccagni,141,No,costo 170 contro FVM 25 - crollo della valutazione; titolare Lazio ma pagato sette volte il valore
+TurettaEPacciani FC,Castro S.,144,No,costo 173 per FVM 30 - passato alla Roma dove è dietro a Malen e Ferguson
+Whiteam FC,Da Cunha,1,Si,costo 1 contro FVM 80 classe 2002 slot U25; titolare del centrocampo del Como - rendita assoluta
+Whiteam FC,Davis K.,33,Si,costo 37 contro FVM 110 classe 2003 slot U25; centravanti titolare dell Udinese; secondo miglior surplus della rosa
+Whiteam FC,Thorstvedt,1,Si,costo 1 per FVM 40 - titolare del Sassuolo di Aquilani; a un credito è impossibile rinunciarci
+Whiteam FC,Kelly L.,16,Si,costo 18 per FVM 27 - titolare della difesa della Juve di Spalletti
+Whiteam FC,Esposito Se.,54,Si,costo 63 per FVM 70 - centravanti titolare del Cagliari con i rigori; margine positivo e ruolo garantito
+Whiteam FC,Ghilardi,1,Si,costo 1 classe 2003 slot U25; è tornato alla Roma di Gasperini che lo ha voluto - slot quasi gratuito
+Whiteam FC,Strefezza,10,dubbio,costo 11 per FVM 50 - margine altissimo ma al Parma non è titolare; primo nome se si libera uno slot O25
+Whiteam FC,Boga,3,dubbio,costo 4 per FVM 37 - ottimo rapporto ma alla Juve è fuori dagli undici di Spalletti
+Whiteam FC,Milinkovic-Savic V.,17,dubbio,costo 19 per FVM 37 - al Napoli è in ballottaggio con Meret; se vince lui è un affare
+Whiteam FC,Doig,3,dubbio,costo 4 classe 2002 slot U25; titolare del Sassuolo - ottimo riempitivo se restano slot
+Whiteam FC,Norton-Cuffy,20,dubbio,costo 22 classe 2004 slot U25; titolare del Genoa ma FVM 14 sotto il costo
+Whiteam FC,Conceicao,70,dubbio,costo 81 per FVM 65 classe 2002 slot U25; titolare Juve ma nessun margine economico
+Whiteam FC,Pinamonti,92,dubbio,costo 106 per FVM 55 - titolare del Sassuolo ma si paga il doppio del valore
+Whiteam FC,Krstovic,231,No,costo 278 contro FVM 95 - in ballottaggio con Scamacca nell Atalanta di Sarri; un quarto del budget per un non garantito
+Whiteam FC,Meret,90,No,costo 104 per FVM 20 - titolare Napoli ma con Milinkovic-Savic in rosa e prezzo cinque volte il valore
+Whiteam FC,Gudmundsson A.,101,No,costo 122 per FVM 35 - titolare Fiorentina ma valutazione crollata dopo una stagione deludente
+Whiteam FC,Gosens,65,No,ceduto dalla Fiorentina

@@ -3,7 +3,7 @@
  * Per aggiornarlo: modifica l'Excel e rilancia lo script.
  */
 window.DATI = {
-  "generatoIl": "2026-08-20",
+  "generatoIl": "2026-09-04",
   "squadre": [
     {
       "id": 1,
@@ -72,53 +72,8 @@ window.DATI = {
   },
   "contratti": [
     {
-      "giocatore": "Alvarez",
-      "annoNascita": 2006,
-      "idSquadra": 1,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 21,
-      "attivo": true
-    },
-    {
-      "giocatore": "Conti",
-      "annoNascita": 2006,
-      "idSquadra": 1,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 24,
-      "attivo": true
-    },
-    {
-      "giocatore": "Donati",
-      "annoNascita": 2006,
-      "idSquadra": 1,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 31,
-      "attivo": true
-    },
-    {
-      "giocatore": "Ferraro",
-      "annoNascita": 2006,
-      "idSquadra": 1,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 122,
-      "attivo": true
-    },
-    {
-      "giocatore": "Gatti",
-      "annoNascita": 2006,
-      "idSquadra": 1,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 1,
-      "attivo": true
-    },
-    {
-      "giocatore": "Perin",
-      "annoNascita": 2006,
+      "giocatore": "Casadei",
+      "annoNascita": 2003,
       "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
@@ -126,147 +81,408 @@ window.DATI = {
       "attivo": true
     },
     {
-      "giocatore": "Baggio",
+      "giocatore": "Dovbyk",
+      "annoNascita": 1997,
+      "idSquadra": 1,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 24,
+      "attivo": true
+    },
+    {
+      "giocatore": "Mancini",
       "annoNascita": 1996,
-      "idSquadra": 2,
+      "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
-      "prezzo": 55,
+      "prezzo": 31,
       "attivo": true
     },
     {
-      "giocatore": "Greco",
-      "annoNascita": 1996,
-      "idSquadra": 2,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 2,
-      "attivo": true
-    },
-    {
-      "giocatore": "Marino",
-      "annoNascita": 1988,
-      "idSquadra": 2,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 18,
-      "attivo": true
-    },
-    {
-      "giocatore": "Romano",
+      "giocatore": "Pierotti",
       "annoNascita": 2001,
-      "idSquadra": 2,
+      "idSquadra": 1,
       "annoInizio": 2026,
       "annoFine": 2029,
       "prezzo": 1,
       "attivo": true
     },
     {
-      "giocatore": "Colombo",
-      "annoNascita": 2005,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 12,
-      "attivo": true
-    },
-    {
-      "giocatore": "Costa",
-      "annoNascita": 1995,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 88,
-      "attivo": true
-    },
-    {
-      "giocatore": "Esposito",
-      "annoNascita": 2005,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 9,
-      "attivo": true
-    },
-    {
-      "giocatore": "Martini",
-      "annoNascita": 1993,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 120,
-      "attivo": true
-    },
-    {
-      "giocatore": "Pellegrini",
-      "annoNascita": 2004,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 30,
-      "attivo": true
-    },
-    {
-      "giocatore": "Serra",
-      "annoNascita": 1997,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 74,
-      "attivo": true
-    },
-    {
-      "giocatore": "Vitale",
-      "annoNascita": 2004,
-      "idSquadra": 3,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 26,
-      "attivo": true
-    },
-    {
-      "giocatore": "Lombardi",
-      "annoNascita": 1997,
-      "idSquadra": 4,
-      "annoInizio": 2026,
-      "annoFine": 2029,
-      "prezzo": 48,
-      "attivo": true
-    },
-    {
-      "giocatore": "Moretti",
+      "giocatore": "Carnesecchi",
       "annoNascita": 2000,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 92,
+      "attivo": true
+    },
+    {
+      "giocatore": "Colombo",
+      "annoNascita": 2002,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 31,
+      "attivo": true
+    },
+    {
+      "giocatore": "Rrahmani",
+      "annoNascita": 1994,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 25,
+      "attivo": true
+    },
+    {
+      "giocatore": "Simeone",
+      "annoNascita": 1995,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 42,
+      "attivo": true
+    },
+    {
+      "giocatore": "Valle",
+      "annoNascita": 2004,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 5,
+      "attivo": true
+    },
+    {
+      "giocatore": "Wesley",
+      "annoNascita": 2003,
+      "idSquadra": 2,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 50,
+      "attivo": true
+    },
+    {
+      "giocatore": "Bisseck",
+      "annoNascita": 2000,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Lauriente",
+      "annoNascita": 1998,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 43,
+      "attivo": true
+    },
+    {
+      "giocatore": "Rodriguez Je.",
+      "annoNascita": 2005,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 6,
+      "attivo": true
+    },
+    {
+      "giocatore": "Rowe",
+      "annoNascita": 2003,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 17,
+      "attivo": true
+    },
+    {
+      "giocatore": "Vlasic",
+      "annoNascita": 1997,
+      "idSquadra": 3,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 41,
+      "attivo": true
+    },
+    {
+      "giocatore": "Da Cunha",
+      "annoNascita": 2001,
       "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Davis K.",
+      "annoNascita": 1998,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 33,
+      "attivo": true
+    },
+    {
+      "giocatore": "Ghilardi",
+      "annoNascita": 2003,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Samardzic",
+      "annoNascita": 2002,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 14,
+      "attivo": true
+    },
+    {
+      "giocatore": "Thorstvedt",
+      "annoNascita": 1999,
+      "idSquadra": 4,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Baturina",
+      "annoNascita": 2003,
+      "idSquadra": 5,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 108,
+      "attivo": true
+    },
+    {
+      "giocatore": "Butez",
+      "annoNascita": 1995,
+      "idSquadra": 5,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 21,
+      "attivo": true
+    },
+    {
+      "giocatore": "McKennie",
+      "annoNascita": 1998,
+      "idSquadra": 5,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Belghali",
+      "annoNascita": 2002,
+      "idSquadra": 6,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 2,
+      "attivo": true
+    },
+    {
+      "giocatore": "Kalulu",
+      "annoNascita": 2000,
+      "idSquadra": 6,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 27,
+      "attivo": true
+    },
+    {
+      "giocatore": "Okoye",
+      "annoNascita": 1999,
+      "idSquadra": 6,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 4,
+      "attivo": true
+    },
+    {
+      "giocatore": "Solet",
+      "annoNascita": 2000,
+      "idSquadra": 6,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 32,
+      "attivo": true
+    },
+    {
+      "giocatore": "Diao",
+      "annoNascita": 2005,
+      "idSquadra": 7,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 7,
+      "attivo": true
+    },
+    {
+      "giocatore": "Lucumi",
+      "annoNascita": 1998,
+      "idSquadra": 7,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Ostigard",
+      "annoNascita": 1999,
+      "idSquadra": 7,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 6,
+      "attivo": true
+    },
+    {
+      "giocatore": "Zaniolo",
+      "annoNascita": 1999,
+      "idSquadra": 7,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 35,
+      "attivo": true
+    },
+    {
+      "giocatore": "Bernasconi",
+      "annoNascita": 2003,
+      "idSquadra": 8,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 5,
+      "attivo": true
+    },
+    {
+      "giocatore": "Dimarco",
+      "annoNascita": 1997,
+      "idSquadra": 8,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 73,
+      "attivo": true
+    },
+    {
+      "giocatore": "Gaetano",
+      "annoNascita": 2000,
+      "idSquadra": 8,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Malen",
+      "annoNascita": 1999,
+      "idSquadra": 8,
       "annoInizio": 2026,
       "annoFine": 2029,
       "prezzo": 210,
       "attivo": true
     },
     {
-      "giocatore": "Ricci",
-      "annoNascita": 2008,
-      "idSquadra": 4,
+      "giocatore": "Ramon",
+      "annoNascita": 2005,
+      "idSquadra": 8,
       "annoInizio": 2026,
       "annoFine": 2029,
-      "prezzo": 3,
+      "prezzo": 10,
       "attivo": true
     },
     {
-      "giocatore": "Rinaldi",
-      "annoNascita": 1997,
-      "idSquadra": 4,
+      "giocatore": "Atta",
+      "annoNascita": 2003,
+      "idSquadra": 9,
       "annoInizio": 2026,
       "annoFine": 2029,
-      "prezzo": 95,
+      "prezzo": 30,
       "attivo": true
     },
     {
-      "giocatore": "Santoro",
+      "giocatore": "Bonny",
+      "annoNascita": 2003,
+      "idSquadra": 9,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 35,
+      "attivo": true
+    },
+    {
+      "giocatore": "Douvikas",
       "annoNascita": 1999,
-      "idSquadra": 4,
+      "idSquadra": 9,
       "annoInizio": 2026,
       "annoFine": 2029,
-      "prezzo": 62,
+      "prezzo": 24,
+      "attivo": true
+    },
+    {
+      "giocatore": "Esposito F.P.",
+      "annoNascita": 2005,
+      "idSquadra": 9,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 45,
+      "attivo": true
+    },
+    {
+      "giocatore": "Frattesi",
+      "annoNascita": 1999,
+      "idSquadra": 9,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 13,
+      "attivo": true
+    },
+    {
+      "giocatore": "Martinez Jo.",
+      "annoNascita": 1998,
+      "idSquadra": 9,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 5,
+      "attivo": true
+    },
+    {
+      "giocatore": "Cambiaghi",
+      "annoNascita": 2000,
+      "idSquadra": 10,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Fazzini",
+      "annoNascita": 2003,
+      "idSquadra": 10,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 1,
+      "attivo": true
+    },
+    {
+      "giocatore": "Gila",
+      "annoNascita": 2000,
+      "idSquadra": 10,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 20,
+      "attivo": true
+    },
+    {
+      "giocatore": "Muric",
+      "annoNascita": 1998,
+      "idSquadra": 10,
+      "annoInizio": 2026,
+      "annoFine": 2029,
+      "prezzo": 5,
       "attivo": true
     }
   ],
